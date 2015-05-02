@@ -1,0 +1,426 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9508F6BF1AF52A2B00A8C713 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9508F6BE1AF52A2B00A8C713 /* AppDelegate.swift */; };
+		9508F6C11AF52A2B00A8C713 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9508F6C01AF52A2B00A8C713 /* ViewController.swift */; };
+		9508F6C41AF52A2B00A8C713 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9508F6C21AF52A2B00A8C713 /* Main.storyboard */; };
+		9508F6C61AF52A2B00A8C713 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9508F6C51AF52A2B00A8C713 /* Images.xcassets */; };
+		9508F6C91AF52A2B00A8C713 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9508F6C71AF52A2B00A8C713 /* LaunchScreen.xib */; };
+		9508F6D51AF52A2B00A8C713 /* AgniTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9508F6D41AF52A2B00A8C713 /* AgniTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9508F6CF1AF52A2B00A8C713 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9508F6B11AF52A2B00A8C713 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9508F6B81AF52A2B00A8C713;
+			remoteInfo = Agni;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		9508F6B91AF52A2B00A8C713 /* Agni.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Agni.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9508F6BD1AF52A2B00A8C713 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9508F6BE1AF52A2B00A8C713 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		9508F6C01AF52A2B00A8C713 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		9508F6C31AF52A2B00A8C713 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		9508F6C51AF52A2B00A8C713 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		9508F6C81AF52A2B00A8C713 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		9508F6CE1AF52A2B00A8C713 /* AgniTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AgniTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9508F6D31AF52A2B00A8C713 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9508F6D41AF52A2B00A8C713 /* AgniTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgniTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9508F6B61AF52A2B00A8C713 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9508F6CB1AF52A2B00A8C713 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9508F6B01AF52A2B00A8C713 = {
+			isa = PBXGroup;
+			children = (
+				9508F6BB1AF52A2B00A8C713 /* Agni */,
+				9508F6D11AF52A2B00A8C713 /* AgniTests */,
+				9508F6BA1AF52A2B00A8C713 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9508F6BA1AF52A2B00A8C713 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9508F6B91AF52A2B00A8C713 /* Agni.app */,
+				9508F6CE1AF52A2B00A8C713 /* AgniTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9508F6BB1AF52A2B00A8C713 /* Agni */ = {
+			isa = PBXGroup;
+			children = (
+				9508F6BE1AF52A2B00A8C713 /* AppDelegate.swift */,
+				9508F6C01AF52A2B00A8C713 /* ViewController.swift */,
+				9508F6C21AF52A2B00A8C713 /* Main.storyboard */,
+				9508F6C51AF52A2B00A8C713 /* Images.xcassets */,
+				9508F6C71AF52A2B00A8C713 /* LaunchScreen.xib */,
+				9508F6BC1AF52A2B00A8C713 /* Supporting Files */,
+			);
+			path = Agni;
+			sourceTree = "<group>";
+		};
+		9508F6BC1AF52A2B00A8C713 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9508F6BD1AF52A2B00A8C713 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9508F6D11AF52A2B00A8C713 /* AgniTests */ = {
+			isa = PBXGroup;
+			children = (
+				9508F6D41AF52A2B00A8C713 /* AgniTests.swift */,
+				9508F6D21AF52A2B00A8C713 /* Supporting Files */,
+			);
+			path = AgniTests;
+			sourceTree = "<group>";
+		};
+		9508F6D21AF52A2B00A8C713 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9508F6D31AF52A2B00A8C713 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9508F6B81AF52A2B00A8C713 /* Agni */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9508F6D81AF52A2B00A8C713 /* Build configuration list for PBXNativeTarget "Agni" */;
+			buildPhases = (
+				9508F6B51AF52A2B00A8C713 /* Sources */,
+				9508F6B61AF52A2B00A8C713 /* Frameworks */,
+				9508F6B71AF52A2B00A8C713 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Agni;
+			productName = Agni;
+			productReference = 9508F6B91AF52A2B00A8C713 /* Agni.app */;
+			productType = "com.apple.product-type.application";
+		};
+		9508F6CD1AF52A2B00A8C713 /* AgniTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9508F6DB1AF52A2B00A8C713 /* Build configuration list for PBXNativeTarget "AgniTests" */;
+			buildPhases = (
+				9508F6CA1AF52A2B00A8C713 /* Sources */,
+				9508F6CB1AF52A2B00A8C713 /* Frameworks */,
+				9508F6CC1AF52A2B00A8C713 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9508F6D01AF52A2B00A8C713 /* PBXTargetDependency */,
+			);
+			name = AgniTests;
+			productName = AgniTests;
+			productReference = 9508F6CE1AF52A2B00A8C713 /* AgniTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9508F6B11AF52A2B00A8C713 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0630;
+				ORGANIZATIONNAME = "Michael Ginn";
+				TargetAttributes = {
+					9508F6B81AF52A2B00A8C713 = {
+						CreatedOnToolsVersion = 6.3.1;
+					};
+					9508F6CD1AF52A2B00A8C713 = {
+						CreatedOnToolsVersion = 6.3.1;
+						TestTargetID = 9508F6B81AF52A2B00A8C713;
+					};
+				};
+			};
+			buildConfigurationList = 9508F6B41AF52A2B00A8C713 /* Build configuration list for PBXProject "Agni" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9508F6B01AF52A2B00A8C713;
+			productRefGroup = 9508F6BA1AF52A2B00A8C713 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9508F6B81AF52A2B00A8C713 /* Agni */,
+				9508F6CD1AF52A2B00A8C713 /* AgniTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9508F6B71AF52A2B00A8C713 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9508F6C41AF52A2B00A8C713 /* Main.storyboard in Resources */,
+				9508F6C91AF52A2B00A8C713 /* LaunchScreen.xib in Resources */,
+				9508F6C61AF52A2B00A8C713 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9508F6CC1AF52A2B00A8C713 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9508F6B51AF52A2B00A8C713 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9508F6C11AF52A2B00A8C713 /* ViewController.swift in Sources */,
+				9508F6BF1AF52A2B00A8C713 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9508F6CA1AF52A2B00A8C713 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9508F6D51AF52A2B00A8C713 /* AgniTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9508F6D01AF52A2B00A8C713 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9508F6B81AF52A2B00A8C713 /* Agni */;
+			targetProxy = 9508F6CF1AF52A2B00A8C713 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		9508F6C21AF52A2B00A8C713 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9508F6C31AF52A2B00A8C713 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		9508F6C71AF52A2B00A8C713 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9508F6C81AF52A2B00A8C713 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9508F6D61AF52A2B00A8C713 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9508F6D71AF52A2B00A8C713 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9508F6D91AF52A2B00A8C713 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Agni/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		9508F6DA1AF52A2B00A8C713 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Agni/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		9508F6DC1AF52A2B00A8C713 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = AgniTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Agni.app/Agni";
+			};
+			name = Debug;
+		};
+		9508F6DD1AF52A2B00A8C713 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = AgniTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Agni.app/Agni";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9508F6B41AF52A2B00A8C713 /* Build configuration list for PBXProject "Agni" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9508F6D61AF52A2B00A8C713 /* Debug */,
+				9508F6D71AF52A2B00A8C713 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9508F6D81AF52A2B00A8C713 /* Build configuration list for PBXNativeTarget "Agni" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9508F6D91AF52A2B00A8C713 /* Debug */,
+				9508F6DA1AF52A2B00A8C713 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		9508F6DB1AF52A2B00A8C713 /* Build configuration list for PBXNativeTarget "AgniTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9508F6DC1AF52A2B00A8C713 /* Debug */,
+				9508F6DD1AF52A2B00A8C713 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9508F6B11AF52A2B00A8C713 /* Project object */;
+}
