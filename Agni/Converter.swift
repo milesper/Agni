@@ -1,16 +1,16 @@
 //
-//  ListConverter.swift
-//  
+//  Converter.swift
+//  Agni
 //
-//  Created by Michael Ginn on 5/5/15.
-//
+//  Created by Michael Ginn on 6/5/15.
+//  Copyright (c) 2015 Michael Ginn. All rights reserved.
 //
 
 import UIKit
 import CoreData
 import Parse
 
-class ListConverter: NSObject {
+class Converter: NSObject {
     //utility methods for interacting with files
     
     class func getWordsArray()->[String]{
@@ -63,7 +63,50 @@ class ListConverter: NSObject {
         listObject.setValue(listTitle, forKey: "title")
         listObject.setValue(listAuthor, forKey: "author")
         
-         var error: NSError?
+        var error: NSError?
         managedContext.save(&error)
     }
+    
+    class func saveSkinInBackground(skin: PFObject, completion: (completed: Bool) -> Void){
+        var defaults = NSUserDefaults.standardUserDefaults() //use to get app-wide data
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            let managedContext = appDelegate.managedObjectContext!
+            let entity =  NSEntityDescription.entityForName("Skin", inManagedObjectContext:managedContext)
+
+            let downloadedSkin = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
+            if let personFile = skin.objectForKey("Person") as? PFFile{
+                var personData = personFile.getData()
+                downloadedSkin.setValue(personData, forKey: "personImage")
+            } else{
+                let personImageData = UIImagePNGRepresentation(UIImage(named: "stickfigure small"))
+                downloadedSkin.setValue(personImageData, forKey: "personImage")
+            }
+            
+            if let swordFile = skin.objectForKey("Sword") as? PFFile{
+                var swordData = swordFile.getData()
+                downloadedSkin.setValue(swordData, forKey: "swordImage")
+            } else{
+                let swordImageData = UIImagePNGRepresentation(UIImage(named: "sword small"))
+                downloadedSkin.setValue(swordImageData, forKey: "swordImage")
+            }
+            
+            if let sheepFile = skin.objectForKey("Sheep") as? PFFile{
+                var sheepData = sheepFile.getData()
+                downloadedSkin.setValue(sheepData, forKey: "sheepImage")
+            } else{
+                let sheepImageData = UIImagePNGRepresentation(UIImage(named: "Sheep small"))
+                downloadedSkin.setValue(sheepImageData, forKey: "sheepImage")
+            }
+            let title = skin.valueForKey("Title") as! String
+            downloadedSkin.setValue(title, forKey: "title")
+            defaults.setObject(title, forKey: "currentSkin")
+            defaults.synchronize()
+            var error: NSError?
+            managedContext.save(&error)
+            completion(completed: true)
+        })
+    }
+
 }

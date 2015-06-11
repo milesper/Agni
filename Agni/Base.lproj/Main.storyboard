@@ -292,7 +292,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Sheep.png" translatesAutoresizingMaskIntoConstraints="NO" id="FmE-xU-ES0">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Sheep small.png" translatesAutoresizingMaskIntoConstraints="NO" id="FmE-xU-ES0">
                                 <rect key="frame" x="247" y="261" width="107" height="79"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="107" id="AoI-fP-Bnv"/>
@@ -370,7 +370,7 @@
             </objects>
             <point key="canvasLocation" x="1003" y="296"/>
         </scene>
-        <!--Download Words-->
+        <!--Download List View Controller-->
         <scene sceneID="rKd-31-93s">
             <objects>
                 <viewController id="NWg-i5-sin" customClass="DownloadListViewController" customModule="Agni" customModuleProvider="target" sceneMemberID="viewController">
@@ -500,7 +500,6 @@
                             </mask>
                         </variation>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Download Words" image="Download From Cloud-32.png" id="3XI-9Y-PlO"/>
                     <connections>
                         <outlet property="tableView" destination="gER-sz-lhq" id="WPo-It-dDY"/>
                     </connections>
@@ -614,7 +613,7 @@
         <!--Skins View Controller-->
         <scene sceneID="tFp-GG-q1I">
             <objects>
-                <viewController id="NOS-oI-3mE" customClass="SkinsViewController" customModule="Agni" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="NOS-oI-3mE" customClass="SkinsViewController" customModule="Agni" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="SdD-zB-mhM"/>
                         <viewControllerLayoutGuide type="bottom" id="puR-Zz-p9J"/>
@@ -623,90 +622,75 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="90" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="rEX-Fb-8eX">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="580"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="119" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="rEX-Fb-8eX">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="listCell" rowHeight="132" id="HYx-Ls-tmI">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="skinCell" rowHeight="119" id="HYx-Ls-tmI">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HYx-Ls-tmI" id="fMO-sh-8hM">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FuM-SY-kaR">
-                                                    <rect key="frame" x="567" y="53" width="25" height="25"/>
+                                                <imageView userInteractionEnabled="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Sheep small.png" translatesAutoresizingMaskIntoConstraints="NO" id="7ce-s8-YSx" customClass="PFImageView">
+                                                    <rect key="frame" x="452" y="48" width="84" height="62"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="25" id="AE4-HJ-ivD">
-                                                            <variation key="widthClass=compact" constant="30"/>
-                                                        </constraint>
+                                                        <constraint firstAttribute="width" constant="84" id="V2P-AG-r0S"/>
+                                                        <constraint firstAttribute="height" constant="62" id="yTa-3W-VtN"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sword small.png" translatesAutoresizingMaskIntoConstraints="NO" id="c9R-sv-Cad" customClass="PFImageView">
+                                                    <rect key="frame" x="48" y="50" width="53" height="28"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="53" id="WDL-0G-jci"/>
+                                                        <constraint firstAttribute="height" constant="28" id="ys3-yw-XDl"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <button opaque="NO" tag="4" contentMode="scaleAspectFit" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FuM-SY-kaR">
+                                                    <rect key="frame" x="552" y="47" width="40" height="25"/>
+                                                    <constraints>
                                                         <constraint firstAttribute="height" constant="25" id="L2B-KZ-tkB">
                                                             <variation key="widthClass=compact" constant="30"/>
                                                         </constraint>
+                                                        <constraint firstAttribute="width" constant="40" id="SSu-cJ-984"/>
                                                     </constraints>
-                                                    <state key="normal" backgroundImage="Download Colored.png"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                                    <state key="normal" title="Use"/>
                                                     <variation key="widthClass=compact">
                                                         <mask key="constraints">
-                                                            <include reference="AE4-HJ-ivD"/>
                                                             <include reference="L2B-KZ-tkB"/>
                                                         </mask>
                                                     </variation>
                                                 </button>
-                                                <progressView opaque="NO" alpha="0.0" tag="5" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1Jv-47-Tz5">
-                                                    <rect key="frame" x="8" y="121" width="529" height="2"/>
+                                                <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="stickfigure small.png" translatesAutoresizingMaskIntoConstraints="NO" id="pVD-Ne-opR" customClass="PFImageView">
+                                                    <rect key="frame" x="8" y="12" width="48" height="98"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="2" id="05Y-gW-di1"/>
-                                                    </constraints>
-                                                    <variation key="widthClass=compact">
-                                                        <mask key="constraints">
-                                                            <include reference="05Y-gW-di1"/>
-                                                        </mask>
-                                                    </variation>
-                                                </progressView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Sheep small.png" translatesAutoresizingMaskIntoConstraints="NO" id="7ce-s8-YSx">
-                                                    <rect key="frame" x="444" y="44" width="107" height="79"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="107" id="V2P-AG-r0S"/>
-                                                        <constraint firstAttribute="height" constant="79" id="yTa-3W-VtN"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sword small.png" translatesAutoresizingMaskIntoConstraints="NO" id="c9R-sv-Cad">
-                                                    <rect key="frame" x="57" y="52" width="62" height="33"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="62" id="WDL-0G-jci"/>
-                                                        <constraint firstAttribute="height" constant="33" id="ys3-yw-XDl"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="stickfigure small.png" translatesAutoresizingMaskIntoConstraints="NO" id="pVD-Ne-opR">
-                                                    <rect key="frame" x="8" y="8" width="57" height="115"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="115" id="9bK-Pk-FjN"/>
-                                                        <constraint firstAttribute="width" constant="57" id="UJQ-Ce-2Ou"/>
+                                                        <constraint firstAttribute="height" constant="98" id="9bK-Pk-FjN"/>
+                                                        <constraint firstAttribute="width" constant="48" id="UJQ-Ce-2Ou"/>
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="1Jv-47-Tz5" firstAttribute="bottom" secondItem="fMO-sh-8hM" secondAttribute="bottomMargin" id="0ie-zv-qF5"/>
                                                 <constraint firstItem="pVD-Ne-opR" firstAttribute="top" secondItem="fMO-sh-8hM" secondAttribute="topMargin" id="Gdt-kT-gUo"/>
                                                 <constraint firstItem="pVD-Ne-opR" firstAttribute="leading" secondItem="fMO-sh-8hM" secondAttribute="leadingMargin" id="kuz-aj-C52"/>
                                                 <constraint firstItem="FuM-SY-kaR" firstAttribute="leading" secondItem="7ce-s8-YSx" secondAttribute="trailing" constant="16" id="oRZ-sZ-wJe"/>
                                                 <constraint firstItem="c9R-sv-Cad" firstAttribute="leading" secondItem="pVD-Ne-opR" secondAttribute="trailing" constant="-8" id="oYt-cs-5gf"/>
                                                 <constraint firstItem="7ce-s8-YSx" firstAttribute="bottom" secondItem="fMO-sh-8hM" secondAttribute="bottomMargin" id="qAc-va-fJU"/>
                                                 <constraint firstItem="c9R-sv-Cad" firstAttribute="centerY" secondItem="pVD-Ne-opR" secondAttribute="centerY" constant="3" id="sZM-6A-7Jr"/>
-                                                <constraint firstItem="1Jv-47-Tz5" firstAttribute="trailing" secondItem="FuM-SY-kaR" secondAttribute="leading" constant="-30" id="sdc-pZ-c4O"/>
                                                 <constraint firstItem="pVD-Ne-opR" firstAttribute="bottom" secondItem="fMO-sh-8hM" secondAttribute="bottomMargin" id="tUr-Kn-haR"/>
-                                                <constraint firstItem="1Jv-47-Tz5" firstAttribute="leading" secondItem="fMO-sh-8hM" secondAttribute="leadingMargin" id="uGv-8E-2P8"/>
                                                 <constraint firstItem="FuM-SY-kaR" firstAttribute="trailing" secondItem="fMO-sh-8hM" secondAttribute="trailingMargin" id="xbE-lH-fRC"/>
                                                 <constraint firstAttribute="centerY" secondItem="FuM-SY-kaR" secondAttribute="centerY" id="xx0-4V-deW"/>
                                             </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="Gdt-kT-gUo"/>
+                                                </mask>
+                                            </variation>
                                             <variation key="widthClass=compact">
                                                 <mask key="subviews">
                                                     <include reference="FuM-SY-kaR"/>
-                                                    <include reference="1Jv-47-Tz5"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <include reference="0ie-zv-qF5"/>
-                                                    <include reference="sdc-pZ-c4O"/>
-                                                    <include reference="uGv-8E-2P8"/>
                                                     <include reference="xbE-lH-fRC"/>
                                                     <include reference="xx0-4V-deW"/>
                                                 </mask>
@@ -715,15 +699,33 @@
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
-                                    <outlet property="dataSource" destination="NWg-i5-sin" id="yu9-43-Z0m"/>
-                                    <outlet property="delegate" destination="NWg-i5-sin" id="zPH-YD-HkW"/>
+                                    <outlet property="dataSource" destination="NOS-oI-3mE" id="15U-mi-XEv"/>
+                                    <outlet property="delegate" destination="NOS-oI-3mE" id="nQ5-Me-KZE"/>
                                 </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="rEX-Fb-8eX" firstAttribute="bottom" secondItem="kaq-2O-9Ud" secondAttribute="bottomMargin" id="5Ei-LF-amr"/>
+                            <constraint firstItem="rEX-Fb-8eX" firstAttribute="top" secondItem="SdD-zB-mhM" secondAttribute="bottom" id="99S-oQ-U6b"/>
+                            <constraint firstItem="rEX-Fb-8eX" firstAttribute="bottom" secondItem="kaq-2O-9Ud" secondAttribute="bottomMargin" id="dkg-II-rYd"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="rEX-Fb-8eX" secondAttribute="trailing" constant="-16" id="dqG-a2-giR"/>
+                            <constraint firstItem="rEX-Fb-8eX" firstAttribute="top" secondItem="kaq-2O-9Ud" secondAttribute="topMargin" id="fuQ-H4-sV4"/>
+                            <constraint firstItem="rEX-Fb-8eX" firstAttribute="leading" secondItem="kaq-2O-9Ud" secondAttribute="leadingMargin" constant="-16" id="p60-Bf-pqq"/>
+                            <constraint firstItem="rEX-Fb-8eX" firstAttribute="top" secondItem="kaq-2O-9Ud" secondAttribute="topMargin" id="s8B-fD-SpD"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="99S-oQ-U6b"/>
+                                <exclude reference="dkg-II-rYd"/>
+                                <exclude reference="s8B-fD-SpD"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="rH5-1N-WeJ"/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="tableView" destination="rEX-Fb-8eX" id="2uc-NC-mPg"/>
                         <segue destination="Ywu-FV-kcX" kind="show" identifier="purchasePage" id="j1p-mQ-KYr"/>
                     </connections>
                 </viewController>
@@ -932,7 +934,7 @@
                                     <action selector="english:" destination="8bQ-TZ-Ah9" eventType="touchUpInside" id="Fpp-O9-Nz9"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Sheep.png" translatesAutoresizingMaskIntoConstraints="NO" id="wtl-pq-QY9">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Sheep small.png" translatesAutoresizingMaskIntoConstraints="NO" id="wtl-pq-QY9">
                                 <rect key="frame" x="247" y="123" width="107" height="79"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="107" id="KBG-Uh-2Le"/>
@@ -1048,11 +1050,9 @@
         <image name="Buy-100.png" width="100" height="100"/>
         <image name="Download 2 Filled-32.png" width="32" height="32"/>
         <image name="Download Colored.png" width="100" height="100"/>
-        <image name="Download From Cloud-32.png" width="32" height="32"/>
         <image name="Paint Palette Filled-32.png" width="32" height="32"/>
         <image name="Refresh-100.png" width="100" height="100"/>
         <image name="Sheep small.png" width="212" height="166"/>
-        <image name="Sheep.png" width="1118" height="874"/>
         <image name="To Do Filled-32.png" width="32" height="32"/>
         <image name="placeholder.png" width="512" height="512"/>
         <image name="sound.png" width="100" height="100"/>

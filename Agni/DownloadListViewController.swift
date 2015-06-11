@@ -100,7 +100,7 @@ class DownloadListViewController: UIViewController, UITableViewDelegate, UITable
         textfile.getDataInBackgroundWithBlock({
             (data,error) in
             if error == nil{
-                ListConverter.saveToCoreData(data!, listTitle: download.valueForKey("Title") as! String, listAuthor: download.valueForKey("Author") as! String)
+                Converter.saveToCoreData(data!, listTitle: download.valueForKey("Title") as! String, listAuthor: download.valueForKey("Author") as! String)
 
                 UIView.transitionWithView(button, duration: 0.2, options: .TransitionCrossDissolve, animations: {
                     button.setBackgroundImage(UIImage(named: "Ok Filled-100.png"), forState: .Normal)

@@ -95,7 +95,7 @@ class WordListsViewController: UIViewController, UITableViewDelegate, UITableVie
             defaults.setObject(true, forKey: "needsUpdateSources") //Game screen will reload data sources
         }
         var time = dispatch_time(DISPATCH_TIME_NOW, 0)
-        dispatch_after(time, dispatch_get_main_queue(), {
+        dispatch_async(dispatch_get_main_queue(), {
             //save in the background
             self.defaults.synchronize()
         })

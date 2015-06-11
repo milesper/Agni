@@ -39,7 +39,7 @@ class AgniViewController: UIViewController, UICollectionViewDataSource, UICollec
         // Do any additional setup after loading the view.
         if defaults.objectForKey("selectedTitles") != nil{ //this will be changed by the selected titles screen
             
-            self.wordsArray = ListConverter.getWordsArray() // Get the data out of the text file
+            self.wordsArray = Converter.getWordsArray() // Get the data out of the text file
         }
         
         self.needsRefresh = true //will get a word, update interface components
@@ -52,7 +52,7 @@ class AgniViewController: UIViewController, UICollectionViewDataSource, UICollec
             self.performSegueWithIdentifier("showWelcome", sender: self)
             
         }else{
-            self.wordsArray = ListConverter.getWordsArray() //get the data since we skipped it at load
+            self.wordsArray = Converter.getWordsArray() //get the data since we skipped it at load
             self.setup()
         }
     }
@@ -89,7 +89,7 @@ class AgniViewController: UIViewController, UICollectionViewDataSource, UICollec
             self.restart()
         }
         if (defaults.valueForKey("needsUpdateSources") as! Bool){ //user has changed which lists are used
-            self.wordsArray = ListConverter.getWordsArray()
+            self.wordsArray = Converter.getWordsArray()
             defaults.setObject(false, forKey: "needsUpdateSources")
             defaults.synchronize()
             self.restart()

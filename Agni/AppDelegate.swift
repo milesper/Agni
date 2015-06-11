@@ -27,6 +27,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var defaults = NSUserDefaults.standardUserDefaults() //used to save app-wide data
         if defaults.objectForKey("skinsUnlocked") == nil{ //this will be changed by the selected titles screen
             defaults.setBool(false, forKey: "skinsUnlocked")
+            
+        }
+        //defaults.setBool(true, forKey: "skinsUnlocked") //for simulator testing
+        
+        if defaults.objectForKey("currentSkin") == nil{
+            defaults.setValue("Default", forKey: "currentSkin")
         }
         defaults.setObject(true, forKey: "needsUpdateSources") //cause the game to refresh its input sources
         defaults.synchronize()
@@ -78,7 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     lazy var managedObjectModel: NSManagedObjectModel = {
         // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
-        let modelURL = NSBundle.mainBundle().URLForResource("WordList", withExtension: "momd")!
+        let modelURL = NSBundle.mainBundle().URLForResource("Store", withExtension: "momd")!
         return NSManagedObjectModel(contentsOfURL: modelURL)!
         }()
     
@@ -86,10 +92,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // The persistent store coordinator for the application. This implementation creates and return a coordinator, having added the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
         // Create the coordinator and store
         var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
+        var options = [NSMigratePersistentStoresAutomaticallyOption: true, NSInferMappingModelAutomaticallyOption: true]
         let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent("Agni.sqlite")
         var error: NSError? = nil
         var failureReason = "There was an error creating or loading the application's saved data."
-        if coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil, error: &error) == nil {
+        if coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: options, error: &error) == nil {
             coordinator = nil
             // Report any error we got.
             var dict = [String: AnyObject]()

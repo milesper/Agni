@@ -19,7 +19,6 @@
 		9508F6DF1AF52E4400A8C713 /* AgniViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9508F6DE1AF52E4400A8C713 /* AgniViewController.swift */; };
 		9508F6E11AF52F3A00A8C713 /* Latin1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9508F6E01AF52F3A00A8C713 /* Latin1.txt */; };
 		9508F6E71AF540BD00A8C713 /* tabBarSheep.png in Resources */ = {isa = PBXBuildFile; fileRef = 9508F6E61AF540BD00A8C713 /* tabBarSheep.png */; };
-		9508F6EC1AF6800200A8C713 /* sword.png in Resources */ = {isa = PBXBuildFile; fileRef = 9508F6EB1AF6800200A8C713 /* sword.png */; };
 		9508F6EE1AF68E3100A8C713 /* LetterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9508F6ED1AF68E3100A8C713 /* LetterCollectionViewCell.swift */; };
 		9508F6F21AF6AE6500A8C713 /* ShakeTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9508F6F11AF6AE6500A8C713 /* ShakeTransition.swift */; };
 		9508F6F81AF7B73200A8C713 /* FinishedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9508F6F71AF7B73200A8C713 /* FinishedViewController.swift */; };
@@ -38,12 +37,12 @@
 		95A639C21B1F731500A2A108 /* sword small.png in Resources */ = {isa = PBXBuildFile; fileRef = 95A639C11B1F731500A2A108 /* sword small.png */; };
 		95A639C41B1F743E00A2A108 /* Sheep small.png in Resources */ = {isa = PBXBuildFile; fileRef = 95A639C31B1F743E00A2A108 /* Sheep small.png */; };
 		95A639C61B1F755600A2A108 /* stickfigure small.png in Resources */ = {isa = PBXBuildFile; fileRef = 95A639C51B1F755600A2A108 /* stickfigure small.png */; };
+		95A639CF1B2221A300A2A108 /* Checkmark-32.png in Resources */ = {isa = PBXBuildFile; fileRef = 95A639CE1B2221A300A2A108 /* Checkmark-32.png */; };
+		95A639D11B2282D400A2A108 /* Converter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A639D01B2282D400A2A108 /* Converter.swift */; };
 		95A86CAD1AF85C6A00E0FB67 /* To Do Filled-32.png in Resources */ = {isa = PBXBuildFile; fileRef = 95A86CAC1AF85C6A00E0FB67 /* To Do Filled-32.png */; };
-		95A86CB01AF85E8600E0FB67 /* WordList.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 95A86CAE1AF85E8600E0FB67 /* WordList.xcdatamodeld */; };
+		95A86CB01AF85E8600E0FB67 /* Store.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 95A86CAE1AF85E8600E0FB67 /* Store.xcdatamodeld */; };
 		95A86CB41AF861E700E0FB67 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A86CB31AF861E700E0FB67 /* CoreData.framework */; };
 		95A86CB81AF9316C00E0FB67 /* WordListsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A86CB71AF9316C00E0FB67 /* WordListsViewController.swift */; };
-		95A86CBE1AF9592000E0FB67 /* ListConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A86CBD1AF9592000E0FB67 /* ListConverter.swift */; };
-		95A86CC01AF9597C00E0FB67 /* Download From Cloud-32.png in Resources */ = {isa = PBXBuildFile; fileRef = 95A86CBF1AF9597C00E0FB67 /* Download From Cloud-32.png */; };
 		95A86CC41AF962A600E0FB67 /* DownloadListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A86CC31AF962A600E0FB67 /* DownloadListViewController.swift */; };
 		95A86CC71AF9668A00E0FB67 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A86CC51AF9668A00E0FB67 /* Bolts.framework */; };
 		95A86CC81AF9668A00E0FB67 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A86CC61AF9668A00E0FB67 /* Parse.framework */; };
@@ -58,7 +57,6 @@
 		95A86CDA1AF966E900E0FB67 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A86CD91AF966E900E0FB67 /* SystemConfiguration.framework */; };
 		95A86CDC1AF966F200E0FB67 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A86CDB1AF966F200E0FB67 /* libz.dylib */; };
 		95A86CDE1AF966FB00E0FB67 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A86CDD1AF966FB00E0FB67 /* libsqlite3.dylib */; };
-		95B425631B054409007B1CEE /* Sheep.png in Resources */ = {isa = PBXBuildFile; fileRef = 95B425621B054409007B1CEE /* Sheep.png */; };
 		95CF7E211AFAFFAE007D2F27 /* Refresh-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 95CF7E201AFAFFAE007D2F27 /* Refresh-100.png */; };
 		95E53B6E1B14DF7F00F7BC4A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95E53B6D1B14DF7F00F7BC4A /* AVFoundation.framework */; };
 		95E53B711B14FCBE00F7BC4A /* gong.wav in Resources */ = {isa = PBXBuildFile; fileRef = 95E53B701B14FCBE00F7BC4A /* gong.wav */; };
@@ -98,7 +96,6 @@
 		9508F6DE1AF52E4400A8C713 /* AgniViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgniViewController.swift; sourceTree = "<group>"; };
 		9508F6E01AF52F3A00A8C713 /* Latin1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Latin1.txt; sourceTree = "<group>"; };
 		9508F6E61AF540BD00A8C713 /* tabBarSheep.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabBarSheep.png; sourceTree = "<group>"; };
-		9508F6EB1AF6800200A8C713 /* sword.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sword.png; sourceTree = "<group>"; };
 		9508F6ED1AF68E3100A8C713 /* LetterCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LetterCollectionViewCell.swift; sourceTree = "<group>"; };
 		9508F6F11AF6AE6500A8C713 /* ShakeTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShakeTransition.swift; sourceTree = "<group>"; };
 		9508F6F71AF7B73200A8C713 /* FinishedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FinishedViewController.swift; sourceTree = "<group>"; };
@@ -117,12 +114,13 @@
 		95A639C11B1F731500A2A108 /* sword small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sword small.png"; sourceTree = "<group>"; };
 		95A639C31B1F743E00A2A108 /* Sheep small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Sheep small.png"; sourceTree = "<group>"; };
 		95A639C51B1F755600A2A108 /* stickfigure small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stickfigure small.png"; sourceTree = "<group>"; };
+		95A639C71B20D15C00A2A108 /* Store 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Store 2.xcdatamodel"; sourceTree = "<group>"; };
+		95A639CE1B2221A300A2A108 /* Checkmark-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Checkmark-32.png"; sourceTree = "<group>"; };
+		95A639D01B2282D400A2A108 /* Converter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Converter.swift; sourceTree = "<group>"; };
 		95A86CAC1AF85C6A00E0FB67 /* To Do Filled-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "To Do Filled-32.png"; sourceTree = "<group>"; };
-		95A86CAF1AF85E8600E0FB67 /* WordList.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WordList.xcdatamodel; sourceTree = "<group>"; };
+		95A86CAF1AF85E8600E0FB67 /* Store.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Store.xcdatamodel; sourceTree = "<group>"; };
 		95A86CB31AF861E700E0FB67 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		95A86CB71AF9316C00E0FB67 /* WordListsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordListsViewController.swift; sourceTree = "<group>"; };
-		95A86CBD1AF9592000E0FB67 /* ListConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListConverter.swift; sourceTree = "<group>"; };
-		95A86CBF1AF9597C00E0FB67 /* Download From Cloud-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Download From Cloud-32.png"; sourceTree = "<group>"; };
 		95A86CC31AF962A600E0FB67 /* DownloadListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadListViewController.swift; sourceTree = "<group>"; };
 		95A86CC51AF9668A00E0FB67 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		95A86CC61AF9668A00E0FB67 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
@@ -137,7 +135,6 @@
 		95A86CD91AF966E900E0FB67 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		95A86CDB1AF966F200E0FB67 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		95A86CDD1AF966FB00E0FB67 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		95B425621B054409007B1CEE /* Sheep.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Sheep.png; sourceTree = "<group>"; };
 		95CF7E201AFAFFAE007D2F27 /* Refresh-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Refresh-100.png"; sourceTree = "<group>"; };
 		95E53B6D1B14DF7F00F7BC4A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		95E53B701B14FCBE00F7BC4A /* gong.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = gong.wav; sourceTree = "<group>"; };
@@ -250,18 +247,16 @@
 				95A639711B1CF57E00A2A108 /* Paint Palette Filled-32.png */,
 				95A639621B18080F00A2A108 /* mute.png */,
 				95A639631B18080F00A2A108 /* sound.png */,
-				95B425621B054409007B1CEE /* Sheep.png */,
 				95A639C31B1F743E00A2A108 /* Sheep small.png */,
 				95A639C51B1F755600A2A108 /* stickfigure small.png */,
 				9508F6E61AF540BD00A8C713 /* tabBarSheep.png */,
-				9508F6EB1AF6800200A8C713 /* sword.png */,
 				95A639C11B1F731500A2A108 /* sword small.png */,
 				95A86CAC1AF85C6A00E0FB67 /* To Do Filled-32.png */,
 				95EA93E71AF9768B00766E92 /* placeholder.png */,
-				95A86CBF1AF9597C00E0FB67 /* Download From Cloud-32.png */,
 				95EA93EF1AF9A12E00766E92 /* Download Colored.png */,
 				95EA93FD1AFAE71400766E92 /* Active State Filled-100.png */,
 				95EA93FF1AFAE8C300766E92 /* Ok Filled-100.png */,
+				95A639CE1B2221A300A2A108 /* Checkmark-32.png */,
 				95CF7E201AFAFFAE007D2F27 /* Refresh-100.png */,
 				95A6397D1B1E761D00A2A108 /* Download 2 Filled-32.png */,
 			);
@@ -271,7 +266,7 @@
 		9508F6F91AF7B76500A8C713 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				95A86CBD1AF9592000E0FB67 /* ListConverter.swift */,
+				95A639D01B2282D400A2A108 /* Converter.swift */,
 				9508F6DE1AF52E4400A8C713 /* AgniViewController.swift */,
 				9503F0001B16743F0020A7ED /* GameSounds.swift */,
 				9508F6F71AF7B73200A8C713 /* FinishedViewController.swift */,
@@ -287,7 +282,7 @@
 		9508F6FA1AF7B77400A8C713 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				95A86CAE1AF85E8600E0FB67 /* WordList.xcdatamodeld */,
+				95A86CAE1AF85E8600E0FB67 /* Store.xcdatamodeld */,
 				9508F6ED1AF68E3100A8C713 /* LetterCollectionViewCell.swift */,
 				9508F6F11AF6AE6500A8C713 /* ShakeTransition.swift */,
 				95A6397F1B1E76C000A2A108 /* TransparentNavigationBar.swift */,
@@ -440,9 +435,7 @@
 				95E53B731B14FD6600F7BC4A /* lightgong.aif in Resources */,
 				95A639761B1CFE0300A2A108 /* Buy-100.png in Resources */,
 				95A6396A1B18FD9800A2A108 /* incorrectSound.wav in Resources */,
-				95A86CC01AF9597C00E0FB67 /* Download From Cloud-32.png in Resources */,
 				95A6397E1B1E761D00A2A108 /* Download 2 Filled-32.png in Resources */,
-				95B425631B054409007B1CEE /* Sheep.png in Resources */,
 				9508F6C41AF52A2B00A8C713 /* Main.storyboard in Resources */,
 				95CF7E211AFAFFAE007D2F27 /* Refresh-100.png in Resources */,
 				9508F6C91AF52A2B00A8C713 /* LaunchScreen.xib in Resources */,
@@ -450,11 +443,11 @@
 				95A86CAD1AF85C6A00E0FB67 /* To Do Filled-32.png in Resources */,
 				95EA93FE1AFAE71400766E92 /* Active State Filled-100.png in Resources */,
 				9503F0031B1679C10020A7ED /* win.wav in Resources */,
-				9508F6EC1AF6800200A8C713 /* sword.png in Resources */,
 				95EA93EC1AF98A4300766E92 /* EnglishStarterPack.txt in Resources */,
 				9503EFFF1B1672400020A7ED /* failure.wav in Resources */,
 				9508F6E11AF52F3A00A8C713 /* Latin1.txt in Resources */,
 				9508F6E71AF540BD00A8C713 /* tabBarSheep.png in Resources */,
+				95A639CF1B2221A300A2A108 /* Checkmark-32.png in Resources */,
 				95A639691B18FD9800A2A108 /* correctSound.wav in Resources */,
 				95A639651B18080F00A2A108 /* sound.png in Resources */,
 				95A639641B18080F00A2A108 /* mute.png in Resources */,
@@ -488,13 +481,13 @@
 				95A86CB81AF9316C00E0FB67 /* WordListsViewController.swift in Sources */,
 				95A6396C1B1CE4C700A2A108 /* WelcomeViewController.swift in Sources */,
 				95A86CC41AF962A600E0FB67 /* DownloadListViewController.swift in Sources */,
-				95A86CBE1AF9592000E0FB67 /* ListConverter.swift in Sources */,
+				95A639D11B2282D400A2A108 /* Converter.swift in Sources */,
 				95A639781B1D0AD700A2A108 /* BuySkinsViewController.swift in Sources */,
 				9508F6BF1AF52A2B00A8C713 /* AppDelegate.swift in Sources */,
 				9508F6DF1AF52E4400A8C713 /* AgniViewController.swift in Sources */,
 				95A639801B1E76C000A2A108 /* TransparentNavigationBar.swift in Sources */,
 				95A639741B1CFAE700A2A108 /* SkinsViewController.swift in Sources */,
-				95A86CB01AF85E8600E0FB67 /* WordList.xcdatamodeld in Sources */,
+				95A86CB01AF85E8600E0FB67 /* Store.xcdatamodeld in Sources */,
 				9508F6EE1AF68E3100A8C713 /* LetterCollectionViewCell.swift in Sources */,
 				9508F6F21AF6AE6500A8C713 /* ShakeTransition.swift in Sources */,
 				9503F0011B16743F0020A7ED /* GameSounds.swift in Sources */,
@@ -742,13 +735,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		95A86CAE1AF85E8600E0FB67 /* WordList.xcdatamodeld */ = {
+		95A86CAE1AF85E8600E0FB67 /* Store.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				95A86CAF1AF85E8600E0FB67 /* WordList.xcdatamodel */,
+				95A639C71B20D15C00A2A108 /* Store 2.xcdatamodel */,
+				95A86CAF1AF85E8600E0FB67 /* Store.xcdatamodel */,
 			);
-			currentVersion = 95A86CAF1AF85E8600E0FB67 /* WordList.xcdatamodel */;
-			path = WordList.xcdatamodeld;
+			currentVersion = 95A639C71B20D15C00A2A108 /* Store 2.xcdatamodel */;
+			path = Store.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
