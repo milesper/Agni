@@ -42,23 +42,47 @@ class GameSounds: NSObject {
     
     var backgroundMusicPlayer = AVAudioPlayer()
     
-    override init() {
-        startAudioPlayer = AVAudioPlayer(contentsOfURL: startSound, error: nil)
+    override init(){
+        do{
+        startAudioPlayer = try AVAudioPlayer(contentsOfURL: startSound)
+        }catch _{
+            print("\nError occurred with sounds")
+        }
         startAudioPlayer.prepareToPlay()
         
-        correctAudioPlayer = AVAudioPlayer(contentsOfURL: correctSound, error: nil)
+        do{
+        correctAudioPlayer = try AVAudioPlayer(contentsOfURL: correctSound)
+        }catch _{
+            print("\nError occurred with sounds")
+        }
         correctAudioPlayer.prepareToPlay()
         
-        incorrectAudioPlayer = AVAudioPlayer(contentsOfURL: incorrectSound, error: nil)
+        do{
+        incorrectAudioPlayer = try AVAudioPlayer(contentsOfURL: incorrectSound)
+        }catch _{
+            print("\nError occurred with sounds")
+        }
         incorrectAudioPlayer.prepareToPlay()
         
-        lossAudioPlayer = AVAudioPlayer(contentsOfURL: loseSound, error: nil)
+        do{
+        lossAudioPlayer = try AVAudioPlayer(contentsOfURL: loseSound)
+        }catch _{
+            print("\nError occurred with sounds")
+        }
         lossAudioPlayer.prepareToPlay()
         
-        winAudioPlayer = AVAudioPlayer(contentsOfURL: winSound, error: nil)
+        do{
+        winAudioPlayer = try AVAudioPlayer(contentsOfURL: winSound)
+        }catch _{
+            print("\nError occurred with sounds")
+        }
         winAudioPlayer.prepareToPlay()
         
-        backgroundMusicPlayer = AVAudioPlayer(contentsOfURL: backgroundMusic, error: nil)
+        do{
+        backgroundMusicPlayer = try AVAudioPlayer(contentsOfURL: backgroundMusic)
+        }catch _{
+            print("\nError occurred with sounds")
+        }
         backgroundMusicPlayer.numberOfLoops = -1
         backgroundMusicPlayer.volume = 0.1
         backgroundMusicPlayer.prepareToPlay()
@@ -83,21 +107,27 @@ class GameSounds: NSObject {
         case .Win:
             winAudioPlayer.volume = 1.0
             winAudioPlayer.play()
-        default:
-            break
         }
     }
     
     func toggleBGMusic(){
         if backgroundMusicPlayer.playing{
+            do {
+                try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
+            } catch _ {
+            }
             backgroundMusicPlayer.pause()
             self.defaults.setBool(false, forKey: "musicOn")
         } else{
+            do {
+                try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategorySoloAmbient)
+            } catch _ {
+            }
             backgroundMusicPlayer.play()
             self.defaults.setBool(true, forKey: "musicOn")
         }
         
-        var time = dispatch_time(DISPATCH_TIME_NOW, 0)
+        let time = dispatch_time(DISPATCH_TIME_NOW, 0)
         dispatch_after(time, dispatch_get_main_queue(), {
             //save in the background
             self.defaults.synchronize()

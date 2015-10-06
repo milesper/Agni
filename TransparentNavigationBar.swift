@@ -16,9 +16,8 @@ extension UINavigationController {
         navigationBar.setBackgroundImage(UIImage(), forBarMetrics:UIBarMetrics.Default)
         navigationBar.translucent = true
         navigationBar.shadowImage = UIImage()
-        setNavigationBarHidden(false, animated:true)
+        navigationBar.hidden = false
     }
-    
     public func hideTransparentNavigationBar() {
         setNavigationBarHidden(true, animated:false)
         navigationBar.setBackgroundImage(UINavigationBar.appearance().backgroundImageForBarMetrics(UIBarMetrics.Default), forBarMetrics:UIBarMetrics.Default)

@@ -22,21 +22,23 @@ class WordListsViewController: UIViewController, UITableViewDelegate, UITableVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.presentTransparentNavigationBar()
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 104/255.0, green: 104/255.0, blue: 104/255.0, alpha: 1.0)]
-    }
-    
-    override func viewDidAppear(animated: Bool) {
+        
+        //find all the lists and load em up
         self.lists = []
-    
+        
         //get lists saved in persistant memory
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext!
         
         let fetchRequest = NSFetchRequest(entityName:"WordList") //get the list of lists
-        var error: NSError?
         
-        let fetchedResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as? [NSManagedObject]
+        var fetchedResults:[NSManagedObject]? = nil
+        do{
+            fetchedResults = try managedContext.executeFetchRequest(fetchRequest) as? [NSManagedObject]
+        } catch _{
+            NSLog("Something went wrong getting words")
+        }
         if (fetchedResults != nil){
             for list in fetchedResults!{
                 self.lists.append(list)
@@ -44,6 +46,10 @@ class WordListsViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         self.selectedTitles = self.defaults.objectForKey("selectedTitles") as! [String]
         self.tableView.reloadData() //will show which lists are selected
+
+    }
+    
+    override func viewDidAppear(animated: Bool) {
         
     }
     
@@ -59,7 +65,7 @@ class WordListsViewController: UIViewController, UITableViewDelegate, UITableVie
     
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("listCell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("listCell", forIndexPath: indexPath)
         if indexPath.row == 0{ //Latin pack
             cell.textLabel?.text = "Latin Starter Pack"
             cell.detailTextLabel?.text = "Agni Dev"
@@ -71,7 +77,7 @@ class WordListsViewController: UIViewController, UITableViewDelegate, UITableVie
             cell.detailTextLabel?.text = (self.lists[indexPath.row - 2].valueForKey("author") as! String)
         }
         
-        if contains(selectedTitles, cell.textLabel!.text!){
+        if selectedTitles.contains((cell.textLabel!.text!)){
             //list is selected
             cell.accessoryType = UITableViewCellAccessoryType.Checkmark
         } else{
@@ -83,9 +89,9 @@ class WordListsViewController: UIViewController, UITableViewDelegate, UITableVie
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cell = tableView.cellForRowAtIndexPath(indexPath)!
-        if contains(self.selectedTitles, cell.textLabel!.text!) && self.selectedTitles.count >= 2{
+        if self.selectedTitles.contains((cell.textLabel!.text!)) && self.selectedTitles.count >= 2{
             //cell is selected and not the only selected one
-            self.selectedTitles.removeAtIndex(find(selectedTitles, cell.textLabel!.text!)!)
+            self.selectedTitles.removeAtIndex(selectedTitles.indexOf((cell.textLabel!.text!))!)
         } else {
             //cell is not selected
             self.selectedTitles.append(cell.textLabel!.text!)
@@ -94,7 +100,6 @@ class WordListsViewController: UIViewController, UITableViewDelegate, UITableVie
         if !(defaults.objectForKey("needsUpdateSources") as! Bool){
             defaults.setObject(true, forKey: "needsUpdateSources") //Game screen will reload data sources
         }
-        var time = dispatch_time(DISPATCH_TIME_NOW, 0)
         dispatch_async(dispatch_get_main_queue(), {
             //save in the background
             self.defaults.synchronize()
@@ -102,43 +107,46 @@ class WordListsViewController: UIViewController, UITableViewDelegate, UITableVie
         self.tableView.reloadData()
     }
     
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        var title = tableView.cellForRowAtIndexPath(indexPath)?.textLabel?.text
-        let onlySelected = (selectedTitles.count == 1 && selectedTitles[0] == title)
-        if editingStyle == UITableViewCellEditingStyle.Delete && indexPath.row > 1{
-            //delete the list from saved memory
-            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            let managedContext = appDelegate.managedObjectContext!
-            managedContext.deleteObject(lists[indexPath.row - 2])
-            var error:NSError? = nil
-            managedContext.save(&error)
-            self.lists.removeAtIndex(indexPath.row - 2)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
-            
-            
-        }
-        if contains(self.selectedTitles, title!){
-            self.selectedTitles.removeAtIndex(find(selectedTitles, title!)!)
-            self.defaults.setObject(selectedTitles, forKey: "selectedTitles")
-            var time = dispatch_time(DISPATCH_TIME_NOW, 0)
-            dispatch_after(time, dispatch_get_main_queue(), {
-                //save in the background
-                self.defaults.synchronize()
-            })
-        }
-        if onlySelected{
-            self.selectedTitles.append("Latin Starter Pack")
-            self.defaults.setObject(selectedTitles, forKey: "selectedTitles")
-            var time = dispatch_time(DISPATCH_TIME_NOW, 0)
-            dispatch_after(time, dispatch_get_main_queue(), {
-                //save in the background
-                self.defaults.synchronize()
-            })
-            self.tableView.reloadData()
-        }
-    }
-    
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return indexPath.row > 1 //only first two rows aren't editable
-    }
+//    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+//        let title = tableView.cellForRowAtIndexPath(indexPath)?.textLabel?.text
+//        let onlySelected = (selectedTitles.count == 1 && selectedTitles[0] == title)
+//        if editingStyle == UITableViewCellEditingStyle.Delete && indexPath.row > 1{
+//            //delete the list from saved memory
+//            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+//            let managedContext = appDelegate.managedObjectContext!
+//            managedContext.deleteObject(lists[indexPath.row - 2])
+//            do {
+//                try managedContext.save()
+//            } catch var error1 as NSError {
+//                NS
+//            }
+//            self.lists.removeAtIndex(indexPath.row - 2)
+//            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+//            
+//            
+//        }
+//        if self.selectedTitles.contains((title!)){
+//            self.selectedTitles.removeAtIndex(selectedTitles.indexOf((title!))!)
+//            self.defaults.setObject(selectedTitles, forKey: "selectedTitles")
+//            var time = dispatch_time(DISPATCH_TIME_NOW, 0)
+//            dispatch_after(time, dispatch_get_main_queue(), {
+//                //save in the background
+//                self.defaults.synchronize()
+//            })
+//        }
+//        if onlySelected{
+//            self.selectedTitles.append("Latin Starter Pack")
+//            self.defaults.setObject(selectedTitles, forKey: "selectedTitles")
+//            var time = dispatch_time(DISPATCH_TIME_NOW, 0)
+//            dispatch_after(time, dispatch_get_main_queue(), {
+//                //save in the background
+//                self.defaults.synchronize()
+//            })
+//            self.tableView.reloadData()
+//        }
+//    }
+//    
+//    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+//        return indexPath.row > 1 //only first two rows aren't editable
+//    }
 }

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14E26a" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14F25a" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Skin" syncable="YES">
-        <attribute name="author" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="personImage" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="sheepImage" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="swordImage" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="file" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="WordList" syncable="YES">
         <attribute name="author" optional="YES" attributeType="String" syncable="YES"/>
@@ -13,7 +12,7 @@
         <attribute name="words" optional="YES" attributeType="Binary" syncable="YES"/>
     </entity>
     <elements>
+        <element name="Skin" positionX="-297" positionY="-18" width="128" height="105"/>
         <element name="WordList" positionX="-63" positionY="-18" width="128" height="90"/>
-        <element name="Skin" positionX="-54" positionY="18" width="128" height="120"/>
     </elements>
 </model>

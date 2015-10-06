@@ -14,7 +14,7 @@ class Converter: NSObject {
     //utility methods for interacting with files
     
     class func getWordsArray()->[String]{
-        var defaults = NSUserDefaults.standardUserDefaults() //use to get app-wide data
+        let defaults = NSUserDefaults.standardUserDefaults() //use to get app-wide data
         
         var fullList:[String] = [] //will concatenate all the other lists into this.
         //get lists from CoreData
@@ -22,26 +22,29 @@ class Converter: NSObject {
         let managedContext = appDelegate.managedObjectContext!
         
         let fetchRequest = NSFetchRequest(entityName:"WordList") //get the list of lists
-        var error: NSError?
         let selectedTitles = defaults.valueForKey("selectedTitles") as! [String]
         
-        var predicate = NSPredicate(format: "title IN %@", selectedTitles)
+        let predicate = NSPredicate(format: "title IN %@", selectedTitles)
         fetchRequest.predicate = predicate
-        if let results = managedContext.executeFetchRequest(fetchRequest, error: &error){
+        do {
+            let results = try managedContext.executeFetchRequest(fetchRequest)
             for list in results{
-                var currentList = NSKeyedUnarchiver.unarchiveObjectWithData(list.valueForKey("words") as! NSData) as! [String]
+                let currentList = NSKeyedUnarchiver.unarchiveObjectWithData(list.valueForKey("words") as! NSData) as! [String]
                 fullList += currentList
             }
+        } catch let error1 as NSError {
+            NSLog("%@", error1)
+            
         }
         
-        if contains(selectedTitles, "Latin Starter Pack"){
-            var path = NSBundle.mainBundle().pathForResource("Latin1", ofType: "txt")
-            var content = NSString(contentsOfFile: path!, encoding:NSUTF8StringEncoding, error: nil) as! String
+        if selectedTitles.contains("Latin Starter Pack"){
+            let path = NSBundle.mainBundle().pathForResource("Latin1", ofType: "txt")
+            let content = (try! NSString(contentsOfFile: path!, encoding:NSUTF8StringEncoding)) as String
             fullList += content.componentsSeparatedByString(", ")
         }
-        if contains(selectedTitles, "English Starter Pack"){
-            var path = NSBundle.mainBundle().pathForResource("EnglishStarterPack", ofType: "txt")
-            var content = NSString(contentsOfFile: path!, encoding:NSUTF8StringEncoding, error: nil) as! String
+        if selectedTitles.contains("English Starter Pack"){
+            let path = NSBundle.mainBundle().pathForResource("EnglishStarterPack", ofType: "txt")
+            let content = (try! NSString(contentsOfFile: path!, encoding:NSUTF8StringEncoding)) as String
             fullList += content.componentsSeparatedByString(", ")
         }
         
@@ -55,58 +58,62 @@ class Converter: NSObject {
         let entity =  NSEntityDescription.entityForName("WordList", inManagedObjectContext:managedContext)
         let listObject = NSManagedObject(entity: entity!, insertIntoManagedObjectContext:managedContext)
         
-        var dataString = NSString(data: data, encoding: NSUTF8StringEncoding) //data from Parse
-        var words:[String] = dataString?.componentsSeparatedByString(", ") as! [String]
-        var data = NSKeyedArchiver.archivedDataWithRootObject(words) //turn it into CoreData data
+        let dataString = NSString(data: data, encoding: NSUTF8StringEncoding) //data from Parse
+        let words:[String] = (dataString?.componentsSeparatedByString(", "))!
+        let data = NSKeyedArchiver.archivedDataWithRootObject(words) //turn it into CoreData data
         
         listObject.setValue(data, forKey: "words")
         listObject.setValue(listTitle, forKey: "title")
         listObject.setValue(listAuthor, forKey: "author")
         
-        var error: NSError?
-        managedContext.save(&error)
+        do {
+            try managedContext.save()
+        } catch let error1 as NSError {
+            NSLog("%@", error1)
+        }
     }
     
-    class func saveSkinInBackground(skin: PFObject, completion: (completed: Bool) -> Void){
-        var defaults = NSUserDefaults.standardUserDefaults() //use to get app-wide data
+    class func saveSkinToCoreData(skindata: NSData, name:String, type:String, date:NSDate){
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let managedContext = appDelegate.managedObjectContext!
+        let entity =  NSEntityDescription.entityForName("Skin", inManagedObjectContext:managedContext)
+        let downloadedSkin = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
+        
+        downloadedSkin.setValue(skindata, forKey: "file")
+        downloadedSkin.setValue(name, forKey: "name")
+        downloadedSkin.setValue(type, forKey: "type")
+        downloadedSkin.setValue(date, forKey: "date")
+        
+        do {
+            try managedContext.save()
+        } catch let error1 as NSError {
+            NSLog("%@", error1)
+        }
+        
+    }
+    
+    class func getCurrentSkinImage()->UIImage?{
+        let defaults = NSUserDefaults.standardUserDefaults() //get app-wide data
+        var skinImage:UIImage?
+        if defaults.stringForKey("currentSkin")! == "Default"{
+            skinImage = UIImage(named: "Sheep small.png")
+        }else{
             let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             let managedContext = appDelegate.managedObjectContext!
-            let entity =  NSEntityDescription.entityForName("Skin", inManagedObjectContext:managedContext)
-
-            let downloadedSkin = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
-            if let personFile = skin.objectForKey("Person") as? PFFile{
-                var personData = personFile.getData()
-                downloadedSkin.setValue(personData, forKey: "personImage")
-            } else{
-                let personImageData = UIImagePNGRepresentation(UIImage(named: "stickfigure small"))
-                downloadedSkin.setValue(personImageData, forKey: "personImage")
-            }
             
-            if let swordFile = skin.objectForKey("Sword") as? PFFile{
-                var swordData = swordFile.getData()
-                downloadedSkin.setValue(swordData, forKey: "swordImage")
-            } else{
-                let swordImageData = UIImagePNGRepresentation(UIImage(named: "sword small"))
-                downloadedSkin.setValue(swordImageData, forKey: "swordImage")
-            }
+            let fetchRequest = NSFetchRequest(entityName:"Skin") //get the list of skins
+            let predicate = NSPredicate(format: "name == %@", defaults.stringForKey("currentSkin")!)
+            fetchRequest.predicate = predicate
             
-            if let sheepFile = skin.objectForKey("Sheep") as? PFFile{
-                var sheepData = sheepFile.getData()
-                downloadedSkin.setValue(sheepData, forKey: "sheepImage")
-            } else{
-                let sheepImageData = UIImagePNGRepresentation(UIImage(named: "Sheep small"))
-                downloadedSkin.setValue(sheepImageData, forKey: "sheepImage")
+            do {
+                let results = try managedContext.executeFetchRequest(fetchRequest)
+                let firstSkin = results[0] as! NSManagedObject
+                skinImage = UIImage(data: firstSkin.valueForKey("file") as! NSData)
+            } catch let error1 as NSError {
+                NSLog("%@", error1)
             }
-            let title = skin.valueForKey("Title") as! String
-            downloadedSkin.setValue(title, forKey: "title")
-            defaults.setObject(title, forKey: "currentSkin")
-            defaults.synchronize()
-            var error: NSError?
-            managedContext.save(&error)
-            completion(completed: true)
-        })
+        }
+        return skinImage
     }
-
 }

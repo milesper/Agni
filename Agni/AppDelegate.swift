@@ -13,27 +13,27 @@ import Bolts
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
     var window: UIWindow?
-
-
-
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         Parse.setApplicationId("exQOpxOX7X8V8njPBHInr0zaexL9mQxzcZvkdNBT",
             clientKey: "xWF9BAovkiwsJMaSrhJ5SpC3UgxHCBe7ER2PPTnM") //connect to online database
         
         self.window!.tintColor = UIColor(red: 114/255.0, green: 191/255.0, blue: 125/255.0, alpha: 1.0) //change tint color
-        var defaults = NSUserDefaults.standardUserDefaults() //used to save app-wide data
+        let defaults = NSUserDefaults.standardUserDefaults() //used to save app-wide data
         if defaults.objectForKey("skinsUnlocked") == nil{ //this will be changed by the selected titles screen
             defaults.setBool(false, forKey: "skinsUnlocked")
-            
         }
-        //defaults.setBool(true, forKey: "skinsUnlocked") //for simulator testing
+        //simulator testing only
+        #if (arch(i386) || arch(x86_64)) && os(iOS)
+            defaults.setBool(true, forKey: "skinsUnlocked")
+        #endif
         
         if defaults.objectForKey("currentSkin") == nil{
             defaults.setValue("Default", forKey: "currentSkin")
         }
+        
         defaults.setObject(true, forKey: "needsUpdateSources") //cause the game to refresh its input sources
         defaults.synchronize()
         
@@ -41,16 +41,102 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Register for Push Notitications, if running iOS 8
         if application.respondsToSelector("registerUserNotificationSettings:") {
             
-            let types:UIUserNotificationType = (.Alert | .Badge | .Sound)
-            let settings:UIUserNotificationSettings = UIUserNotificationSettings(forTypes: types, categories: nil)
-            
-            application.registerUserNotificationSettings(settings)
-            application.registerForRemoteNotifications()
-            
+            if #available(iOS 8.0, *) {
+                let types:UIUserNotificationType = ([.Alert, .Badge, .Sound])
+                let settings:UIUserNotificationSettings = UIUserNotificationSettings(forTypes: types, categories: nil)
+                application.registerUserNotificationSettings(settings)
+                application.registerForRemoteNotifications()
+            } else {
+                // Fallback on earlier versions
+            }
         }
+        let networkReachability = Reachability.reachabilityForInternetConnection()
+        let networkStatus = networkReachability.currentReachabilityStatus()
+        if networkStatus.rawValue == NotReachable.rawValue{
+            print("No connection")
+        }else{
+            print("Connected to the Interwebs!")
+            getNewWords()
+            getNewSkins()
+        }
+        
         
         return true
     }
+    
+    func getNewWords(){
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let managedContext = appDelegate.managedObjectContext!
+        let fetchRequest = NSFetchRequest(entityName:"WordList")
+        var downloadedTitles:[String] = []
+        
+        var fetchedResults:[NSManagedObject]? = nil
+        do{
+            fetchedResults = try managedContext.executeFetchRequest(fetchRequest) as? [NSManagedObject]
+        } catch _{
+            NSLog("Something went wrong")
+        }
+        
+        if (fetchedResults != nil){
+            for list in fetchedResults!{
+                downloadedTitles.append(list.valueForKey("title") as! String)
+            }
+        }
+        NSLog("Word lists already downloaded: %@", downloadedTitles)
+        //Let's download some word lists!
+        let query = PFQuery(className: "WordList")
+        query.whereKey("Title", notContainedIn: downloadedTitles)
+        query.findObjectsInBackgroundWithBlock({
+            (data,error) in
+            let downloads = data as! [PFObject]
+            for download in downloads{
+                let textfile = download.objectForKey("Textfile") as! PFFile
+                textfile.getDataInBackgroundWithBlock({
+                    (data,error) in
+                    if error == nil{
+                        Converter.saveToCoreData(data!, listTitle: download.valueForKey("Title") as! String, listAuthor: download.valueForKey("Author") as! String)
+                    }
+                })
+            }
+        })
+    }
+    
+    func getNewSkins(){
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let managedContext = appDelegate.managedObjectContext!
+        let fetchRequest = NSFetchRequest(entityName:"Skin")
+        var downloadedNames:[String] = []
+        
+        var fetchedResults:[NSManagedObject]? = nil
+        do{
+            fetchedResults = try managedContext.executeFetchRequest(fetchRequest) as? [NSManagedObject]
+        } catch _{
+            NSLog("Something went wrong getting skins")
+        }
+        if (fetchedResults != nil){
+            for list in fetchedResults!{
+                downloadedNames.append(list.valueForKey("name") as! String)
+            }
+        }
+        NSLog("Skins already downloaded: %@", downloadedNames)
+        //Let's download some skins!
+        let query = PFQuery(className: "Skin")
+        query.whereKey("Name", notContainedIn: downloadedNames)
+        query.findObjectsInBackgroundWithBlock({
+            (data,error) in
+            let downloads = data as! [PFObject]
+            for download in downloads{
+                let imagefile = download.objectForKey("File") as! PFFile
+                imagefile.getDataInBackgroundWithBlock({
+                    (data,error) in
+                    if error == nil{
+                        Converter.saveSkinToCoreData(data!, name: download.valueForKey("Name") as! String, type: download.valueForKey("Type") as! String, date: download.valueForKey("createdAt") as! NSDate)
+                    }
+                })
+            }
+        })
+    }
+    
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         let installation = PFInstallation.currentInstallation()
@@ -60,9 +146,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
         if error.code == 3010 {
-            println("Push notifications are not supported in the iOS Simulator.")
+            print("Push notifications are not supported in the iOS Simulator.")
         } else {
-            println("application:didFailToRegisterForRemoteNotificationsWithError: %@", error)
+            print("application:didFailToRegisterForRemoteNotificationsWithError: %@", error)
         }
     }
     
@@ -79,7 +165,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     lazy var applicationDocumentsDirectory: NSURL = {
         // The directory the application uses to store the Core Data store file. This code uses a directory named "com.xxxx.ProjectName" in the application's documents Application Support directory.
         let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
-        return urls[urls.count-1] as! NSURL
+        return urls[urls.count-1]
         }()
     
     lazy var managedObjectModel: NSManagedObjectModel = {
@@ -96,7 +182,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent("Agni.sqlite")
         var error: NSError? = nil
         var failureReason = "There was an error creating or loading the application's saved data."
-        if coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: options, error: &error) == nil {
+        do {
+            try coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: options)
+        } catch var error1 as NSError {
+            error = error1
             coordinator = nil
             // Report any error we got.
             var dict = [String: AnyObject]()
@@ -108,6 +197,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             NSLog("Unresolved error \(error), \(error!.userInfo)")
             abort()
+        } catch {
+            fatalError()
         }
         
         return coordinator
@@ -128,12 +219,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func saveContext () {
         if let moc = self.managedObjectContext {
-            var error: NSError? = nil
-            if moc.hasChanges && !moc.save(&error) {
-                // Replace this implementation with code to handle the error appropriately.
-                // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                NSLog("Unresolved error \(error), \(error!.userInfo)")
-                abort()
+            if moc.hasChanges {
+                do {
+                    try moc.save()
+                } catch let error1 as NSError {
+                    // Replace this implementation with code to handle the error appropriately.
+                    // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+                    NSLog("Unresolved error \(error1), \(error1.userInfo)")
+                    abort()
+                }
             }
         }
     }

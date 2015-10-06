@@ -9,22 +9,24 @@
 import UIKit
 import AVFoundation
 
-class AgniViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIViewControllerTransitioningDelegate {
+class AgniViewController: UIViewController, UIViewControllerTransitioningDelegate {
     //interface components
     @IBOutlet weak var wordLabel: UILabel!
     @IBOutlet weak var distanceFromPerson: NSLayoutConstraint!
     @IBOutlet weak var correctLabel: UILabel!
     @IBOutlet weak var sheepImage: UIImageView!
     @IBOutlet weak var swordImage: UIImageView!
-    @IBOutlet weak var lettersCollectionView: UICollectionView!
     @IBOutlet weak var winsLabel: UILabel!
     @IBOutlet weak var volumeButton: UIButton!
     
+    @IBOutlet var letterButtons: [UIButton]!
+    
     var chosenWord = ""
     var wordsArray:[String] = [] //will change depending on input
-    var remaining:[Character] = [] //unguessed letters
+
     var stage = 0 //goes up to 7, which is death
     var swordLocs:[CGFloat] = [] //holds all possible positions for the sword
+    var remaining = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     var needsRefresh = false //will be true when a game is finished
     var wins = 0 //update after each win
     var defaults = NSUserDefaults.standardUserDefaults() //use to get app-wide data
@@ -43,18 +45,26 @@ class AgniViewController: UIViewController, UICollectionViewDataSource, UICollec
         }
         
         self.needsRefresh = true //will get a word, update interface components
-
         
+        for button in letterButtons{
+            button.addTarget(self, action: "guessLetter:", forControlEvents: UIControlEvents.TouchUpInside)
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
         if defaults.objectForKey("selectedTitles") == nil{ //this will be changed by the selected titles screen
             self.performSegueWithIdentifier("showWelcome", sender: self)
             
+        }else if  defaults.stringForKey("lastVersionShown") != "1.2.0"{
+            self.performSegueWithIdentifier("showWhatsNew", sender: self)
         }else{
             self.wordsArray = Converter.getWordsArray() //get the data since we skipped it at load
             self.setup()
         }
+        
+        self.sheepImage.image = Converter.getCurrentSkinImage()!
+        
+        
     }
     
     func setup(){
@@ -77,13 +87,13 @@ class AgniViewController: UIViewController, UICollectionViewDataSource, UICollec
         let increment = distance / 6.0
         var distanceFromPerson = self.distanceFromPerson.constant
         
-        for index in 1...6 { //six stages of location for the sword
+        for _ in 1...6 { //six stages of location for the sword
             distanceFromPerson += increment //add to the location
             swordLocs.append(distanceFromPerson)
         }
         
         
-        self.winsLabel.text = "Wins: \(self.wins)"
+        self.winsLabel.text = "Wins: \(QTRomanNumerals.convertToRomanNum(self.wins))"
         
         if needsRefresh{ //reset all values, the game was finished
             self.restart()
@@ -106,9 +116,11 @@ class AgniViewController: UIViewController, UICollectionViewDataSource, UICollec
         }
         self.musicOn = !self.musicOn
     }
+    
     @IBAction func refreshButton(sender: AnyObject) {
         self.restart()
     }
+    
     func restart(){
         
         soundPlayer.playSound(.Start)
@@ -116,27 +128,47 @@ class AgniViewController: UIViewController, UICollectionViewDataSource, UICollec
         self.chosenWord = self.wordsArray[randomIndex].uppercaseString
         NSLog("\(chosenWord)")
         
-        self.remaining = Array("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+        self.remaining = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         self.refreshWord() //word should be blank
         
         self.distanceFromPerson.constant = -8 //put sword in first position
         stage = 0
         
-        lettersCollectionView.reloadData()
+        for var i = 0; i < letterButtons.count; i++ {
+            let button = letterButtons[i]
+            let index = remaining.startIndex.advancedBy(i)
+            button.setTitle(String(self.remaining[index]), forState: .Normal)
+        }
         
         needsRefresh = false
     }
     
+    func guessLetter(sender:UIButton){
+        let letter = sender.titleLabel?.text
+        if letter != " "{
+            self.remaining = self.remaining.stringByReplacingOccurrencesOfString(letter!, withString: " ", options: [], range: nil)
+            if self.chosenWord.uppercaseString.rangeOfString(letter!) != nil{
+                soundPlayer.playSound(.Correct)
+                self.refreshWord()
+            } else{ //letter is not in word
+                soundPlayer.playSound(.Incorrect)
+                self.wrongLetter()
+            }
+            sender.setTitle(" ", forState: .Normal)
+        }
+    }
 
     func refreshWord(){
-        var finalString:NSMutableAttributedString = NSMutableAttributedString(string: "") //will use to build string
+        let finalString:NSMutableAttributedString = NSMutableAttributedString(string: "") //will use to build string
         var finished = true
-        for letter in self.chosenWord{
-            if !contains(self.remaining, letter){
+        for letter in self.chosenWord.characters{
+            if !("ABCDEFGHIJKLMNOPQRSTUVWXYZ".containsString(String(letter))){
+                finalString.appendAttributedString(NSAttributedString(string: "\(letter) "))
+            }else if !self.remaining.characters.contains(letter){
                 //letter is guessed already
                 finalString.appendAttributedString(NSAttributedString(string: "\(letter)", attributes: [NSUnderlineStyleAttributeName:NSUnderlineStyle.StyleSingle.rawValue]))
                 finalString.appendAttributedString(NSAttributedString(string: "  "))
-            } else{
+            }else{
                 //letter is still unguessed
                 finalString.appendAttributedString(NSAttributedString(string: "_  "))
                 finished = false
@@ -149,7 +181,7 @@ class AgniViewController: UIViewController, UICollectionViewDataSource, UICollec
                 self.correctLabel.alpha = 1.0
                 }, completion: {
                     finished in
-                    UIView.animateWithDuration(0.5, delay: 1.0, options: nil, animations: {
+                    UIView.animateWithDuration(0.5, delay: 1.0, options: [], animations: {
                         self.correctLabel.alpha = 0.0
                         }, completion: {
                             finished in
@@ -179,37 +211,37 @@ class AgniViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.remaining.count //will always be 26, some may be space characters
-    }
-    
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        var cell = collectionView.dequeueReusableCellWithReuseIdentifier("letterCell", forIndexPath: indexPath) as! LetterCollectionViewCell
-            cell.label.text = String(self.remaining[indexPath.row]) //show a letter or a blank space
-
-        
-        let backgroundView = UIView(frame: CGRectMake(0, 0, cell.contentView.frame.width, cell.contentView.frame.height))
-        backgroundView.backgroundColor = UIColor(red: 114/255.0, green: 191/255.0, blue: 125/255.0, alpha: 1.0)
-
-        cell.selectedBackgroundView = backgroundView
-        
-        return cell
-    }
-
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        var cell = collectionView.dequeueReusableCellWithReuseIdentifier("letterCell", forIndexPath: indexPath) as! LetterCollectionViewCell
-        let char = remaining[indexPath.row]
-        remaining[indexPath.row] = " " //letter has been used, refresh it
-        if contains(self.chosenWord,char){
-            soundPlayer.playSound(.Correct)
-            self.refreshWord()
-        } else if char != " "{ //letter is not in word
-            soundPlayer.playSound(.Incorrect)
-            self.wrongLetter()
-        }
-        cell.userInteractionEnabled = false
-        collectionView.reloadData()
-    }
+//    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return self.remaining.count //will always be 26, some may be space characters
+//    }
+//    
+//    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+//        var cell = collectionView.dequeueReusableCellWithReuseIdentifier("letterCell", forIndexPath: indexPath) as! LetterCollectionViewCell
+//            cell.label.text = String(self.remaining[indexPath.row]) //show a letter or a blank space
+//
+//        
+//        let backgroundView = UIView(frame: CGRectMake(0, 0, cell.contentView.frame.width, cell.contentView.frame.height))
+//        backgroundView.backgroundColor = UIColor(red: 114/255.0, green: 191/255.0, blue: 125/255.0, alpha: 1.0)
+//
+//        cell.selectedBackgroundView = backgroundView
+//        
+//        return cell
+//    }
+//
+//    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+//        var cell = collectionView.dequeueReusableCellWithReuseIdentifier("letterCell", forIndexPath: indexPath) as! LetterCollectionViewCell
+//        let char = remaining[indexPath.row]
+//        remaining[indexPath.row] = " " //letter has been used, refresh it
+//        if contains(self.chosenWord,char){
+//            soundPlayer.playSound(.Correct)
+//            self.refreshWord()
+//        } else if char != " "{ //letter is not in word
+//            soundPlayer.playSound(.Incorrect)
+//            self.wrongLetter()
+//        }
+//        cell.userInteractionEnabled = false
+//        collectionView.reloadData()
+//    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "loss"{
