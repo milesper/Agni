@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import GameKit
 
 class AgniViewController: UIViewController, UIViewControllerTransitioningDelegate {
     //interface components
@@ -16,28 +17,34 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
     @IBOutlet weak var correctLabel: UILabel!
     @IBOutlet weak var sheepImage: UIImageView!
     @IBOutlet weak var swordImage: UIImageView!
-    @IBOutlet weak var winsLabel: UILabel!
+    @IBOutlet weak var winsButton: UIButton!
     @IBOutlet weak var volumeButton: UIButton!
-    
     @IBOutlet var letterButtons: [UIButton]!
     
     var chosenWord = ""
     var wordsArray:[String] = [] //will change depending on input
+    
+    var firstTime = false;
 
     var stage = 0 //goes up to 7, which is death
     var swordLocs:[CGFloat] = [] //holds all possible positions for the sword
     var remaining = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     var needsRefresh = false //will be true when a game is finished
-    var wins = 0 //update after each win
+    var winStreak = 0 //update after each win
+    var winning = false
     var defaults = NSUserDefaults.standardUserDefaults() //use to get app-wide data
+    var lastSegue:UIStoryboardSegue?
     
     var soundPlayer = GameSounds()
     var musicOn = true
     var musicStarted = false
     
+    var achivementManager = Achievements()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        (UIApplication.sharedApplication().delegate as! AppDelegate).authenticateLocalPlayer()
         // Do any additional setup after loading the view.
         if defaults.objectForKey("selectedTitles") != nil{ //this will be changed by the selected titles screen
             
@@ -47,15 +54,17 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
         self.needsRefresh = true //will get a word, update interface components
         
         for button in letterButtons{
-            button.addTarget(self, action: "guessLetter:", forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self, action: #selector(AgniViewController.guessLetter(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         }
+        
+
     }
     
     override func viewDidAppear(animated: Bool) {
         if defaults.objectForKey("selectedTitles") == nil{ //this will be changed by the selected titles screen
             self.performSegueWithIdentifier("showWelcome", sender: self)
-            
-        }else if  defaults.stringForKey("lastVersionShown") != "1.2.0"{
+            firstTime = true
+        }else if  defaults.stringForKey("lastVersionShown") != "1.2.0" && !firstTime{
             self.performSegueWithIdentifier("showWhatsNew", sender: self)
         }else{
             self.wordsArray = Converter.getWordsArray() //get the data since we skipped it at load
@@ -63,7 +72,6 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
         }
         
         self.sheepImage.image = Converter.getCurrentSkinImage()!
-        
         
     }
     
@@ -93,7 +101,8 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
         }
         
         
-        self.winsLabel.text = "Wins: \(QTRomanNumerals.convertToRomanNum(self.wins))"
+        self.winsButton.setTitle("\(QTRomanNumerals.convertToRomanNum(self.winStreak))", forState: .Normal)
+        if self.winStreak == 0 {self.winsButton.setTitle("0", forState: .Normal)}
         
         if needsRefresh{ //reset all values, the game was finished
             self.restart()
@@ -121,12 +130,14 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
         self.restart()
     }
     
+    //MARK: Gameplay
+    
     func restart(){
         
         soundPlayer.playSound(.Start)
         let randomIndex = Int(arc4random_uniform(UInt32(self.wordsArray.count))) //choose a random word from the list
-        self.chosenWord = self.wordsArray[randomIndex].uppercaseString
-        NSLog("\(chosenWord)")
+        self.chosenWord = self.wordsArray[randomIndex]
+        NSLog("\(chosenWord.uppercaseString)")
         
         self.remaining = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         self.refreshWord() //word should be blank
@@ -134,7 +145,7 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
         self.distanceFromPerson.constant = -8 //put sword in first position
         stage = 0
         
-        for var i = 0; i < letterButtons.count; i++ {
+        for i in 0 ..< letterButtons.count {
             let button = letterButtons[i]
             let index = remaining.startIndex.advancedBy(i)
             button.setTitle(String(self.remaining[index]), forState: .Normal)
@@ -161,7 +172,7 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
     func refreshWord(){
         let finalString:NSMutableAttributedString = NSMutableAttributedString(string: "") //will use to build string
         var finished = true
-        for letter in self.chosenWord.characters{
+        for letter in self.chosenWord.uppercaseString.characters{
             if !("ABCDEFGHIJKLMNOPQRSTUVWXYZ".containsString(String(letter))){
                 finalString.appendAttributedString(NSAttributedString(string: "\(letter) "))
             }else if !self.remaining.characters.contains(letter){
@@ -176,26 +187,12 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
         }
         self.wordLabel.attributedText = finalString as NSAttributedString
         if finished{ //user has won
-            soundPlayer.playSound(.Win)
-            UIView.animateWithDuration(0.3, animations: {
-                self.correctLabel.alpha = 1.0
-                }, completion: {
-                    finished in
-                    UIView.animateWithDuration(0.5, delay: 1.0, options: [], animations: {
-                        self.correctLabel.alpha = 0.0
-                        }, completion: {
-                            finished in
-                            self.needsRefresh = true //restart
-                            self.wins++
-                            self.viewDidAppear(true)
-                    })
-            })
-            
+            self.win()
         }
     }
     
     func wrongLetter(){
-        stage++
+        stage += 1
         if stage <= 6{
         UIView.animateWithDuration(0.5, animations: {
             self.distanceFromPerson.constant = self.swordLocs[self.stage - 1] //move sword toward sheep
@@ -203,55 +200,86 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
         })
         } else{
             soundPlayer.playSound(.Lose)
+            self.winning = false
+            self.winStreak = 0
+            
             self.performSegueWithIdentifier("loss", sender: self) //show lost screen
             self.needsRefresh = true
+            self.achivementManager.loss()
         }
         
     }
     
+    func win(){
+        soundPlayer.playSound(.Win)
+        UIView.animateWithDuration(0.3, animations: {
+            self.correctLabel.alpha = 1.0
+            }, completion: {
+                finished in
+                UIView.animateWithDuration(0.5, delay: 1.0, options: [], animations: {
+                    self.correctLabel.alpha = 0.0
+                    }, completion: {
+                        finished in
+                        self.needsRefresh = true //restart
+                        
+                        //Update streak
+                        if self.winning{
+                            self.winStreak += 1
+                        }else{
+                            self.winStreak = 1
+                        }
+                        if self.winStreak > self.defaults.integerForKey("longest_streak"){
+                            self.achivementManager.higherWinStreak(self.winStreak)
+                        }
+                        self.winning = true
+                        
+                        //stuff for achievements
+                        self.achivementManager.win()
+                        
+                        //show the views again
+                        self.viewDidAppear(true)
+                })
+        })
+        
+    }
     
-    
-//    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return self.remaining.count //will always be 26, some may be space characters
-//    }
-//    
-//    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-//        var cell = collectionView.dequeueReusableCellWithReuseIdentifier("letterCell", forIndexPath: indexPath) as! LetterCollectionViewCell
-//            cell.label.text = String(self.remaining[indexPath.row]) //show a letter or a blank space
-//
-//        
-//        let backgroundView = UIView(frame: CGRectMake(0, 0, cell.contentView.frame.width, cell.contentView.frame.height))
-//        backgroundView.backgroundColor = UIColor(red: 114/255.0, green: 191/255.0, blue: 125/255.0, alpha: 1.0)
-//
-//        cell.selectedBackgroundView = backgroundView
-//        
-//        return cell
-//    }
-//
-//    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-//        var cell = collectionView.dequeueReusableCellWithReuseIdentifier("letterCell", forIndexPath: indexPath) as! LetterCollectionViewCell
-//        let char = remaining[indexPath.row]
-//        remaining[indexPath.row] = " " //letter has been used, refresh it
-//        if contains(self.chosenWord,char){
-//            soundPlayer.playSound(.Correct)
-//            self.refreshWord()
-//        } else if char != " "{ //letter is not in word
-//            soundPlayer.playSound(.Incorrect)
-//            self.wrongLetter()
-//        }
-//        cell.userInteractionEnabled = false
-//        collectionView.reloadData()
-//    }
+    //MARK: Segue
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        self.lastSegue = segue
         if segue.identifier == "loss"{
             let toViewController = segue.destinationViewController as! FinishedViewController
             toViewController.transitioningDelegate = self
             toViewController.word = self.chosenWord //loss screen will tell the user the word
         }
+        if segue.identifier == "stats"{
+            let toViewController = segue.destinationViewController as! StatsViewController
+            toViewController.transitioningDelegate = self
+        }
+        self.navigationController?.presentTransparentNavigationBar()
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 104/255.0, green: 104/255.0, blue: 104/255.0, alpha: 1.0)]
     }
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return ShakeTransition()
+        guard let segue = self.lastSegue else{return nil}
+        
+        switch segue.identifier!{
+        case "loss":
+            return ShakeTransition()
+        case "stats":
+            return CircleTransition(button: winsButton)
+        default:
+            return nil
+        }
     }
-    
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard let segue = self.lastSegue else{return nil}
+        
+        switch segue.identifier!{
+        case "stats":
+            return ReverseCircleTransition(button: winsButton)
+        default:
+            return nil
+        }
+
+    }
 }

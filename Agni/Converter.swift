@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreData
-import Parse
 
 class Converter: NSObject {
     //utility methods for interacting with files
@@ -51,14 +50,14 @@ class Converter: NSObject {
         return fullList
     }
     
-    class func saveToCoreData(data:NSData, listTitle: String, listAuthor: String){
+    class func saveListToCoreData(listData listData:NSData, listTitle: String, listAuthor: String){
         //convert Parse textfile to core data
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext!
         let entity =  NSEntityDescription.entityForName("WordList", inManagedObjectContext:managedContext)
         let listObject = NSManagedObject(entity: entity!, insertIntoManagedObjectContext:managedContext)
         
-        let dataString = NSString(data: data, encoding: NSUTF8StringEncoding) //data from Parse
+        let dataString = NSString(data: listData, encoding: NSUTF8StringEncoding) //data from Parse
         let words:[String] = (dataString?.componentsSeparatedByString(", "))!
         let data = NSKeyedArchiver.archivedDataWithRootObject(words) //turn it into CoreData data
         
@@ -68,22 +67,62 @@ class Converter: NSObject {
         
         do {
             try managedContext.save()
+            NSLog("Saved \(listTitle)")
         } catch let error1 as NSError {
             NSLog("%@", error1)
         }
     }
     
-    class func saveSkinToCoreData(skindata: NSData, name:String, type:String, date:NSDate){
+    class func saveListToCoreData(listItems listItems:[String], listTitle:String, listAuthor:String){
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let managedContext = appDelegate.managedObjectContext!
+        let entity =  NSEntityDescription.entityForName("WordList", inManagedObjectContext:managedContext)
+        let listObject = NSManagedObject(entity: entity!, insertIntoManagedObjectContext:managedContext)
+        
+        let data = NSKeyedArchiver.archivedDataWithRootObject(listItems) //turn it into CoreData data
+        
+        listObject.setValue(data, forKey: "words")
+        listObject.setValue(listTitle, forKey: "title")
+        listObject.setValue(listAuthor, forKey: "author")
+        
+        do {
+            try managedContext.save()
+            NSLog("Saved \(listTitle)")
+        } catch let error1 as NSError {
+            NSLog("%@", error1)
+        }
+
+    }
+    
+    class func saveSkinToCoreData(skindata: NSData, name:String, type:String, date:NSDate, version:Int, largeImageData:NSData){
         
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext!
         let entity =  NSEntityDescription.entityForName("Skin", inManagedObjectContext:managedContext)
-        let downloadedSkin = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
         
+        
+        let fetchRequest = NSFetchRequest(entityName:"Skin")
+        fetchRequest.predicate = NSPredicate(format: "name==%@", name) //find older versions of the skin
+        
+        var fetchedResults:[NSManagedObject]? = nil
+        do{
+            fetchedResults = try managedContext.executeFetchRequest(fetchRequest) as? [NSManagedObject]
+        } catch _{
+            NSLog("Something went wrong getting skins")
+        }
+        
+        let downloadedSkin:NSManagedObject
+        if fetchedResults?.count != 0{
+            downloadedSkin = (fetchedResults?.first)!
+        } else{
+            downloadedSkin = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
+        }
         downloadedSkin.setValue(skindata, forKey: "file")
         downloadedSkin.setValue(name, forKey: "name")
         downloadedSkin.setValue(type, forKey: "type")
         downloadedSkin.setValue(date, forKey: "date")
+        downloadedSkin.setValue(version, forKey: "version")
+        downloadedSkin.setValue(largeImageData, forKey: "largefile")
         
         do {
             try managedContext.save()
@@ -97,7 +136,7 @@ class Converter: NSObject {
         let defaults = NSUserDefaults.standardUserDefaults() //get app-wide data
         var skinImage:UIImage?
         if defaults.stringForKey("currentSkin")! == "Default"{
-            skinImage = UIImage(named: "Sheep small.png")
+            skinImage = UIImage(named: "Sheep")
         }else{
             let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             let managedContext = appDelegate.managedObjectContext!

@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreData
-import Parse
+
 
 class WordListsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -32,6 +32,8 @@ class WordListsViewController: UIViewController, UITableViewDelegate, UITableVie
         let managedContext = appDelegate.managedObjectContext!
         
         let fetchRequest = NSFetchRequest(entityName:"WordList") //get the list of lists
+        let sortDescriptor = NSSortDescriptor(key: "title", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
         
         var fetchedResults:[NSManagedObject]? = nil
         do{
@@ -56,26 +58,47 @@ class WordListsViewController: UIViewController, UITableViewDelegate, UITableVie
     // MARK: - Table view data source
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (self.lists.count + 2) //"+ 2" because of the two preinstalled word lists
+        if section == 0{
+            return 2
+        }else if section == 1{
+            return self.lists.count
+        }else{
+            return 0
+        }
+        //return (self.lists.count + 2) //"+ 2" because of the two preinstalled word lists
     }
     
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("listCell", forIndexPath: indexPath)
-        if indexPath.row == 0{ //Latin pack
-            cell.textLabel?.text = "Latin Starter Pack"
-            cell.detailTextLabel?.text = "Agni Dev"
-        } else if indexPath.row == 1{ //English pack
-            cell.textLabel?.text = "English Starter Pack"
-            cell.detailTextLabel?.text = "Agni Dev"
-        } else { //A downloaded pack
-            cell.textLabel?.text = (self.lists[indexPath.row - 2].valueForKey("title") as! String)
-            cell.detailTextLabel?.text = (self.lists[indexPath.row - 2].valueForKey("author") as! String)
+//        if indexPath.row == 0{ //Latin pack
+//            cell.textLabel?.text = "Latin Starter Pack"
+//            cell.detailTextLabel?.text = "Agni Dev"
+//        } else if indexPath.row == 1{ //English pack
+//            cell.textLabel?.text = "English Starter Pack"
+//            cell.detailTextLabel?.text = "Agni Dev"
+//        } else { //A downloaded pack
+//            cell.textLabel?.text = (self.lists[indexPath.row - 2].valueForKey("title") as! String)
+//            cell.detailTextLabel?.text = (self.lists[indexPath.row - 2].valueForKey("author") as! String)
+//        }
+        if indexPath.section == 0{
+            if indexPath.row == 0{
+                cell.textLabel?.text = "Latin Starter Pack"
+                cell.detailTextLabel?.text = "Agni Dev"
+            }else if indexPath.row == 1{
+                cell.textLabel?.text = "English Starter Pack"
+                cell.detailTextLabel?.text = "Agni Dev"
+            }
+        }else{
+            cell.textLabel?.text = (self.lists[indexPath.row].valueForKey("title") as! String)
+            cell.detailTextLabel?.text = (self.lists[indexPath.row ].valueForKey("author") as! String)
+
         }
+        
         
         if selectedTitles.contains((cell.textLabel!.text!)){
             //list is selected
@@ -92,9 +115,11 @@ class WordListsViewController: UIViewController, UITableViewDelegate, UITableVie
         if self.selectedTitles.contains((cell.textLabel!.text!)) && self.selectedTitles.count >= 2{
             //cell is selected and not the only selected one
             self.selectedTitles.removeAtIndex(selectedTitles.indexOf((cell.textLabel!.text!))!)
+            cell.accessoryType = UITableViewCellAccessoryType.None
         } else {
             //cell is not selected
             self.selectedTitles.append(cell.textLabel!.text!)
+            cell.accessoryType = UITableViewCellAccessoryType.Checkmark
         }
         self.defaults.setObject(selectedTitles, forKey: "selectedTitles")
         if !(defaults.objectForKey("needsUpdateSources") as! Bool){
@@ -104,49 +129,22 @@ class WordListsViewController: UIViewController, UITableViewDelegate, UITableVie
             //save in the background
             self.defaults.synchronize()
         })
-        self.tableView.reloadData()
+        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
-//    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-//        let title = tableView.cellForRowAtIndexPath(indexPath)?.textLabel?.text
-//        let onlySelected = (selectedTitles.count == 1 && selectedTitles[0] == title)
-//        if editingStyle == UITableViewCellEditingStyle.Delete && indexPath.row > 1{
-//            //delete the list from saved memory
-//            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//            let managedContext = appDelegate.managedObjectContext!
-//            managedContext.deleteObject(lists[indexPath.row - 2])
-//            do {
-//                try managedContext.save()
-//            } catch var error1 as NSError {
-//                NS
-//            }
-//            self.lists.removeAtIndex(indexPath.row - 2)
-//            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
-//            
-//            
-//        }
-//        if self.selectedTitles.contains((title!)){
-//            self.selectedTitles.removeAtIndex(selectedTitles.indexOf((title!))!)
-//            self.defaults.setObject(selectedTitles, forKey: "selectedTitles")
-//            var time = dispatch_time(DISPATCH_TIME_NOW, 0)
-//            dispatch_after(time, dispatch_get_main_queue(), {
-//                //save in the background
-//                self.defaults.synchronize()
-//            })
-//        }
-//        if onlySelected{
-//            self.selectedTitles.append("Latin Starter Pack")
-//            self.defaults.setObject(selectedTitles, forKey: "selectedTitles")
-//            var time = dispatch_time(DISPATCH_TIME_NOW, 0)
-//            dispatch_after(time, dispatch_get_main_queue(), {
-//                //save in the background
-//                self.defaults.synchronize()
-//            })
-//            self.tableView.reloadData()
-//        }
-//    }
-//    
-//    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-//        return indexPath.row > 1 //only first two rows aren't editable
-//    }
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        //Space between starter and downloaded
+        if section == 0{
+            return 10
+        }else{
+            return 0
+        }
+    }
+    
+    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = UITableViewHeaderFooterView()
+        footerView.backgroundView = UIView()
+        footerView.backgroundView?.backgroundColor = UIColor.whiteColor()
+        return footerView
+    }
 }

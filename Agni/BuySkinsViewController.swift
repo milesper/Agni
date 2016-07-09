@@ -8,30 +8,33 @@
 
 import UIKit
 import StoreKit
-import Parse
 
-class BuySkinsViewController: UIViewController  {
+
+class BuySkinsViewController: UIViewController, SKPaymentTransactionObserver  {
     var defaults = NSUserDefaults.standardUserDefaults()
     let productID = "agni_sheep_skins"
-    var activityIndicator:UIActivityIndicatorView?
     
-    @IBOutlet weak var wrapperView: UIView!
+    var activityIndicator:UIActivityIndicatorView?
+    @IBOutlet weak var wrapperView: UIVisualEffectView!
     @IBOutlet weak var buyButton: UIButton!
     @IBOutlet weak var restoreButton: UIButton!
+    
+    var transactionInProgress = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        SKPaymentQueue.defaultQueue().addTransactionObserver(self)
         
-        PFPurchase.addObserverForProduct("agni_sheep_skins") {
-            (transaction: SKPaymentTransaction?) -> Void in
-            // Will run once this product is purchased.
-            NSLog("Purchased")
-            self.defaults.setBool(true , forKey: "skinsUnlocked")
-            self.navigationController?.popViewControllerAnimated(true)
-            self.defaults.synchronize()
-        }
+//        PFPurchase.addObserverForProduct("agni_sheep_skins") {
+//            (transaction: SKPaymentTransaction?) -> Void in
+//            // Will run once this product is purchased.
+//            NSLog("Purchased")
+//            self.defaults.setBool(true , forKey: "skinsUnlocked")
+//            self.dismissViewControllerAnimated(true, completion: nil)
+//            self.defaults.synchronize()
+//        }
         wrapperView.layer.cornerRadius = 5.0
         wrapperView.layer.borderColor = self.view.tintColor.CGColor
         wrapperView.layer.borderWidth = 3.0
@@ -48,21 +51,43 @@ class BuySkinsViewController: UIViewController  {
         //show spinning indicator
         self.activityIndicator?.startAnimating()
         
-        PFPurchase.buyProduct("agni_sheep_skins") {
-            (error: NSError?) -> Void in
-            if error == nil {
-
-            } else{
-                NSLog("%@", error!.description)
+        let payment = SKMutablePayment()
+        payment.productIdentifier = productID
+        SKPaymentQueue.defaultQueue().addPayment(payment)
+        transactionInProgress = true
+    }
+    
+    func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+        for transaction in transactions{
+            switch transaction.transactionState{
+            case .Purchased:
+                print("Purchased successfully")
+                SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+                transactionInProgress = false
+                self.activityIndicator?.stopAnimating()
+                upgradeBought()
+            case .Failed:
+                print("Transaction failed")
+                SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+                transactionInProgress = false
+                self.activityIndicator?.stopAnimating()
+            default:
+                print(transaction.transactionState.rawValue)
+                self.activityIndicator?.stopAnimating()
             }
-            self.activityIndicator?.stopAnimating()
         }
     }
+    
+    func upgradeBought(){
+        self.defaults.setBool(true , forKey: "skinsUnlocked")
+        self.defaults.synchronize()
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
     @IBAction func restore(sender: UIButton) {
         //show spinning indicator
         self.activityIndicator?.startAnimating()
-        
-        PFPurchase.restore()
+        SKPaymentQueue.defaultQueue().restoreCompletedTransactions()
     }
         
     @IBAction func dismiss(sender: AnyObject) {
