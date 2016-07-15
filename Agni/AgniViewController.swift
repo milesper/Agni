@@ -12,6 +12,7 @@ import GameKit
 
 class AgniViewController: UIViewController, UIViewControllerTransitioningDelegate {
     //interface components
+    @IBOutlet weak var menuButton: UIButton!
     @IBOutlet weak var wordLabel: UILabel!
     @IBOutlet weak var distanceFromPerson: NSLayoutConstraint!
     @IBOutlet weak var correctLabel: UILabel!
@@ -256,6 +257,10 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
             let toViewController = segue.destinationViewController as! StatsViewController
             toViewController.transitioningDelegate = self
         }
+        if segue.identifier == "showMenu"{
+            let toViewController = segue.destinationViewController as! MenuViewController
+            toViewController.transitioningDelegate = self
+        }
         self.navigationController?.presentTransparentNavigationBar()
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 104/255.0, green: 104/255.0, blue: 104/255.0, alpha: 1.0)]
     }
@@ -267,6 +272,8 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
             return ShakeTransition()
         case "stats":
             return CircleTransition(button: winsButton)
+        case "showMenu":
+            return MenuSlideTransition(button: menuButton)
         default:
             return nil
         }
@@ -277,6 +284,8 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
         switch segue.identifier!{
         case "stats":
             return ReverseCircleTransition(button: winsButton)
+        case "showMenu":
+            return ReverseMenuSlideTransition()
         default:
             return nil
         }

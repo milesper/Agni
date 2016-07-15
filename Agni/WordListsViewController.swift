@@ -10,14 +10,17 @@ import UIKit
 import CoreData
 
 
-class WordListsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class WordListsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
 
     var selectedTitles:[String] = []
     var lists:[NSManagedObject] = [] //lists from CoreData
+    var customLists:[NSManagedObject] = []
+    
     var defaults = NSUserDefaults.standardUserDefaults() //get app-wide data
     
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var pageControl: UIPageControl!
     
     
     override func viewDidLoad() {
@@ -43,7 +46,11 @@ class WordListsViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         if (fetchedResults != nil){
             for list in fetchedResults!{
-                self.lists.append(list)
+                if list.valueForKey("Author") as! String == "Agni Dev"{
+                    self.lists.append(list)
+                }else{
+                    self.customLists.append(list)
+                }
             }
         }
         self.selectedTitles = self.defaults.objectForKey("selectedTitles") as! [String]
@@ -58,14 +65,26 @@ class WordListsViewController: UIViewController, UITableViewDelegate, UITableVie
     // MARK: - Table view data source
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
+        if tableView.tag == 1{
+            return 2
+        }else if tableView.tag == 2{
+            return 1
+        }else{
+            return 1
+        }
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0{
-            return 2
-        }else if section == 1{
-            return self.lists.count
+        if tableView.tag == 1{
+            if section == 0{
+                return 2
+            }else if section == 1{
+                return self.lists.count
+            }else{
+                return 0
+            }
+        }else if tableView.tag == 2{
+            return self.customLists.count
         }else{
             return 0
         }
@@ -75,31 +94,25 @@ class WordListsViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("listCell", forIndexPath: indexPath)
-//        if indexPath.row == 0{ //Latin pack
-//            cell.textLabel?.text = "Latin Starter Pack"
-//            cell.detailTextLabel?.text = "Agni Dev"
-//        } else if indexPath.row == 1{ //English pack
-//            cell.textLabel?.text = "English Starter Pack"
-//            cell.detailTextLabel?.text = "Agni Dev"
-//        } else { //A downloaded pack
-//            cell.textLabel?.text = (self.lists[indexPath.row - 2].valueForKey("title") as! String)
-//            cell.detailTextLabel?.text = (self.lists[indexPath.row - 2].valueForKey("author") as! String)
-//        }
-        if indexPath.section == 0{
-            if indexPath.row == 0{
-                cell.textLabel?.text = "Latin Starter Pack"
-                cell.detailTextLabel?.text = "Agni Dev"
-            }else if indexPath.row == 1{
-                cell.textLabel?.text = "English Starter Pack"
-                cell.detailTextLabel?.text = "Agni Dev"
-            }
-        }else{
-            cell.textLabel?.text = (self.lists[indexPath.row].valueForKey("title") as! String)
-            cell.detailTextLabel?.text = (self.lists[indexPath.row ].valueForKey("author") as! String)
 
+        if tableView.tag == 1{
+            if indexPath.section == 0{
+                if indexPath.row == 0{
+                    cell.textLabel?.text = "Latin Starter Pack"
+                    cell.detailTextLabel?.text = "Agni Dev"
+                }else if indexPath.row == 1{
+                    cell.textLabel?.text = "English Starter Pack"
+                    cell.detailTextLabel?.text = "Agni Dev"
+                }
+            }else{
+                cell.textLabel?.text = (self.lists[indexPath.row].valueForKey("title") as! String)
+                cell.detailTextLabel?.text = (self.lists[indexPath.row ].valueForKey("author") as! String)
+                
+            }
+        }else if tableView.tag == 2{
+            cell.textLabel?.text = (self.customLists[indexPath.row].valueForKey("title") as! String)
+            cell.detailTextLabel?.text = (self.customLists[indexPath.row].valueForKey("author") as! String)
         }
-        
-        
         if selectedTitles.contains((cell.textLabel!.text!)){
             //list is selected
             cell.accessoryType = UITableViewCellAccessoryType.Checkmark
@@ -112,11 +125,18 @@ class WordListsViewController: UIViewController, UITableViewDelegate, UITableVie
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let cell = tableView.cellForRowAtIndexPath(indexPath)!
-        if self.selectedTitles.contains((cell.textLabel!.text!)) && self.selectedTitles.count >= 2{
+        
+        
+        if self.selectedTitles.contains((cell.textLabel!.text!)){
+            if self.selectedTitles.count < 2{
+                tableView.deselectRowAtIndexPath(indexPath, animated: true)
+                return
+            }
+            
             //cell is selected and not the only selected one
             self.selectedTitles.removeAtIndex(selectedTitles.indexOf((cell.textLabel!.text!))!)
             cell.accessoryType = UITableViewCellAccessoryType.None
-        } else {
+        }else{
             //cell is not selected
             self.selectedTitles.append(cell.textLabel!.text!)
             cell.accessoryType = UITableViewCellAccessoryType.Checkmark
@@ -129,7 +149,7 @@ class WordListsViewController: UIViewController, UITableViewDelegate, UITableVie
             //save in the background
             self.defaults.synchronize()
         })
-        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -147,4 +167,16 @@ class WordListsViewController: UIViewController, UITableViewDelegate, UITableVie
         footerView.backgroundView?.backgroundColor = UIColor.whiteColor()
         return footerView
     }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        let pageWidth = scrollView.frame.size.width
+        let page = Int(floor((scrollView.contentOffset.x - pageWidth / 2 ) / pageWidth) + 1)
+        
+        pageControl.currentPage = page;
+    }
+    
+    @IBAction func closeWordLists(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+
 }

@@ -263,7 +263,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             (viewController, error) in
             if (viewController != nil){
                 print("Not logged in")
-                self.window?.rootViewController?.presentViewController(viewController!, animated: true, completion: nil)
+                var currentVC = self.window?.rootViewController
+                while let presentedViewController = currentVC!.presentedViewController {
+                    currentVC = presentedViewController
+                }
+                currentVC!.presentViewController(viewController!, animated: true, completion: nil)
             } else if localPlayer.authenticated{
                 self.gameCenterAuthenticated = true
                 localPlayer.loadDefaultLeaderboardIdentifierWithCompletionHandler({(leaderboardId, error) in
@@ -279,6 +283,101 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     NSLog("%@", error!.localizedDescription)
                     self.gameCenterAuthenticated = false
                 }
+            }
+        }
+    }
+    
+    //MARK: Sharing files
+    func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
+        do{
+            let str = try NSString(contentsOfURL: url, encoding: NSUTF8StringEncoding)
+            let components = str.componentsSeparatedByString("\n")
+            NSLog("File opened contains: \(components)")
+            
+            let alert = UIAlertController(title: "Save List", message: "Would you like to save '\(components[0])'?", preferredStyle: .Alert)
+            let actionNo = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+            let actionYes = UIAlertAction(title: "Save", style: .Default, handler: {
+                action in
+                self.saveListAction(components)
+            })
+            alert.addAction(actionNo)
+            alert.addAction(actionYes)
+            
+            var currentVC = self.window?.rootViewController
+            while let presentedViewController = currentVC!.presentedViewController {
+                currentVC = presentedViewController
+            }
+            currentVC!.presentViewController(alert, animated: true, completion: nil)
+            
+        }catch _{print("Cannot convert URL")}
+        
+        let fileManager = NSFileManager.defaultManager()
+        let documentsDirectory = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask, true)
+        let path = documentsDirectory.first! + "/Inbox"
+        do{
+            let directoryContents = try fileManager.contentsOfDirectoryAtPath(path)
+            for file in directoryContents{
+                print(file)
+                try fileManager.removeItemAtPath(path + "/" + file)
+            }
+        }catch {
+            print((error as NSError).description)
+        }
+
+        return true
+    }
+    
+    func saveListAction( components:[String]){
+        var comps = components
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let managedContext = appDelegate.managedObjectContext!
+        
+        let fetchRequest = NSFetchRequest(entityName:"WordList") //get the list of lists
+        
+        let predicate = NSPredicate(format: "title == %@", components[0])
+        fetchRequest.predicate = predicate
+        do {
+            let results = try managedContext.executeFetchRequest(fetchRequest)
+            if results.count == 0 && components[0] != "English Starter Pack" && components[0] != "Latin Starter Pack"{
+                CustomListManager.saveListToCoreData(components)
+            }else{
+                let alert = UIAlertController(title: "List name already taken", message: "Choose a different name:", preferredStyle: .Alert)
+                let actionNo = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+                let actionYes = UIAlertAction(title: "Save", style: .Default, handler: {
+                    action in
+                    comps[0] = (alert.textFields?.first?.text)!
+                    self.saveListAction(comps)
+                })
+                actionYes.enabled = false
+                alert.addAction(actionNo)
+                alert.addAction(actionYes)
+                alert.addTextFieldWithConfigurationHandler({textfield in
+                    textfield.placeholder = "New name"
+                    textfield.addTarget(self, action: #selector(AppDelegate.alertTextFieldDidChange), forControlEvents: .EditingChanged)
+                })
+                
+                var currentVC = self.window?.rootViewController
+                while let presentedViewController = currentVC!.presentedViewController {
+                    currentVC = presentedViewController
+                }
+                currentVC!.presentViewController(alert, animated: true, completion: nil)
+            }
+        } catch let error1 as NSError {
+            NSLog("%@", error1)
+            
+        }
+    }
+    
+    func alertTextFieldDidChange(){
+        var currentVC = self.window?.rootViewController
+        while let presentedViewController = currentVC!.presentedViewController {
+            currentVC = presentedViewController
+        }
+        if let alert = currentVC as? UIAlertController{
+            let textfield = alert.textFields?.first
+            let saveAction = alert.actions.last
+            if textfield!.text!.characters.count > 0{
+                saveAction?.enabled = true
             }
         }
     }
