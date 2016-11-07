@@ -13,25 +13,25 @@ class MenuItemView: UIView {
         super.init(coder: aDecoder)
         self.layer.cornerRadius = 8
         self.layer.borderWidth = 1.5
-        self.layer.borderColor = self.backgroundColor?.CGColor
+        self.layer.borderColor = self.backgroundColor?.cgColor
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let innerView = self.viewWithTag(1)
-        UIView.animateWithDuration(0.2, animations: {
+        UIView.animate(withDuration: 0.2, animations: {
             innerView?.backgroundColor = self.backgroundColor
         })
     }
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         let innerView = self.viewWithTag(1)
-        UIView.animateWithDuration(0.2, animations: {
-            innerView?.backgroundColor = UIColor.whiteColor()
+        UIView.animate(withDuration: 0.2, animations: {
+            innerView?.backgroundColor = UIColor.white
         })
     }
-    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         let innerView = self.viewWithTag(1)
-        UIView.animateWithDuration(0.2, animations: {
-            innerView?.backgroundColor = UIColor.whiteColor()
+        UIView.animate(withDuration: 0.2, animations: {
+            innerView?.backgroundColor = UIColor.white
         })
     }
 }

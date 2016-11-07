@@ -1,6 +1,6 @@
 //
 //  AgniViewController.swift
-//  
+//
 //
 //  Created by Michael Ginn on 5/2/15.
 //
@@ -26,14 +26,14 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
     var wordsArray:[String] = [] //will change depending on input
     
     var firstTime = false;
-
+    
     var stage = 0 //goes up to 7, which is death
     var swordLocs:[CGFloat] = [] //holds all possible positions for the sword
     var remaining = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     var needsRefresh = false //will be true when a game is finished
     var winStreak = 0 //update after each win
     var winning = false
-    var defaults = NSUserDefaults.standardUserDefaults() //use to get app-wide data
+    var defaults = UserDefaults.standard //use to get app-wide data
     var lastSegue:UIStoryboardSegue?
     
     var soundPlayer = GameSounds()
@@ -44,31 +44,31 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        (UIApplication.sharedApplication().delegate as! AppDelegate).authenticateLocalPlayer()
+        
+        (UIApplication.shared.delegate as! AppDelegate).authenticateLocalPlayer()
         // Do any additional setup after loading the view.
-        if defaults.objectForKey("selectedTitles") != nil{ //this will be changed by the selected titles screen
+        if defaults.object(forKey: "selectedTitles") != nil{ //this will be changed by the selected titles screen
             
-            self.wordsArray = Converter.getWordsArray() // Get the data out of the text file
+            self.wordsArray = Converter.getCurrentWordsArray() // Get the data out of the text file
         }
         
         self.needsRefresh = true //will get a word, update interface components
         
         for button in letterButtons{
-            button.addTarget(self, action: #selector(AgniViewController.guessLetter(_:)), forControlEvents: UIControlEvents.TouchUpInside)
+            button.addTarget(self, action: #selector(AgniViewController.guessLetter(_:)), for: UIControlEvents.touchUpInside)
         }
         
-
+        
     }
     
-    override func viewDidAppear(animated: Bool) {
-        if defaults.objectForKey("selectedTitles") == nil{ //this will be changed by the selected titles screen
-            self.performSegueWithIdentifier("showWelcome", sender: self)
+    override func viewDidAppear(_ animated: Bool) {
+        if defaults.object(forKey: "selectedTitles") == nil{ //this will be changed by the selected titles screen
+            self.performSegue(withIdentifier: "showWelcome", sender: self)
             firstTime = true
-        }else if  defaults.stringForKey("lastVersionShown") != "1.2.0" && !firstTime{
-            self.performSegueWithIdentifier("showWhatsNew", sender: self)
+        }else if  defaults.string(forKey: "lastVersionShown") != "1.3.0" && !firstTime{
+            self.performSegue(withIdentifier: "showWhatsNew", sender: self)
         }else{
-            self.wordsArray = Converter.getWordsArray() //get the data since we skipped it at load
+            self.wordsArray = Converter.getCurrentWordsArray() //get the data since we skipped it at load
             self.setup()
         }
         
@@ -78,14 +78,14 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
     
     func setup(){
         if !musicStarted{
-            if defaults.objectForKey("musicOn") == nil{
-                defaults.setBool(true, forKey: "musicOn")
+            if defaults.object(forKey: "musicOn") == nil{
+                defaults.set(true, forKey: "musicOn")
                 defaults.synchronize()
             }
-            if (defaults.objectForKey("musicOn") as! Bool){
+            if (defaults.object(forKey: "musicOn") as! Bool){
                 self.soundPlayer.toggleBGMusic()
             }else{
-                self.volumeButton.setBackgroundImage(UIImage(named: "mute.png"), forState: .Normal)
+                self.volumeButton.setBackgroundImage(UIImage(named: "mute.png"), for: UIControlState())
                 self.musicOn = false
             }
             musicStarted = true
@@ -102,32 +102,32 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
         }
         
         
-        self.winsButton.setTitle("\(QTRomanNumerals.convertToRomanNum(self.winStreak))", forState: .Normal)
-        if self.winStreak == 0 {self.winsButton.setTitle("0", forState: .Normal)}
+        self.winsButton.setTitle("\(QTRomanNumerals.convertToRomanNum(self.winStreak))", for: UIControlState())
+        if self.winStreak == 0 {self.winsButton.setTitle("0", for: UIControlState())}
         
         if needsRefresh{ //reset all values, the game was finished
             self.restart()
         }
-        if (defaults.valueForKey("needsUpdateSources") as! Bool){ //user has changed which lists are used
-            self.wordsArray = Converter.getWordsArray()
-            defaults.setObject(false, forKey: "needsUpdateSources")
+        if (defaults.value(forKey: "needsUpdateSources") as! Bool){ //user has changed which lists are used
+            self.wordsArray = Converter.getCurrentWordsArray()
+            defaults.set(false, forKey: "needsUpdateSources")
             defaults.synchronize()
             self.restart()
         }
-
+        
     }
-
-    @IBAction func toggleMusic(sender: UIButton) {
+    
+    @IBAction func toggleMusic(_ sender: UIButton) {
         soundPlayer.toggleBGMusic()
         if self.musicOn{
-            sender.setBackgroundImage(UIImage(named: "mute.png"), forState: .Normal)
+            sender.setBackgroundImage(UIImage(named: "mute.png"), for: UIControlState())
         } else{
-            sender.setBackgroundImage(UIImage(named: "sound.png"), forState: .Normal)
+            sender.setBackgroundImage(UIImage(named: "sound.png"), for: UIControlState())
         }
         self.musicOn = !self.musicOn
     }
     
-    @IBAction func refreshButton(sender: AnyObject) {
+    @IBAction func refreshButton(_ sender: AnyObject) {
         self.restart()
     }
     
@@ -135,10 +135,10 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
     
     func restart(){
         
-        soundPlayer.playSound(.Start)
+        soundPlayer.playSound(.start)
         let randomIndex = Int(arc4random_uniform(UInt32(self.wordsArray.count))) //choose a random word from the list
         self.chosenWord = self.wordsArray[randomIndex]
-        NSLog("\(chosenWord.uppercaseString)")
+        NSLog("\(chosenWord.uppercased())")
         
         self.remaining = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         self.refreshWord() //word should be blank
@@ -148,41 +148,41 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
         
         for i in 0 ..< letterButtons.count {
             let button = letterButtons[i]
-            let index = remaining.startIndex.advancedBy(i)
-            button.setTitle(String(self.remaining[index]), forState: .Normal)
+            let index = remaining.characters.index(remaining.startIndex, offsetBy: i)
+            button.setTitle(String(self.remaining[index]), for: UIControlState())
         }
         
         needsRefresh = false
     }
     
-    func guessLetter(sender:UIButton){
+    func guessLetter(_ sender:UIButton){
         let letter = sender.titleLabel?.text
         if letter != " "{
-            self.remaining = self.remaining.stringByReplacingOccurrencesOfString(letter!, withString: " ", options: [], range: nil)
-            if self.chosenWord.uppercaseString.rangeOfString(letter!) != nil{
-                soundPlayer.playSound(.Correct)
+            self.remaining = self.remaining.replacingOccurrences(of: letter!, with: " ", options: [], range: nil)
+            if self.chosenWord.uppercased().range(of: letter!) != nil{
+                soundPlayer.playSound(.correct)
                 self.refreshWord()
             } else{ //letter is not in word
-                soundPlayer.playSound(.Incorrect)
+                soundPlayer.playSound(.incorrect)
                 self.wrongLetter()
             }
-            sender.setTitle(" ", forState: .Normal)
+            sender.setTitle(" ", for: UIControlState())
         }
     }
-
+    
     func refreshWord(){
         let finalString:NSMutableAttributedString = NSMutableAttributedString(string: "") //will use to build string
         var finished = true
-        for letter in self.chosenWord.uppercaseString.characters{
-            if !("ABCDEFGHIJKLMNOPQRSTUVWXYZ".containsString(String(letter))){
-                finalString.appendAttributedString(NSAttributedString(string: "\(letter) "))
+        for letter in self.chosenWord.uppercased().characters{
+            if !("ABCDEFGHIJKLMNOPQRSTUVWXYZ".contains(String(letter))){
+                finalString.append(NSAttributedString(string: "\(letter) "))
             }else if !self.remaining.characters.contains(letter){
                 //letter is guessed already
-                finalString.appendAttributedString(NSAttributedString(string: "\(letter)", attributes: [NSUnderlineStyleAttributeName:NSUnderlineStyle.StyleSingle.rawValue]))
-                finalString.appendAttributedString(NSAttributedString(string: "  "))
+                finalString.append(NSAttributedString(string: "\(letter)", attributes: [NSUnderlineStyleAttributeName:NSUnderlineStyle.styleSingle.rawValue]))
+                finalString.append(NSAttributedString(string: "  "))
             }else{
                 //letter is still unguessed
-                finalString.appendAttributedString(NSAttributedString(string: "_  "))
+                finalString.append(NSAttributedString(string: "_  "))
                 finished = false
             }
         }
@@ -195,16 +195,16 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
     func wrongLetter(){
         stage += 1
         if stage <= 6{
-        UIView.animateWithDuration(0.5, animations: {
-            self.distanceFromPerson.constant = self.swordLocs[self.stage - 1] //move sword toward sheep
-            self.view.layoutIfNeeded()
-        })
+            UIView.animate(withDuration: 0.5, animations: {
+                self.distanceFromPerson.constant = self.swordLocs[self.stage - 1] //move sword toward sheep
+                self.view.layoutIfNeeded()
+            })
         } else{
-            soundPlayer.playSound(.Lose)
+            soundPlayer.playSound(.lose)
             self.winning = false
             self.winStreak = 0
             
-            self.performSegueWithIdentifier("loss", sender: self) //show lost screen
+            self.performSegue(withIdentifier: "loss", sender: self) //show lost screen
             self.needsRefresh = true
             self.achivementManager.loss()
         }
@@ -212,31 +212,33 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
     }
     
     func win(){
-        soundPlayer.playSound(.Win)
-        UIView.animateWithDuration(0.3, animations: {
+        soundPlayer.playSound(.win)
+        UIView.animate(withDuration: 0.3, animations: {
             self.correctLabel.alpha = 1.0
             }, completion: {
                 finished in
-                UIView.animateWithDuration(0.5, delay: 1.0, options: [], animations: {
+                UIView.animate(withDuration: 0.5, delay: 1.0, options: [], animations: {
                     self.correctLabel.alpha = 0.0
                     }, completion: {
                         finished in
                         self.needsRefresh = true //restart
                         
-                        //Update streak
-                        if self.winning{
-                            self.winStreak += 1
-                        }else{
-                            self.winStreak = 1
+                        if !self.defaults.bool(forKey: "customListUsed"){
+                            //Update streak
+                            if self.winning{
+                                self.winStreak += 1
+                            }else{
+                                self.winStreak = 1
+                            }
+                            if self.winStreak > self.defaults.integer(forKey: "longest_streak"){
+                                self.achivementManager.higherWinStreak(self.winStreak)
+                            }
+                            self.winning = true
+                            
+                            //stuff for achievements
+                            self.achivementManager.win()
+                            
                         }
-                        if self.winStreak > self.defaults.integerForKey("longest_streak"){
-                            self.achivementManager.higherWinStreak(self.winStreak)
-                        }
-                        self.winning = true
-                        
-                        //stuff for achievements
-                        self.achivementManager.win()
-                        
                         //show the views again
                         self.viewDidAppear(true)
                 })
@@ -246,25 +248,24 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
     
     //MARK: Segue
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         self.lastSegue = segue
         if segue.identifier == "loss"{
-            let toViewController = segue.destinationViewController as! FinishedViewController
+            let toViewController = segue.destination as! FinishedViewController
             toViewController.transitioningDelegate = self
             toViewController.word = self.chosenWord //loss screen will tell the user the word
         }
         if segue.identifier == "stats"{
-            let toViewController = segue.destinationViewController as! StatsViewController
+            let toViewController = segue.destination as! StatsViewController
             toViewController.transitioningDelegate = self
         }
         if segue.identifier == "showMenu"{
-            let toViewController = segue.destinationViewController as! MenuViewController
+            let toViewController = segue.destination as! MenuViewController
             toViewController.transitioningDelegate = self
         }
-        self.navigationController?.presentTransparentNavigationBar()
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 104/255.0, green: 104/255.0, blue: 104/255.0, alpha: 1.0)]
     }
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         guard let segue = self.lastSegue else{return nil}
         
         switch segue.identifier!{
@@ -278,7 +279,7 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
             return nil
         }
     }
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         guard let segue = self.lastSegue else{return nil}
         
         switch segue.identifier!{
@@ -289,6 +290,6 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
         default:
             return nil
         }
-
+        
     }
 }

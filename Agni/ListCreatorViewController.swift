@@ -9,35 +9,45 @@
 import UIKit
 import CoreData
 
-class ListCreatorViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
-    var defaults = NSUserDefaults.standardUserDefaults() //use to get app-wide data
+class ListCreatorViewController: MenuItemViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+    var defaults = UserDefaults.standard //use to get app-wide data
     
     var userLists:[NSManagedObject] = []
-
+    
+    @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
-        defaults.setObject(["Latin III"], forKey: "userCreatedLists")
-        if defaults.objectForKey("userCreatedLists") == nil{
+        loadData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        loadData()
+        collectionView.reloadData()
+    }
+    
+    func loadData(){
+        self.userLists = []
+        if defaults.object(forKey: "userCreatedLists") == nil{
             let blankArray:[String] = []
-            defaults.setObject(blankArray, forKey: "userCreatedLists")
+            defaults.set(blankArray, forKey: "userCreatedLists")
             userLists = []
         }else{
-            let listNames = defaults.objectForKey("userCreatedLists") as! [String]
+            let listNames = defaults.object(forKey: "userCreatedLists") as! [String]
             //get lists saved in persistant memory
-            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
             let managedContext = appDelegate.managedObjectContext!
             
-            let fetchRequest = NSFetchRequest(entityName:"WordList") //get the list of lists
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName:"WordList") //get the list of lists
             let sortDescriptor = NSSortDescriptor(key: "title", ascending: true)
             fetchRequest.sortDescriptors = [sortDescriptor]
             let predicate = NSPredicate(format: "title IN %@", listNames)
             fetchRequest.predicate = predicate
-
+            
             var fetchedResults:[NSManagedObject]? = nil
             do{
-                fetchedResults = try managedContext.executeFetchRequest(fetchRequest) as? [NSManagedObject]
+                fetchedResults = try managedContext.fetch(fetchRequest) as? [NSManagedObject]
             } catch _{
                 NSLog("Something went wrong getting words")
             }
@@ -46,28 +56,44 @@ class ListCreatorViewController: UIViewController, UICollectionViewDelegate, UIC
                     self.userLists.append(list)
                 }
             }
-
+            
         }
+        
     }
     
     //Collection View
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return userLists.count
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("fileCell", forIndexPath: indexPath)
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "fileCell", for: indexPath)
         let label = cell.viewWithTag(1) as! UILabel
-        label.text = (userLists[indexPath.row].valueForKey("title") as! String)
+        label.text = (userLists[(indexPath as NSIndexPath).row].value(forKey: "title") as! String)
         
         return cell
     }
     
-    @IBAction func closeListCreator(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showListDetail"{
+            let destVC = segue.destination as! CustomListViewController
+            let indexPath = collectionView.indexPathsForSelectedItems?.first
+            
+            destVC.list = self.userLists[(indexPath! as NSIndexPath).row]
+            
+            UIGraphicsBeginImageContext(CGSize(width: view.frame.size.width, height: view.frame.size.height));
+            view.drawHierarchy(in: CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height), afterScreenUpdates: true)
+            destVC.backgroundImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            
+        }
+    }
+    
+    @IBAction func closeListCreator(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
 }

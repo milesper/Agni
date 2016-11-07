@@ -9,23 +9,23 @@
 import UIKit
 
 class WelcomeViewController: UIViewController {
-    var defaults = NSUserDefaults.standardUserDefaults() //use to get app-wide data
-
+    var defaults = UserDefaults.standard //use to get app-wide data
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
     }
-
-    @IBAction func latin(sender: AnyObject) {
-        defaults.setObject(["Latin Starter Pack"], forKey: "selectedTitles")
-        self.dismissViewControllerAnimated(true, completion: nil)
+    
+    @IBAction func latin(_ sender: AnyObject) {
+        defaults.set(["Latin Starter Pack"], forKey: "selectedTitles")
+        self.dismiss(animated: true, completion: nil)
     }
-
-    @IBAction func english(sender: AnyObject) {
-        defaults.setObject(["English Starter Pack"], forKey: "selectedTitles")
-        self.dismissViewControllerAnimated(true, completion: nil)
+    
+    @IBAction func english(_ sender: AnyObject) {
+        defaults.set(["English Starter Pack"], forKey: "selectedTitles")
+        self.dismiss(animated: true, completion: nil)
     }
-
-
+    
+    
 }

@@ -1,6 +1,6 @@
 //
 //  WordListsViewController.swift
-//  
+//
 //
 //  Created by Michael Ginn on 5/5/15.
 //
@@ -10,13 +10,13 @@ import UIKit
 import CoreData
 
 
-class WordListsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
-
+class WordListsViewController: MenuItemViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
+    
     var selectedTitles:[String] = []
     var lists:[NSManagedObject] = [] //lists from CoreData
     var customLists:[NSManagedObject] = []
     
-    var defaults = NSUserDefaults.standardUserDefaults() //get app-wide data
+    var defaults = UserDefaults.standard //get app-wide data
     
     
     @IBOutlet weak var tableView: UITableView!
@@ -31,40 +31,40 @@ class WordListsViewController: UIViewController, UITableViewDelegate, UITableVie
         self.lists = []
         
         //get lists saved in persistant memory
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext!
         
-        let fetchRequest = NSFetchRequest(entityName:"WordList") //get the list of lists
+        let fetchRequest:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName:"WordList") //get the list of lists
         let sortDescriptor = NSSortDescriptor(key: "title", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
         
         var fetchedResults:[NSManagedObject]? = nil
         do{
-            fetchedResults = try managedContext.executeFetchRequest(fetchRequest) as? [NSManagedObject]
+            fetchedResults = try managedContext.fetch(fetchRequest) as? [NSManagedObject]
         } catch _{
             NSLog("Something went wrong getting words")
         }
         if (fetchedResults != nil){
             for list in fetchedResults!{
-                if list.valueForKey("Author") as! String == "Agni Dev"{
+                if list.value(forKey: "Author") as! String == "Agni Dev"{
                     self.lists.append(list)
                 }else{
                     self.customLists.append(list)
                 }
             }
         }
-        self.selectedTitles = self.defaults.objectForKey("selectedTitles") as! [String]
+        self.selectedTitles = self.defaults.object(forKey: "selectedTitles") as! [String]
         self.tableView.reloadData() //will show which lists are selected
-
+        
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         
     }
     
     // MARK: - Table view data source
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         if tableView.tag == 1{
             return 2
         }else if tableView.tag == 2{
@@ -74,7 +74,7 @@ class WordListsViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView.tag == 1{
             if section == 0{
                 return 2
@@ -92,67 +92,67 @@ class WordListsViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("listCell", forIndexPath: indexPath)
-
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "listCell", for: indexPath)
+        
         if tableView.tag == 1{
-            if indexPath.section == 0{
-                if indexPath.row == 0{
+            if (indexPath as NSIndexPath).section == 0{
+                if (indexPath as NSIndexPath).row == 0{
                     cell.textLabel?.text = "Latin Starter Pack"
                     cell.detailTextLabel?.text = "Agni Dev"
-                }else if indexPath.row == 1{
+                }else if (indexPath as NSIndexPath).row == 1{
                     cell.textLabel?.text = "English Starter Pack"
                     cell.detailTextLabel?.text = "Agni Dev"
                 }
             }else{
-                cell.textLabel?.text = (self.lists[indexPath.row].valueForKey("title") as! String)
-                cell.detailTextLabel?.text = (self.lists[indexPath.row ].valueForKey("author") as! String)
+                cell.textLabel?.text = (self.lists[(indexPath as NSIndexPath).row].value(forKey: "title") as! String)
+                cell.detailTextLabel?.text = (self.lists[(indexPath as NSIndexPath).row ].value(forKey: "author") as! String)
                 
             }
         }else if tableView.tag == 2{
-            cell.textLabel?.text = (self.customLists[indexPath.row].valueForKey("title") as! String)
-            cell.detailTextLabel?.text = (self.customLists[indexPath.row].valueForKey("author") as! String)
+            cell.textLabel?.text = (self.customLists[(indexPath as NSIndexPath).row].value(forKey: "title") as! String)
+            cell.detailTextLabel?.text = (self.customLists[(indexPath as NSIndexPath).row].value(forKey: "author") as! String)
         }
         if selectedTitles.contains((cell.textLabel!.text!)){
             //list is selected
-            cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+            cell.accessoryType = UITableViewCellAccessoryType.checkmark
         } else{
             //list is not selected
-            cell.accessoryType = UITableViewCellAccessoryType.None
+            cell.accessoryType = UITableViewCellAccessoryType.none
         }
         return cell
     }
-
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell = tableView.cellForRowAtIndexPath(indexPath)!
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath)!
         
         
         if self.selectedTitles.contains((cell.textLabel!.text!)){
             if self.selectedTitles.count < 2{
-                tableView.deselectRowAtIndexPath(indexPath, animated: true)
+                tableView.deselectRow(at: indexPath, animated: true)
                 return
             }
             
             //cell is selected and not the only selected one
-            self.selectedTitles.removeAtIndex(selectedTitles.indexOf((cell.textLabel!.text!))!)
-            cell.accessoryType = UITableViewCellAccessoryType.None
+            self.selectedTitles.remove(at: selectedTitles.index(of: (cell.textLabel!.text!))!)
+            cell.accessoryType = UITableViewCellAccessoryType.none
         }else{
             //cell is not selected
             self.selectedTitles.append(cell.textLabel!.text!)
-            cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+            cell.accessoryType = UITableViewCellAccessoryType.checkmark
         }
-        self.defaults.setObject(selectedTitles, forKey: "selectedTitles")
-        if !(defaults.objectForKey("needsUpdateSources") as! Bool){
-            defaults.setObject(true, forKey: "needsUpdateSources") //Game screen will reload data sources
+        self.defaults.set(selectedTitles, forKey: "selectedTitles")
+        if !(defaults.object(forKey: "needsUpdateSources") as! Bool){
+            defaults.set(true, forKey: "needsUpdateSources") //Game screen will reload data sources
         }
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             //save in the background
             self.defaults.synchronize()
         })
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         //Space between starter and downloaded
         if section == 0{
             return 10
@@ -161,22 +161,22 @@ class WordListsViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
     
-    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footerView = UITableViewHeaderFooterView()
         footerView.backgroundView = UIView()
-        footerView.backgroundView?.backgroundColor = UIColor.whiteColor()
+        footerView.backgroundView?.backgroundColor = UIColor.white
         return footerView
     }
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let pageWidth = scrollView.frame.size.width
         let page = Int(floor((scrollView.contentOffset.x - pageWidth / 2 ) / pageWidth) + 1)
         
         pageControl.currentPage = page;
     }
     
-    @IBAction func closeWordLists(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func closeWordLists(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
-
+    
 }

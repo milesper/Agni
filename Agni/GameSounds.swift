@@ -11,27 +11,27 @@ import UIKit
 import AVFoundation
 
 class GameSounds: NSObject {
-    var defaults = NSUserDefaults.standardUserDefaults() //use to get app-wide data
+    var defaults = UserDefaults.standard //use to get app-wide data
     
     enum gameSound{
-        case Correct
-        case Incorrect
-        case Start
-        case Win
-        case Lose
+        case correct
+        case incorrect
+        case start
+        case win
+        case lose
     }
     enum bgMusicToggle{
-        case On
-        case Off
+        case on
+        case off
     }
 
-    var correctSound =  NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("correctSound", ofType: "wav")!)
-    var incorrectSound =  NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("incorrectSound", ofType: "wav")!)
-    var startSound =  NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("lightgong", ofType: "aif")!)
-    var loseSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("loss", ofType: "wav")!)
-    var winSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("win", ofType: "wav")!)
+    var correctSound =  URL(fileURLWithPath: Bundle.main.path(forResource: "correctSound", ofType: "wav")!)
+    var incorrectSound =  URL(fileURLWithPath: Bundle.main.path(forResource: "incorrectSound", ofType: "wav")!)
+    var startSound =  URL(fileURLWithPath: Bundle.main.path(forResource: "lightgong", ofType: "aif")!)
+    var loseSound = URL(fileURLWithPath: Bundle.main.path(forResource: "loss", ofType: "wav")!)
+    var winSound = URL(fileURLWithPath: Bundle.main.path(forResource: "win", ofType: "wav")!)
     
-    var backgroundMusic = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("BackgroundMusic", ofType: "m4a")!)
+    var backgroundMusic = URL(fileURLWithPath: Bundle.main.path(forResource: "BackgroundMusic", ofType: "m4a")!)
 
     
     var startAudioPlayer = AVAudioPlayer()
@@ -44,42 +44,42 @@ class GameSounds: NSObject {
     
     override init(){
         do{
-        startAudioPlayer = try AVAudioPlayer(contentsOfURL: startSound)
+        startAudioPlayer = try AVAudioPlayer(contentsOf: startSound)
         }catch _{
             print("\nError occurred with sounds")
         }
         startAudioPlayer.prepareToPlay()
         
         do{
-        correctAudioPlayer = try AVAudioPlayer(contentsOfURL: correctSound)
+        correctAudioPlayer = try AVAudioPlayer(contentsOf: correctSound)
         }catch _{
             print("\nError occurred with sounds")
         }
         correctAudioPlayer.prepareToPlay()
         
         do{
-        incorrectAudioPlayer = try AVAudioPlayer(contentsOfURL: incorrectSound)
+        incorrectAudioPlayer = try AVAudioPlayer(contentsOf: incorrectSound)
         }catch _{
             print("\nError occurred with sounds")
         }
         incorrectAudioPlayer.prepareToPlay()
         
         do{
-        lossAudioPlayer = try AVAudioPlayer(contentsOfURL: loseSound)
+        lossAudioPlayer = try AVAudioPlayer(contentsOf: loseSound)
         }catch _{
             print("\nError occurred with sounds")
         }
         lossAudioPlayer.prepareToPlay()
         
         do{
-        winAudioPlayer = try AVAudioPlayer(contentsOfURL: winSound)
+        winAudioPlayer = try AVAudioPlayer(contentsOf: winSound)
         }catch _{
             print("\nError occurred with sounds")
         }
         winAudioPlayer.prepareToPlay()
         
         do{
-        backgroundMusicPlayer = try AVAudioPlayer(contentsOfURL: backgroundMusic)
+        backgroundMusicPlayer = try AVAudioPlayer(contentsOf: backgroundMusic)
         }catch _{
             print("\nError occurred with sounds")
         }
@@ -88,47 +88,47 @@ class GameSounds: NSObject {
         backgroundMusicPlayer.prepareToPlay()
     }
 
-    func playSound(sound:gameSound){
+    func playSound(_ sound:gameSound){
         switch sound{
-        case .Correct:
+        case .correct:
             correctAudioPlayer.stop()
             correctAudioPlayer.volume = 1.0
             correctAudioPlayer.play()
-        case .Incorrect:
+        case .incorrect:
             incorrectAudioPlayer.stop()
             incorrectAudioPlayer.volume = 1.0
             incorrectAudioPlayer.play()
-        case .Start:
+        case .start:
             startAudioPlayer.volume = 1.0
             startAudioPlayer.play()
-        case .Lose:
+        case .lose:
             lossAudioPlayer.volume = 1.0
             lossAudioPlayer.play()
-        case .Win:
+        case .win:
             winAudioPlayer.volume = 1.0
             winAudioPlayer.play()
         }
     }
     
     func toggleBGMusic(){
-        if backgroundMusicPlayer.playing{
+        if backgroundMusicPlayer.isPlaying{
             do {
                 try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
             } catch _ {
             }
             backgroundMusicPlayer.pause()
-            self.defaults.setBool(false, forKey: "musicOn")
+            self.defaults.set(false, forKey: "musicOn")
         } else{
             do {
                 try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategorySoloAmbient)
             } catch _ {
             }
             backgroundMusicPlayer.play()
-            self.defaults.setBool(true, forKey: "musicOn")
+            self.defaults.set(true, forKey: "musicOn")
         }
         
-        let time = dispatch_time(DISPATCH_TIME_NOW, 0)
-        dispatch_after(time, dispatch_get_main_queue(), {
+        let time = DispatchTime.now() + Double(0) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: time, execute: {
             //save in the background
             self.defaults.synchronize()
         })

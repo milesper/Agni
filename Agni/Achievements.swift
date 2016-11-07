@@ -10,21 +10,21 @@ import UIKit
 import GameKit
 
 class Achievements: NSObject {
-    var defaults = NSUserDefaults.standardUserDefaults() //use to get app-wide data
+    var defaults = UserDefaults.standard //use to get app-wide data
     var streak = 0
     var totalWins = 0
     var totalLosses = 0
     
     override init(){
-        totalWins = self.defaults.integerForKey("win_total")
-        totalLosses = self.defaults.integerForKey("loss_total")
+        totalWins = self.defaults.integer(forKey: "win_total")
+        totalLosses = self.defaults.integer(forKey: "loss_total")
     }
     
     func win(){
         //incremement wins and save to defaults
         totalWins += 1
-        self.defaults.setInteger(totalWins, forKey: "win_total")
-        dispatch_async(dispatch_get_main_queue(), {
+        self.defaults.set(totalWins, forKey: "win_total")
+        DispatchQueue.main.async(execute: {
             //save in the background
             self.defaults.synchronize()
             self.checkWinsAchievements()
@@ -33,31 +33,31 @@ class Achievements: NSObject {
         //Report to leaderboard
         let score = GKScore(leaderboardIdentifier: "total_wins")
         score.value = Int64(totalWins)
-        GKScore.reportScores([score], withCompletionHandler: {
+        GKScore.report([score], withCompletionHandler: {
             error in
             if error != nil{
                 NSLog(error!.localizedDescription)
             }
         })
     }
-
+    
     
     func loss(){
         totalLosses += 1
-        self.defaults.setInteger(totalLosses, forKey: "loss_total")
-        dispatch_async(dispatch_get_main_queue(), {
+        self.defaults.set(totalLosses, forKey: "loss_total")
+        DispatchQueue.main.async(execute: {
             //save in the background
             self.defaults.synchronize()
             self.checkLossesAchievements()
         })
     }
     
-    func higherWinStreak(streak:Int){
-        self.defaults.setInteger(streak, forKey: "longest_streak")
+    func higherWinStreak(_ streak:Int){
+        self.defaults.set(streak, forKey: "longest_streak")
     }
     
     func checkWinsAchievements(){
-        totalWins = self.defaults.integerForKey("win_total")
+        totalWins = self.defaults.integer(forKey: "win_total")
         
         var achievements:[GKAchievement] = []
         
@@ -103,14 +103,14 @@ class Achievements: NSObject {
             thousandWinsAchievement.showsCompletionBanner = true
             achievements.append(thousandWinsAchievement)
         }
-        GKAchievement.reportAchievements(achievements, withCompletionHandler: {error in
+        GKAchievement.report(achievements, withCompletionHandler: {error in
             if error != nil{
                 NSLog("%@", (error?.localizedDescription)!)
             }
         })
     }
     func checkLossesAchievements(){
-        totalLosses = self.defaults.integerForKey("loss_total")
+        totalLosses = self.defaults.integer(forKey: "loss_total")
         var achievements:[GKAchievement] = []
         
         if totalLosses == 1{
@@ -131,14 +131,14 @@ class Achievements: NSObject {
             onehundredLossesAchievement.showsCompletionBanner = true
             achievements.append(onehundredLossesAchievement)
         }
-        GKAchievement.reportAchievements(achievements, withCompletionHandler: {error in
+        GKAchievement.report(achievements, withCompletionHandler: {error in
             if error != nil{
                 NSLog("%@", (error?.localizedDescription)!)
             }
         })
     }
     
-    func checkSkinsAchievements(numberOfSkins:Int){
+    func checkSkinsAchievements(_ numberOfSkins:Int){
         var achievements:[GKAchievement] = []
         
         if numberOfSkins <= 2{
@@ -153,7 +153,7 @@ class Achievements: NSObject {
             tenSkinsAchievement.showsCompletionBanner = true
             achievements.append(tenSkinsAchievement)
         }
-        GKAchievement.reportAchievements(achievements, withCompletionHandler: {error in
+        GKAchievement.report(achievements, withCompletionHandler: {error in
             if error != nil{
                 NSLog("%@", (error?.localizedDescription)!)
             }

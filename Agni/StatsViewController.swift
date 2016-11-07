@@ -9,7 +9,7 @@
 import UIKit
 
 class StatsViewController: UIViewController {
-    let defaults = NSUserDefaults.standardUserDefaults() //used to save app-wide data
+    let defaults = UserDefaults.standard //used to save app-wide data
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var statsView: UIView!
@@ -22,33 +22,33 @@ class StatsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setUpStats()
     }
     
     func setUpStats(){
         // Do any additional setup after loading the view.
         let totalWinNumber:String
-        if (defaults.integerForKey("win_total") == 0) && defaults.objectForKey("total_wins") != nil{
-            totalWinNumber = QTRomanNumerals.convertToRomanNum(defaults.objectForKey("total_wins") as! Int)
+        if (defaults.integer(forKey: "win_total") == 0) && defaults.object(forKey: "total_wins") != nil{
+            totalWinNumber = QTRomanNumerals.convertToRomanNum(defaults.object(forKey: "total_wins") as! Int)
         }else{
-            totalWinNumber = QTRomanNumerals.convertToRomanNum(defaults.objectForKey("win_total") as! Int)
+            totalWinNumber = QTRomanNumerals.convertToRomanNum(defaults.object(forKey: "win_total") as! Int)
         }
         
         totalWins.text = "\(totalWinNumber)"
         
         //Best streak
         let bestStreakNumber:String
-        if defaults.integerForKey("longest_streak") == 0{
+        if defaults.integer(forKey: "longest_streak") == 0{
             bestStreakNumber = "-"
         }else{
-            bestStreakNumber = QTRomanNumerals.convertToRomanNum(defaults.objectForKey("longest_streak") as! Int)
+            bestStreakNumber = QTRomanNumerals.convertToRomanNum(defaults.object(forKey: "longest_streak") as! Int)
         }
         bestStreak.text = "\(bestStreakNumber)"
-
+        
         //Percent wins
-        let totalGames = defaults.integerForKey("win_total") + defaults.integerForKey("loss_total")
-        let percentageValue = (defaults.objectForKey("win_total") as! Float) / Float(totalGames)
+        let totalGames = defaults.integer(forKey: "win_total") + defaults.integer(forKey: "loss_total")
+        let percentageValue = (defaults.object(forKey: "win_total") as! Float) / Float(totalGames)
         if !percentageValue.isNaN{
             percentage.text = String(format: "%.1f", percentageValue * 100) + "%"
         }else{
@@ -56,31 +56,31 @@ class StatsViewController: UIViewController {
         }
         
         //Skins used
-        let numberOfSkinsUsed = defaults.arrayForKey("used_skins")?.count
+        let numberOfSkinsUsed = defaults.array(forKey: "used_skins")?.count
         skinsUsed.text = QTRomanNumerals.convertToRomanNum(numberOfSkinsUsed!)
         
         //Days played
-        let daysPlayedNumber = defaults.integerForKey("days_played")
+        let daysPlayedNumber = defaults.integer(forKey: "days_played")
         daysPlayed.text = QTRomanNumerals.convertToRomanNum(daysPlayedNumber)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func close(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func close(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

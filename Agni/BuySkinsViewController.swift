@@ -4,14 +4,14 @@
 //
 //  Created by Michael Ginn on 6/1/15.
 //  Copyright (c) 2015 Michael Ginn. All rights reserved.
-//  
+//
 
 import UIKit
 import StoreKit
 
 
 class BuySkinsViewController: UIViewController, SKPaymentTransactionObserver  {
-    var defaults = NSUserDefaults.standardUserDefaults()
+    var defaults = UserDefaults.standard
     let productID = "agni_sheep_skins"
     
     var activityIndicator:UIActivityIndicatorView?
@@ -23,52 +23,52 @@ class BuySkinsViewController: UIViewController, SKPaymentTransactionObserver  {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-        SKPaymentQueue.defaultQueue().addTransactionObserver(self)
         
-//        PFPurchase.addObserverForProduct("agni_sheep_skins") {
-//            (transaction: SKPaymentTransaction?) -> Void in
-//            // Will run once this product is purchased.
-//            NSLog("Purchased")
-//            self.defaults.setBool(true , forKey: "skinsUnlocked")
-//            self.dismissViewControllerAnimated(true, completion: nil)
-//            self.defaults.synchronize()
-//        }
+        // Do any additional setup after loading the view.
+        SKPaymentQueue.default().add(self)
+        
+        //        PFPurchase.addObserverForProduct("agni_sheep_skins") {
+        //            (transaction: SKPaymentTransaction?) -> Void in
+        //            // Will run once this product is purchased.
+        //            NSLog("Purchased")
+        //            self.defaults.setBool(true , forKey: "skinsUnlocked")
+        //            self.dismissViewControllerAnimated(true, completion: nil)
+        //            self.defaults.synchronize()
+        //        }
         wrapperView.layer.cornerRadius = 5.0
-        wrapperView.layer.borderColor = self.view.tintColor.CGColor
+        wrapperView.layer.borderColor = self.view.tintColor.cgColor
         wrapperView.layer.borderWidth = 3.0
     }
-
-    override func viewDidAppear(animated: Bool) {
-        self.activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         self.activityIndicator?.frame = self.buyButton.frame
-        self.activityIndicator?.backgroundColor = UIColor.whiteColor()
+        self.activityIndicator?.backgroundColor = UIColor.white
         self.buyButton.superview!.insertSubview(activityIndicator!, aboveSubview: buyButton)
     }
     
-    @IBAction func buy(sender: UIButton) {
+    @IBAction func buy(_ sender: UIButton) {
         //show spinning indicator
         self.activityIndicator?.startAnimating()
         
         let payment = SKMutablePayment()
         payment.productIdentifier = productID
-        SKPaymentQueue.defaultQueue().addPayment(payment)
+        SKPaymentQueue.default().add(payment)
         transactionInProgress = true
     }
     
-    func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         for transaction in transactions{
             switch transaction.transactionState{
-            case .Purchased:
+            case .purchased:
                 print("Purchased successfully")
-                SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+                SKPaymentQueue.default().finishTransaction(transaction)
                 transactionInProgress = false
                 self.activityIndicator?.stopAnimating()
                 upgradeBought()
-            case .Failed:
+            case .failed:
                 print("Transaction failed")
-                SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+                SKPaymentQueue.default().finishTransaction(transaction)
                 transactionInProgress = false
                 self.activityIndicator?.stopAnimating()
             default:
@@ -79,18 +79,18 @@ class BuySkinsViewController: UIViewController, SKPaymentTransactionObserver  {
     }
     
     func upgradeBought(){
-        self.defaults.setBool(true , forKey: "skinsUnlocked")
+        self.defaults.set(true , forKey: "skinsUnlocked")
         self.defaults.synchronize()
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func restore(sender: UIButton) {
+    @IBAction func restore(_ sender: UIButton) {
         //show spinning indicator
         self.activityIndicator?.startAnimating()
-        SKPaymentQueue.defaultQueue().restoreCompletedTransactions()
+        SKPaymentQueue.default().restoreCompletedTransactions()
     }
-        
-    @IBAction func dismiss(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    
+    @IBAction func dismiss(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
 }

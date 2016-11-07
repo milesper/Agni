@@ -15,52 +15,52 @@ class MenuSlideTransition: NSObject, UIViewControllerAnimatedTransitioning {
         self.originButton = button
     }
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
-        return 1.2
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+        return 1.0
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)! as! AgniViewController
-        let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)! as! MenuViewController
-        let finalFrameForVC = transitionContext.finalFrameForViewController(toViewController)
-        let containerView = transitionContext.containerView()
-        let bounds = UIScreen.mainScreen().bounds
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        let fromViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)! as! AgniViewController
+        let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)! as! MenuViewController
+        let finalFrameForVC = transitionContext.finalFrame(for: toViewController)
+        let containerView = transitionContext.containerView
+        let bounds = UIScreen.main.bounds
         
         guard let button = originButton else{print("transition failed");return}
-        let buttonSnapshot = button.snapshotViewAfterScreenUpdates(true)
-        buttonSnapshot.frame = button.frame
+        let buttonSnapshot = button.snapshotView(afterScreenUpdates: true)
+        buttonSnapshot?.frame = button.frame
         let finalFrameForButton = fromViewController.volumeButton.frame
         button.alpha = 0.0
         
-        toViewController.view.frame = CGRectOffset(finalFrameForVC, 0, bounds.size.height)
-        toViewController.view.backgroundColor = UIColor.clearColor()
+        toViewController.view.frame = finalFrameForVC.offsetBy(dx: 0, dy: bounds.size.height)
+        toViewController.view.backgroundColor = UIColor.clear
         let whiteView = UIView(frame: bounds)
-        whiteView.backgroundColor = UIColor.whiteColor()
+        whiteView.backgroundColor = UIColor.white
         
-        containerView?.addSubview(whiteView)
-        containerView?.addSubview(fromViewController.view)
-        containerView?.addSubview(toViewController.view)
-        containerView?.addSubview(buttonSnapshot)
+        containerView.addSubview(whiteView)
+        containerView.addSubview(fromViewController.view)
+        containerView.addSubview(toViewController.view)
+        containerView.addSubview(buttonSnapshot!)
         
-        UIView.animateWithDuration(1.0, delay: 0.0, options: .CurveEaseInOut, animations: {
+        UIView.animate(withDuration: 0.8, delay: 0.0, options: UIViewAnimationOptions(), animations: {
             toViewController.view.frame.origin.y = 0
             fromViewController.view.alpha = 0.0
             }, completion: {
                 finished in
-                toViewController.view.backgroundColor = UIColor.whiteColor()
+                toViewController.view.backgroundColor = UIColor.white
                 fromViewController.view.alpha = 1.0
         })
         
-        UIView.animateWithDuration(1.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
-            buttonSnapshot.frame = finalFrameForButton
-            buttonSnapshot.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2))
+        UIView.animate(withDuration: 1.0, delay: 0.0, options: UIViewAnimationOptions(), animations: {
+            buttonSnapshot?.frame = finalFrameForButton
+            buttonSnapshot?.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI_2))
             }, completion: {
                 finished in
                 button.alpha = 1.0
                 toViewController.menuButton.alpha = 1.0
-                buttonSnapshot.removeFromSuperview()
+                buttonSnapshot?.removeFromSuperview()
                 
-                containerView?.addSubview(toViewController.view)
+                containerView.addSubview(toViewController.view)
                 transitionContext.completeTransition(true)
         })
     }
