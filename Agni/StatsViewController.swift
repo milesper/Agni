@@ -30,9 +30,9 @@ class StatsViewController: UIViewController {
         // Do any additional setup after loading the view.
         let totalWinNumber:String
         if (defaults.integer(forKey: "win_total") == 0) && defaults.object(forKey: "total_wins") != nil{
-            totalWinNumber = QTRomanNumerals.convertToRomanNum(defaults.object(forKey: "total_wins") as! Int)
+            totalWinNumber = QTRomanNumerals.convertToRomanNum(decimalNum: defaults.object(forKey: "total_wins") as! Int)
         }else{
-            totalWinNumber = QTRomanNumerals.convertToRomanNum(defaults.object(forKey: "win_total") as! Int)
+            totalWinNumber = QTRomanNumerals.convertToRomanNum(decimalNum: defaults.object(forKey: "win_total") as! Int)
         }
         
         totalWins.text = "\(totalWinNumber)"
@@ -42,7 +42,7 @@ class StatsViewController: UIViewController {
         if defaults.integer(forKey: "longest_streak") == 0{
             bestStreakNumber = "-"
         }else{
-            bestStreakNumber = QTRomanNumerals.convertToRomanNum(defaults.object(forKey: "longest_streak") as! Int)
+            bestStreakNumber = QTRomanNumerals.convertToRomanNum(decimalNum: defaults.object(forKey: "longest_streak") as! Int)
         }
         bestStreak.text = "\(bestStreakNumber)"
         
@@ -57,11 +57,11 @@ class StatsViewController: UIViewController {
         
         //Skins used
         let numberOfSkinsUsed = defaults.array(forKey: "used_skins")?.count
-        skinsUsed.text = QTRomanNumerals.convertToRomanNum(numberOfSkinsUsed!)
+        skinsUsed.text = QTRomanNumerals.convertToRomanNum(decimalNum: numberOfSkinsUsed!)
         
         //Days played
         let daysPlayedNumber = defaults.integer(forKey: "days_played")
-        daysPlayed.text = QTRomanNumerals.convertToRomanNum(daysPlayedNumber)
+        daysPlayed.text = QTRomanNumerals.convertToRomanNum(decimalNum: daysPlayedNumber)
     }
     
     override func didReceiveMemoryWarning() {

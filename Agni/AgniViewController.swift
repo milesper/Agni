@@ -102,7 +102,7 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
         }
         
         
-        self.winsButton.setTitle("\(QTRomanNumerals.convertToRomanNum(self.winStreak))", for: UIControlState())
+        self.winsButton.setTitle("\(QTRomanNumerals.convertToRomanNum(decimalNum: self.winStreak))", for: UIControlState())
         if self.winStreak == 0 {self.winsButton.setTitle("0", for: UIControlState())}
         
         if needsRefresh{ //reset all values, the game was finished

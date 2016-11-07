@@ -18,13 +18,13 @@ class FinishedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.lossLabel.text = "You have lost.  The correct word was \(word.lowercaseString)."
+        self.lossLabel.text = "You have lost.  The correct word was \(word.lowercased())."
         
         sheepImageView.image = Converter.getCurrentSkinImage()!
     }
     
     @IBAction func resumePlay(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
 
 }

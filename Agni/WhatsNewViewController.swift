@@ -18,7 +18,7 @@ class WhatsNewViewController: UIViewController {
     @IBOutlet weak var thirdDescription: UILabel!
     @IBOutlet weak var continueButton: UIButton!
     
-    var defaults = NSUserDefaults.standardUserDefaults() //use to get app-wide data
+    var defaults = UserDefaults.standard //use to get app-wide data
     
     
     override func viewDidLoad() {
@@ -26,19 +26,19 @@ class WhatsNewViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         for eachView in [firstImage, firstDescription, secondImage, secondDescription, thirdImage, thirdDescription]{
-            eachView.alpha = 0.0
+            eachView!.alpha = 0.0
         }
     }
 
-    override func viewDidAppear(animated: Bool) {
-        UIView.animateWithDuration(0.3, animations: {
+    override func viewDidAppear(_ animated: Bool) {
+        UIView.animate(withDuration: 0.3, animations: {
             self.firstImage.alpha = 1.0; self.firstDescription.alpha = 1.0
             }, completion: {
                 finished in
-                UIView.animateWithDuration(0.3, animations: {
+                UIView.animate(withDuration: 0.3, animations: {
                     self.secondImage.alpha = 1.0; self.secondDescription.alpha = 1.0
                 }, completion: { (finished) -> Void in
-                    UIView.animateWithDuration(0.3, animations: {
+                    UIView.animate(withDuration: 0.3, animations: {
                         self.thirdImage.alpha = 1.0; self.thirdDescription.alpha = 1.0
                     })
                 })
@@ -48,6 +48,6 @@ class WhatsNewViewController: UIViewController {
     
     @IBAction func continueButtonPressed(sender: AnyObject) {
         defaults.setValue("1.2.0", forKey: "lastVersionShown")
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
 }
