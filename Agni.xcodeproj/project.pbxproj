@@ -31,6 +31,7 @@
 		95649AA61C2F21030052ADEB /* Achievements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95649AA51C2F21030052ADEB /* Achievements.swift */; };
 		95649AA81C32268A0052ADEB /* EnglishStarterPack.txt in Resources */ = {isa = PBXBuildFile; fileRef = 95649AA71C32268A0052ADEB /* EnglishStarterPack.txt */; };
 		9564C7211D34A13F002F1335 /* ReverseMenuSlideTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9564C7201D34A13F002F1335 /* ReverseMenuSlideTransition.swift */; };
+		957A0D061DD2826B004DB474 /* ChallengeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957A0D051DD2826B004DB474 /* ChallengeViewController.swift */; };
 		9583EC0E1D8F8C060097D22B /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9583EC0D1D8F8C060097D22B /* Stickers.xcassets */; };
 		9583EC121D8F8C060097D22B /* Agni Stickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9583EC0B1D8F8C060097D22B /* Agni Stickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		9583F9A21D2F0E170017A26F /* StatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9583F9A11D2F0E170017A26F /* StatsViewController.swift */; };
@@ -152,6 +153,7 @@
 		95649AA51C2F21030052ADEB /* Achievements.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Achievements.swift; sourceTree = "<group>"; };
 		95649AA71C32268A0052ADEB /* EnglishStarterPack.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = EnglishStarterPack.txt; sourceTree = "<group>"; };
 		9564C7201D34A13F002F1335 /* ReverseMenuSlideTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReverseMenuSlideTransition.swift; sourceTree = "<group>"; };
+		957A0D051DD2826B004DB474 /* ChallengeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChallengeViewController.swift; path = ../ChallengeViewController.swift; sourceTree = "<group>"; };
 		9583EC0B1D8F8C060097D22B /* Agni Stickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Agni Stickers.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9583EC0D1D8F8C060097D22B /* Stickers.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Stickers.xcassets; sourceTree = "<group>"; };
 		9583EC0F1D8F8C060097D22B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -346,6 +348,7 @@
 				95D9F50B1D31A2160083A7C6 /* MenuViewController.swift */,
 				95B303BD1D6160180077E92B /* MenuItemViewController.swift */,
 				95A86CB71AF9316C00E0FB67 /* WordListsViewController.swift */,
+				957A0D071DD28284004DB474 /* Challenge */,
 				95F21F651D39B78A003C0203 /* List Creation */,
 				95897A121B86AEED00BBA25C /* SkinPickerViewController.swift */,
 				95A639771B1D0AD700A2A108 /* BuySkinsViewController.swift */,
@@ -403,6 +406,14 @@
 				952C86461D43B74000064CA5 /* UIImageEffects.m */,
 			);
 			name = UIImageEffects;
+			sourceTree = "<group>";
+		};
+		957A0D071DD28284004DB474 /* Challenge */ = {
+			isa = PBXGroup;
+			children = (
+				957A0D051DD2826B004DB474 /* ChallengeViewController.swift */,
+			);
+			name = Challenge;
 			sourceTree = "<group>";
 		};
 		9583EC0C1D8F8C060097D22B /* Agni Stickers */ = {
@@ -700,6 +711,7 @@
 				95897A101B86AAB400BBA25C /* iCarousel.m in Sources */,
 				9508F6F21AF6AE6500A8C713 /* ShakeTransition.swift in Sources */,
 				9503F0011B16743F0020A7ED /* GameSounds.swift in Sources */,
+				957A0D061DD2826B004DB474 /* ChallengeViewController.swift in Sources */,
 				9583F9A21D2F0E170017A26F /* StatsViewController.swift in Sources */,
 				95D9F50E1D31A8780083A7C6 /* MenuSlideTransition.swift in Sources */,
 				95D9F50C1D31A2160083A7C6 /* MenuViewController.swift in Sources */,

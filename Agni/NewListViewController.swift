@@ -28,7 +28,6 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   }
 }
 
-
 class NewListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     var defaults = UserDefaults.standard //use to get app-wide data
     

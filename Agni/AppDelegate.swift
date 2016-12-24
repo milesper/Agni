@@ -219,6 +219,9 @@
             if let queryCursor = cursor { //there are more operations to execute
                 let queryCursorOperation = CKQueryOperation(cursor: queryCursor)
                 self.executeSkinQueryOperation(queryCursorOperation, onOperationQueue: operationQueue)
+            }else{
+                let nc = NotificationCenter()
+                nc.post(Notification(name: Notification.Name("skins-refreshed")))
             }
         }
         publicDB.add(queryOperation)

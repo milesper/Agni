@@ -25,8 +25,8 @@ class WhatsNewViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        for eachView in [firstImage, firstDescription, secondImage, secondDescription, thirdImage, thirdDescription]{
-            eachView!.alpha = 0.0
+        for eachView in [firstImage, firstDescription, secondImage, secondDescription, thirdImage, thirdDescription] as [UIView] {
+            eachView.alpha = 0.0
         }
     }
 
@@ -46,8 +46,8 @@ class WhatsNewViewController: UIViewController {
     }
     
     
-    @IBAction func continueButtonPressed(sender: AnyObject) {
-        defaults.setValue("1.2.0", forKey: "lastVersionShown")
+    @IBAction func continueButtonPressed(sender: UIButton) {
+        defaults.setValue("1.3.0", forKey: "lastVersionShown")
         self.dismiss(animated: true, completion: nil)
     }
 }

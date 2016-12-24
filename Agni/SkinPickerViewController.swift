@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class SkinPickerViewController: UIViewController, iCarouselDataSource, iCarouselDelegate {
+class SkinPickerViewController: MenuItemViewController, iCarouselDataSource, iCarouselDelegate {
     @IBOutlet var carousel : iCarousel!
     var defaults = UserDefaults.standard //get app-wide data
     var skins:[NSManagedObject] = []
@@ -19,7 +19,10 @@ class SkinPickerViewController: UIViewController, iCarouselDataSource, iCarousel
     override func viewDidLoad() {
         super.viewDidLoad()
         carousel.type = iCarouselType.cylinder
-        
+        loadSkins()
+    }
+    
+    func loadSkins(){
         //get skins saved in persistant memory
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext!
@@ -49,10 +52,13 @@ class SkinPickerViewController: UIViewController, iCarouselDataSource, iCarousel
             }
         }
         carousel.scrollToItem(at: lastSelectedIndex, animated: false)
+        NotificationCenter().addObserver(self, selector: #selector(skinsUpdated), name: Notification.Name("skins-refreshed"), object: nil)
+
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        
+    func skinsUpdated(){
+        print("Skins have been updated")
+        loadSkins()
     }
     
     func numberOfItems(in carousel: iCarousel) -> Int {
@@ -64,7 +70,8 @@ class SkinPickerViewController: UIViewController, iCarouselDataSource, iCarousel
         var checkView:UIImageView
         if (view == nil){
             itemView = UIButton(frame:CGRect(x:0, y:0, width:212, height:206))
-            itemView.imageView?.contentMode = .top
+            itemView.contentMode = .scaleAspectFit
+            itemView.imageView?.contentMode = .scaleAspectFit
             itemView.isUserInteractionEnabled = true
             
             checkView = UIImageView(frame: CGRect(x: 0, y: 174, width: 50, height: 50))
@@ -81,10 +88,10 @@ class SkinPickerViewController: UIViewController, iCarouselDataSource, iCarousel
         //set up the image and selection image
         checkView = itemView.viewWithTag(1) as! UIImageView
         if index == 0{
-            itemView.setImage(UIImage(named: "Sheep small.png"), for:.normal)
+            itemView.setImage(UIImage(named: "Sheep"), for:.normal)
             if self.defaults.string(forKey: "currentSkin") == "Default"{
                 self.lastSelectedIndex = 0
-                checkView.image = UIImage(named: "Checkmark-50.png")
+                checkView.image = UIImage(named: "Checkmark-100.png")
             }
             itemView.addTarget(self, action: #selector(useSkin(sender:)), for: .touchUpInside)
         }else{
@@ -92,7 +99,7 @@ class SkinPickerViewController: UIViewController, iCarouselDataSource, iCarousel
             
             if self.defaults.string(forKey: "currentSkin") == skins[index - 1].value(forKey: "name") as? String{
                 self.lastSelectedIndex = index
-                checkView.image = UIImage(named: "Checkmark-50.png")
+                checkView.image = UIImage(named: "Checkmark-100.png")
             }
             itemView.addTarget(self, action: #selector(useSkin(sender:)), for: .touchUpInside)
         }
@@ -105,26 +112,41 @@ class SkinPickerViewController: UIViewController, iCarouselDataSource, iCarousel
             print("Press!")
             let index = carousel.index(ofItemViewOrSubview: sender)
             let checkImageView = sender.viewWithTag(1) as! UIImageView
-            checkImageView.image = UIImage(named: "Checkmark-50.png")
+            checkImageView.image = UIImage(named: "Checkmark-100.png")
+            checkImageView.alpha = 1.0;
             if index > 0{
                 defaults.setValue(skins[index - 1].value(forKey: "name") as? String, forKey: "currentSkin") //change it up
             } else{
                 defaults.setValue("Default", forKey: "currentSkin")
             }
             
-            defaults.synchronize()
-            let previousItemView = carousel.itemView(at: lastSelectedIndex)
-            let lastButton = previousItemView?.viewWithTag(1) as! UIImageView
-            lastButton.image = UIImage()
-            lastButton.alpha = 0.0
-            lastSelectedIndex = index
+
+            if (lastSelectedIndex != index){
+                let previousItemView = carousel.itemView(at: lastSelectedIndex)
+                let lastButton = previousItemView?.viewWithTag(1) as! UIImageView
+                lastButton.alpha = 0.0
+                lastSelectedIndex = index
+            }
             
             NSLog("Current Skin: %@", defaults.value(forKey: "currentSkin") as! String)
         } else{
             self.performSegue(withIdentifier: "buySkins", sender: self)
         }
     }
-
+    
+    @IBAction func randomSkin(_ sender: UIButton) {
+        let randIndex = Int(arc4random_uniform(UInt32(skins.count+1)))
+        let selectedView = carousel.itemView(at: randIndex) as! UIButton
+        carousel.scrollToItem(at: randIndex, animated: true)
+        useSkin(sender: selectedView)
+    }
+    @IBAction func refreshSkins(_ sender: UIButton) {
+        let delegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate
+        delegate.getNewSkins()
+    }
+    
+    
+    
     func carousel(_ carousel: iCarousel, valueFor option: iCarouselOption, withDefault value: CGFloat) -> CGFloat
     {
         if (option == .spacing)
@@ -141,5 +163,11 @@ class SkinPickerViewController: UIViewController, iCarouselDataSource, iCarousel
         }
         return value
     }
+    
+    @IBAction func closeSkins(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    
     
 }
