@@ -1,15 +1,15 @@
 //
-//  FinishedViewController.swift
+//  LossViewController.swift
 //  Agni
 //
-//  Created by Michael Ginn on 9/17/15.
-//  Copyright © 2015 Michael Ginn. All rights reserved.
+//  Created by Michael Ginn on 7/30/17.
+//  Copyright © 2017 Michael Ginn. All rights reserved.
 //
 
 import UIKit
 
-class FinishedViewController: UIViewController {
-
+class LossViewController: UIViewController {
+    
     @IBOutlet weak var lossLabel: UILabel!
     @IBOutlet weak var exclamationLabel: UILabel! //contains only the word "Eheu!" ("Oh dear!")
     @IBOutlet weak var sheepImageView: UIImageView!

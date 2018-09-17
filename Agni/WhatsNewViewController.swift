@@ -47,7 +47,7 @@ class WhatsNewViewController: UIViewController {
     
     
     @IBAction func continueButtonPressed(sender: UIButton) {
-        defaults.setValue("1.3.0", forKey: "lastVersionShown")
+        defaults.setValue(Constants.CURRENT_VERSION, forKey: "lastVersionShown")
         self.dismiss(animated: true, completion: nil)
     }
 }

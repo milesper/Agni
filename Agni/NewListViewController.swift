@@ -3,11 +3,12 @@
 //  Agni
 //
 //  Created by Michael Ginn on 7/15/16.
-//  Copyright © 2016 Michael Ginn. All rights reserved.
+//  Copyright © 2016-17 Michael Ginn. All rights reserved.
 //
 
 import UIKit
 import CoreData
+
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
@@ -36,9 +37,14 @@ class NewListViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var topLabel: UILabel!
     @IBOutlet weak var authorTextField: UITextField!
+    @IBOutlet weak var studyModeSwitch: UISwitch!
+    
+    var currentlyEditingTextField: UITextField? = nil
     
     var listToEdit:NSManagedObject?
     var words:[String] = []
+    var meanings:[String] = []
+    var studyMode = false
     enum EditMode{
         case new
         case edit
@@ -49,6 +55,8 @@ class NewListViewController: UIViewController, UITableViewDelegate, UITableViewD
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        registerForKeyboardNotifications()
+        
         listTitleTextField.addTarget(self, action: #selector(NewListViewController.titleDidChange), for: .editingChanged)
         authorTextField.addTarget(self, action: #selector(NewListViewController.titleDidChange), for: .editingChanged)
         if listToEdit == nil{
@@ -63,6 +71,15 @@ class NewListViewController: UIViewController, UITableViewDelegate, UITableViewD
             authorTextField.text = (listToEdit!.value(forKey: "author") as! String)
             authorTextField.isEnabled = false
             words = NSKeyedUnarchiver.unarchiveObject(with: listToEdit!.value(forKey: "words") as! Data) as! [String]
+            if let meaningsData = listToEdit!.value(forKey: "word_meanings") as? Data{
+                meanings =  NSKeyedUnarchiver.unarchiveObject(with: meaningsData) as! [String]
+            }else{
+                meanings = [String](repeating: "", count: words.count)
+            }
+            if let hasStudyMode = listToEdit?.value(forKey: "has_study_mode") as? Bool{
+                studyModeSwitch.setOn(hasStudyMode, animated: true)
+                self.studyModeSwitched(studyModeSwitch)
+            }
             saveButton.isEnabled = true
         }
     }
@@ -72,8 +89,8 @@ class NewListViewController: UIViewController, UITableViewDelegate, UITableViewD
         // Dispose of any resources that can be recreated.
     }
     
-    func titleDidChange(){
-        if listTitleTextField.text?.characters.count > 0 && authorTextField.text?.characters.count > 0{
+    @objc func titleDidChange(){
+        if listTitleTextField.text?.count > 0 && authorTextField.text?.count > 0{
             saveButton.isEnabled = true
         }else{
             saveButton.isEnabled = false
@@ -87,11 +104,18 @@ class NewListViewController: UIViewController, UITableViewDelegate, UITableViewD
         if mode == .edit{
             let data = NSKeyedArchiver.archivedData(withRootObject: words) //turn it into CoreData data
             listToEdit!.setValue(data, forKey: "words")
+            if studyMode{
+                let meaningData = NSKeyedArchiver.archivedData(withRootObject: meanings)
+                listToEdit!.setValue(meaningData, forKey: "word_meanings")
+                listToEdit!.setValue(true, forKey: "has_study_mode")
+            }else{
+                listToEdit!.setValue(false, forKey: "has_study_mode")
+            }
             do {
                 try managedContext.save()
-                NSLog("Saved \(listTitleTextField.text)")
+                print("Saved \(listTitleTextField.text!)")
             } catch let error1 as NSError {
-                NSLog("%@", error1)
+                print("%@", error1)
             }
             self.dismiss(animated: true, completion: nil)
         }else{
@@ -108,7 +132,8 @@ class NewListViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.present(alert, animated: true, completion: nil)
                     return
                 }else{
-                    Converter.saveListToCoreData(listItems: words, listTitle: listTitleTextField.text!, listAuthor: authorTextField.text!)
+                    Converter.saveListToCoreData(listItems: words,listItemMeanings:meanings, listTitle: listTitleTextField.text!, listAuthor: authorTextField.text!)
+                    
                     var userCreatedLists = defaults.array(forKey: "userCreatedLists") as! [String]
                     userCreatedLists.append(listTitleTextField.text!)
                     defaults.set(userCreatedLists, forKey: "userCreatedLists")
@@ -134,67 +159,189 @@ class NewListViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if (indexPath as NSIndexPath).row == words.count{
+        if indexPath.row == words.count{
+            //empty cell
             let cell = tableView.dequeueReusableCell(withIdentifier: "newWordCell")
             let textField = cell?.viewWithTag(1) as! UITextField
+            textField.text = ""
             textField.delegate = self
+            let meaningTextField = cell?.viewWithTag(5) as! UITextField
+            meaningTextField.delegate = self
+            meaningTextField.text = ""
+            meaningTextField.isHidden = !studyMode
             return cell!
         }else{
+            //cell with word
             let cell = tableView.dequeueReusableCell(withIdentifier: "wordCell")
             let textField = cell?.viewWithTag(1) as! UITextField
-            textField.text = words[(indexPath as NSIndexPath).row]
+            textField.text = words[indexPath.row]
             textField.delegate = self
+            let meaningTextField = cell?.viewWithTag(5) as! UITextField
+            meaningTextField.delegate = self
+            meaningTextField.text = indexPath.row < meanings.count ? meanings[indexPath.row] : ""
+            meaningTextField.isHidden = !studyMode
+
             return cell!
         }
     }
     
     //Text Field
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        self.currentlyEditingTextField = textField
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField.tag == 1{
-            let cell = textField.superview?.superview as! UITableViewCell
-            let indexPath = tableView.indexPath(for: cell)
-            
-            if (indexPath as NSIndexPath?)?.row == words.count{
-                //Cell is last
-                words.append(textField.text!)
-                tableView.reloadData()
-                let lastCell = tableView.cellForRow(at: IndexPath(row: words.count, section: 0))
-                let newTextField = lastCell?.viewWithTag(1) as! UITextField
-                newTextField.text = ""
-                newTextField.becomeFirstResponder()
+        
+        if textField.tag == 2 || textField.tag == 3{
+            textField.resignFirstResponder()
+            return true
+        }
+        guard let cell = textField.superview?.superview as? UITableViewCell else{return false}
+        guard let indexPath = tableView.indexPath(for: cell) else{return false}
+        
+        if textField.tag == 1 && !(textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)!{
+            //Word text field, not blank
+            let hintTextField = cell.viewWithTag(5) as! UITextField
+            if studyMode{
+                //Go to hint text field
+                hintTextField.becomeFirstResponder()
+                self.currentlyEditingTextField = hintTextField
+                return true
             }else{
+                if indexPath.row == words.count{
+                    //Cell is last cell
+                    words.append(textField.text!)
+                    meanings.append("")
+                    
+                    tableView.reloadData() //Create a new cell
+                    let lastCell = tableView.cellForRow(at: IndexPath(row: words.count, section: 0))
+                    let lastCellTextField = lastCell?.viewWithTag(1) as! UITextField
+                    lastCellTextField.becomeFirstResponder()
+                    return true
+                }else{
+                    words[indexPath.row] = textField.text!
+                    textField.resignFirstResponder()
+                    return true
+                }
+            }
+        }else if textField.tag == 5{
+            //Hint field
+            let wordTextField = cell.viewWithTag(1) as! UITextField
+            
+            if indexPath.row == words.count{
+                //Cell is last cell
+                if !(wordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) {
+                    words.append(wordTextField.text!)
+                    meanings.append(textField.text!)
+                    
+                    tableView.reloadData() //Create a new cell
+                    let lastCell = tableView.cellForRow(at: IndexPath(row: words.count, section: 0))
+                    let lastCellTextField = lastCell?.viewWithTag(1) as! UITextField
+                    lastCellTextField.becomeFirstResponder()
+                }else{
+                    //Word cell is empty
+                    textField.resignFirstResponder()
+                }
+            }else{
+                words[indexPath.row] = wordTextField.text!
+                meanings[indexPath.row] = textField.text!
                 textField.resignFirstResponder()
             }
-            
-        }else if textField.tag == 2{
-            self.authorTextField.becomeFirstResponder()
+            return true
         }else{
-            textField.resignFirstResponder()
+            return false
         }
-        return false
+
     }
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
+        self.currentlyEditingTextField = nil
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        print("scrolling")
+        guard let textField = currentlyEditingTextField else{return}
+        textField.resignFirstResponder()
+        
+        guard let cell = textField.superview?.superview as? UITableViewCell else{return}
+        guard let indexPath = tableView.indexPath(for: cell) else{return}
+        //Now we know its in the table view
+        
         if textField.tag == 1{
-            let cell = textField.superview?.superview as! UITableViewCell
-            let indexPath = tableView.indexPath(for: cell)
+            //Words textfield
+            let hintTextField = cell.viewWithTag(5) as! UITextField
             
-            if textField.text == ""{
-                if (indexPath! as NSIndexPath).row < words.count{
-                    words.remove(at: (indexPath! as NSIndexPath).row)
-                    tableView.reloadSections(IndexSet.init(integer: 0), with: .fade)
-                }else{
+            if !(textField.text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)!{
+                //Textfield is not empty
+                if indexPath.row == words.count{
+                    //Cell is the last cell
+                    words.append(textField.text!)
+                    meanings.append(hintTextField.text!)
                     tableView.reloadData()
+                }else{
+                    //Cell is not last cell
+                    words[indexPath.row] = textField.text!
                 }
             }else{
-                if (indexPath as NSIndexPath?)?.row == words.count{
-                    words.append(textField.text!)
-                    tableView.reloadSections(IndexSet.init(integer: 0), with: .fade)
-                    let lastCell = tableView.cellForRow(at: IndexPath(row: words.count, section: 0))
-                    let newTextField = lastCell?.viewWithTag(1) as! UITextField
-                    newTextField.text = ""
+                //Textfield is empty
+                if indexPath.row != words.count{
+                    words.remove(at: indexPath.row)
+                    tableView.reloadData()
                 }
             }
-            
+        }else if textField.tag == 5{
+            //Meanings textfield
+            let wordTextField = cell.viewWithTag(1) as! UITextField
+            if indexPath.row == words.count{
+                //Cell is last cell
+                words.append(wordTextField.text!)
+                meanings.append(textField.text!)
+                
+                tableView.reloadData() //Create a new cell
+            }else{
+                words[indexPath.row] = wordTextField.text!
+                meanings[indexPath.row] = textField.text!
+            }
+
         }
+    }
+    
+    @IBAction func studyModeSwitched(_ sender: UISwitch) {
+        studyMode = sender.isOn
+        UIView.transition(with: tableView, duration: 0.5, options: .transitionCrossDissolve, animations: {
+            self.tableView.reloadData()
+        }, completion: nil)
+    }
+    
+    
+    //Keyboard 
+    func registerForKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(aNotification:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(aNotification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    @objc func keyboardWasShown(aNotification: NSNotification) {
+        guard currentlyEditingTextField != nil else{return}
+        let info = aNotification.userInfo as! [String: AnyObject],
+        kbSize = (info[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue.size,
+        contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: kbSize.height, right: 0)
+        
+        self.tableView.contentInset = contentInsets
+        self.tableView.scrollIndicatorInsets = contentInsets
+        
+        // If active text field is hidden by keyboard, scroll it so it's visible
+        // Your app might not need or want this behavior.
+        var aRect = self.view.frame
+        aRect.size.height -= kbSize.height
+        
+        if !aRect.contains(self.currentlyEditingTextField!.frame.origin) {
+            self.tableView.scrollRectToVisible(self.currentlyEditingTextField!.frame, animated: true)
+        }
+    }
+    
+    @objc func keyboardWillBeHidden(aNotification: NSNotification) {
+        let contentInsets = UIEdgeInsets.zero
+        self.tableView.contentInset = contentInsets
+        self.tableView.scrollIndicatorInsets = contentInsets
     }
 }

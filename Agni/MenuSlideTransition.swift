@@ -42,26 +42,28 @@ class MenuSlideTransition: NSObject, UIViewControllerAnimatedTransitioning {
         containerView.addSubview(toViewController.view)
         containerView.addSubview(buttonSnapshot!)
         
-        UIView.animate(withDuration: 0.8, delay: 0.0, options: UIViewAnimationOptions(), animations: {
+        UIView.animate(withDuration: 1.3, delay: 1, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: UIViewAnimationOptions.allowUserInteraction, animations: {
             toViewController.view.frame.origin.y = 0
             fromViewController.view.alpha = 0.0
             }, completion: {
                 finished in
                 toViewController.view.backgroundColor = UIColor.white
                 fromViewController.view.alpha = 1.0
-        })
-        
-        UIView.animate(withDuration: 1.0, delay: 0.0, options: UIViewAnimationOptions(), animations: {
-            buttonSnapshot?.frame = finalFrameForButton
-            buttonSnapshot?.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI_2))
-            }, completion: {
-                finished in
+                
                 button.alpha = 1.0
                 toViewController.menuButton.alpha = 1.0
                 buttonSnapshot?.removeFromSuperview()
                 
                 containerView.addSubview(toViewController.view)
                 transitionContext.completeTransition(true)
+
         })
+        
+        UIView.animate(withDuration: 1.0, delay: 0.0, options: UIViewAnimationOptions(), animations: {
+            buttonSnapshot?.frame = finalFrameForButton
+            buttonSnapshot?.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi/2))
+            }, completion: {
+                finished in
+            })
     }
 }

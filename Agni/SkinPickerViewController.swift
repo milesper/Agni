@@ -34,12 +34,14 @@ class SkinPickerViewController: MenuItemViewController, iCarouselDataSource, iCa
         do{
             fetchedResults = try managedContext.fetch(fetchRequest) as? [NSManagedObject]
         }catch _{
-            NSLog("Something went wrong getting skins")
+            print("Something went wrong getting skins")
         }
         
         if (fetchedResults != nil){
             for skin in fetchedResults!{
-                self.skins.append(skin)
+                if skin.value(forKey: "unlocked") == nil || skin.value(forKey:"unlocked") as! Bool{
+                    self.skins.append(skin)
+                }
             }
         }
         skins.sort(by: {($0.value(forKey: "date") as! NSDate).compare(($1.value(forKey: "date") as! NSDate) as Date) == .orderedDescending})
@@ -56,9 +58,10 @@ class SkinPickerViewController: MenuItemViewController, iCarouselDataSource, iCa
 
     }
     
-    func skinsUpdated(){
+    @objc func skinsUpdated(){
         print("Skins have been updated")
         loadSkins()
+        carousel.reloadData()
     }
     
     func numberOfItems(in carousel: iCarousel) -> Int {
@@ -86,20 +89,26 @@ class SkinPickerViewController: MenuItemViewController, iCarouselDataSource, iCa
         }
         
         //set up the image and selection image
+        
         checkView = itemView.viewWithTag(1) as! UIImageView
         if index == 0{
-            itemView.setImage(UIImage(named: "Sheep"), for:.normal)
+            itemView.setImage(UIImage(named: "Sheep large"), for:.normal)
             if self.defaults.string(forKey: "currentSkin") == "Default"{
                 self.lastSelectedIndex = 0
                 checkView.image = UIImage(named: "Checkmark-100.png")
             }
             itemView.addTarget(self, action: #selector(useSkin(sender:)), for: .touchUpInside)
         }else{
-            itemView.setImage(UIImage(data: (skins[index-1].value(forKey: "file") as! NSData) as Data), for:.normal)
+            let skin = skins[index-1]
+            itemView.setImage(UIImage(data: (skin.value(forKey: "file") as! NSData) as Data), for:.normal)
             
-            if self.defaults.string(forKey: "currentSkin") == skins[index - 1].value(forKey: "name") as? String{
+            let isAwardSkin = skin.value(forKey: "forList") != nil && skin.value(forKey: "forList") as! String != "" //Will use to determine if skin is locked
+            
+            if self.defaults.string(forKey: "currentSkin") == skin.value(forKey: "name") as? String{
                 self.lastSelectedIndex = index
                 checkView.image = UIImage(named: "Checkmark-100.png")
+            }else if !isAwardSkin && !defaults.bool(forKey: "skinsUnlocked"){
+                checkView.image = UIImage(named: "Lock-100.png")
             }
             itemView.addTarget(self, action: #selector(useSkin(sender:)), for: .touchUpInside)
         }
@@ -107,30 +116,45 @@ class SkinPickerViewController: MenuItemViewController, iCarouselDataSource, iCa
         return itemView
     }
     
-    func useSkin(sender:UIButton){
-        if defaults.bool(forKey: "skinsUnlocked"){
-            print("Press!")
-            let index = carousel.index(ofItemViewOrSubview: sender)
+    @objc func useSkin(sender:UIButton){
+        let index = carousel.index(ofItemViewOrSubview: sender)
+        
+        if index == 0{
+            defaults.setValue("Default", forKey: "currentSkin")
             let checkImageView = sender.viewWithTag(1) as! UIImageView
             checkImageView.image = UIImage(named: "Checkmark-100.png")
             checkImageView.alpha = 1.0;
-            if index > 0{
-                defaults.setValue(skins[index - 1].value(forKey: "name") as? String, forKey: "currentSkin") //change it up
-            } else{
-                defaults.setValue("Default", forKey: "currentSkin")
-            }
             
-
             if (lastSelectedIndex != index){
                 let previousItemView = carousel.itemView(at: lastSelectedIndex)
                 let lastButton = previousItemView?.viewWithTag(1) as! UIImageView
                 lastButton.alpha = 0.0
                 lastSelectedIndex = index
             }
+            print("Current Skin: %@", defaults.value(forKey: "currentSkin") as! String)
+        }else{
+            let skin = skins[index-1]
+            let isAwardSkin = skin.value(forKey: "forList") != nil && skin.value(forKey: "forList") as! String != ""
             
-            NSLog("Current Skin: %@", defaults.value(forKey: "currentSkin") as! String)
-        } else{
-            self.performSegue(withIdentifier: "buySkins", sender: self)
+            if isAwardSkin || defaults.bool(forKey: "skinsUnlocked"){
+                print("Press!")
+                let checkImageView = sender.viewWithTag(1) as! UIImageView
+                checkImageView.image = UIImage(named: "Checkmark-100.png")
+                checkImageView.alpha = 1.0;
+                defaults.setValue(skin.value(forKey: "name") as? String, forKey: "currentSkin") //change it up
+                
+                
+                if (lastSelectedIndex != index){
+                    let previousItemView = carousel.itemView(at: lastSelectedIndex)
+                    let lastButton = previousItemView?.viewWithTag(1) as! UIImageView
+                    lastButton.alpha = 0.0
+                    lastSelectedIndex = index
+                }
+                
+                print("Current Skin: %@", defaults.value(forKey: "currentSkin") as! String)
+            } else{
+                self.performSegue(withIdentifier: "buySkins", sender: self)
+            }
         }
     }
     
@@ -140,9 +164,10 @@ class SkinPickerViewController: MenuItemViewController, iCarouselDataSource, iCa
         carousel.scrollToItem(at: randIndex, animated: true)
         useSkin(sender: selectedView)
     }
+    
     @IBAction func refreshSkins(_ sender: UIButton) {
         let delegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate
-        delegate.getNewSkins()
+        delegate.downloadManager.getNewSkins()
     }
     
     
@@ -159,7 +184,7 @@ class SkinPickerViewController: MenuItemViewController, iCarouselDataSource, iCa
         }
         if (option == .arc)
         {
-            return CGFloat(M_PI)
+            return CGFloat(Double.pi)
         }
         return value
     }

@@ -49,7 +49,7 @@ class ListCreatorViewController: MenuItemViewController, UICollectionViewDelegat
             do{
                 fetchedResults = try managedContext.fetch(fetchRequest) as? [NSManagedObject]
             } catch _{
-                NSLog("Something went wrong getting words")
+                print("Something went wrong getting words")
             }
             if (fetchedResults != nil){
                 for list in fetchedResults!{
@@ -81,9 +81,9 @@ class ListCreatorViewController: MenuItemViewController, UICollectionViewDelegat
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showListDetail"{
             let destVC = segue.destination as! CustomListViewController
-            let indexPath = collectionView.indexPathsForSelectedItems?.first
+            guard let indexPath = collectionView.indexPathsForSelectedItems?.first else {return}
             
-            destVC.list = self.userLists[(indexPath! as NSIndexPath).row]
+            destVC.list = self.userLists[indexPath.row]
             
             UIGraphicsBeginImageContext(CGSize(width: view.frame.size.width, height: view.frame.size.height));
             view.drawHierarchy(in: CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height), afterScreenUpdates: true)

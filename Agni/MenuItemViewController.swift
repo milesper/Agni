@@ -17,8 +17,8 @@ class MenuItemViewController: UIViewController {
         panGesture?.addTarget(self, action: #selector(MenuItemViewController.handlePanGesture(_:)))
     }
 
-    func handlePanGesture(_ sender: UIPanGestureRecognizer) {
-        let percentThreshold:CGFloat = 0.3
+    @objc func handlePanGesture(_ sender: UIPanGestureRecognizer) {
+        let percentThreshold:CGFloat = 0.5
         
         // convert y-position to downward pull progress (percentage)
         let translation = sender.translation(in: view)
@@ -48,6 +48,5 @@ class MenuItemViewController: UIViewController {
             break
         }
     }
-
 
 }

@@ -9,15 +9,20 @@
 import UIKit
 import GameKit
 
-class MenuViewController: UIViewController, GKGameCenterControllerDelegate, UITableViewDelegate, UITableViewDataSource, UIViewControllerTransitioningDelegate {
+class MenuViewController: MenuItemViewController, GKGameCenterControllerDelegate, UITableViewDelegate, UIViewControllerTransitioningDelegate {
     var defaults = UserDefaults.standard //get app-wide data
     
     @IBOutlet weak var sheepImageView: UIImageView!
     @IBOutlet weak var menuButton: UIButton!
     @IBOutlet weak var contentView: UIView!
-    @IBOutlet weak var wordListTableView: UITableView!
     
-    let interactor = MenuItemInteractor()
+    @IBOutlet weak var wordListLabel: UILabel!
+    @IBOutlet weak var studyModeSwitch: UISwitch!
+    @IBOutlet weak var hintsRemainingButton: UIButton!
+    
+    var hintManager = HintIAPManager()
+    
+    let svinteractor = MenuItemInteractor()
     
     @IBOutlet weak var skinMenuItem: MenuItemView!
     var wordLists:[String] = []
@@ -28,40 +33,26 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, UITa
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.sheepImageView.image = Converter.getCurrentSkinImage()!
+        wordListLabel.text = (self.defaults.object(forKey: "selectedTitle") as! String)
+        studyModeSwitch.setOn(defaults.bool(forKey: "study_mode_on"), animated: true)
         
-        wordLists = self.defaults.object(forKey: "selectedTitles") as! [String]
-        wordLists.sort()
+        hintsRemainingButton.setTitle("Hints remaining: \(hintManager.hintsRemaining)", for: .normal)
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         self.sheepImageView.image = Converter.getCurrentSkinImage()!
         
-        wordLists = self.defaults.object(forKey: "selectedTitles") as! [String]
-        wordLists.sort()
-        wordListTableView.reloadData()
-        
-        if self.wordListTableView.contentSize.height > self.wordListTableView.frame.height{
-            timer = Timer.scheduledTimer(timeInterval: 0.025, target: self, selector: #selector(MenuViewController.scrollTableView), userInfo: nil, repeats: true)
-            w = 0.5
-        }
+        wordListLabel.text = (self.defaults.object(forKey: "selectedTitle") as! String)
     }
     
-    func scrollTableView(){
-        var scrollPoint = self.wordListTableView.contentOffset
-        scrollPoint.y = scrollPoint.y + w
-        if scrollPoint.y >= self.wordListTableView.contentSize.height - self.wordListTableView.frame.height + 20{
-            w *= -1
-        }
-        if scrollPoint.y < 0{
-            w = 0
-        }
-        self.wordListTableView.setContentOffset(scrollPoint, animated: false)
-    }
+    // MARK: Menu Items
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    @IBAction func toggleStudyMode(_ sender: Any) {
+        defaults.set(studyModeSwitch.isOn, forKey: "study_mode_on")
+        defaults.set(true, forKey: "needsUpdateSources")
     }
+
     
     @IBAction func showGameCenter(_ sender: AnyObject) {
         if (UIApplication.shared.delegate as! AppDelegate).gameCenterAuthenticated{
@@ -83,6 +74,15 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, UITa
         }
         self.present(gcViewController, animated: true, completion: nil)
     }
+    @IBAction func showIconsLink(_ sender: Any) {
+        if let link = URL(string: "https://icons8.com") {
+            if #available(iOS 10.0, *) {
+                UIApplication.shared.open(link)
+            } else {
+                // Fallback on earlier versions
+                UIApplication.shared.openURL(link)
+            } }
+    }
     
     @IBAction func closeMenu(_ sender: AnyObject) {
         self.dismiss(animated: true, completion: nil)
@@ -100,46 +100,34 @@ class MenuViewController: UIViewController, GKGameCenterControllerDelegate, UITa
 
     }
     
-    //Segue
+    @IBAction func getHints(_ sender: Any) {
+        let alert = UIAlertController(title: "Get more hints?", message: "Add 50 hints", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (action) in
+            self.hintManager.buy()
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    // MARK: Segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destinationViewController = segue.destination as? MenuItemViewController {
             destinationViewController.transitioningDelegate = self
-            destinationViewController.interactor = interactor
+            destinationViewController.interactor = svinteractor
         }
-        
     }
-    
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return ReverseMenuItemTransition()
+        return DismissAnimator()
     }
-    
+
     func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        return interactor.hasStarted ? interactor : nil
+        return svinteractor.hasStarted ? svinteractor : nil
     }
     
     //GKGameCenterVC delegate
     func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
         gameCenterViewController.dismiss(animated: true, completion: nil)
     }
-    
-    //TableView
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return wordLists.count
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ListCell")!
-        cell.backgroundColor = UIColor.clear
-        let label = cell.viewWithTag(1) as! UILabel
-        label.layer.cornerRadius = label.frame.height / 2.0
-        
-        label.text = wordLists[(indexPath as NSIndexPath).row]
-        return cell
-    }
-    
+  
     
 }

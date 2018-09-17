@@ -9,33 +9,60 @@
  import UIKit
  import CoreData
  import GameKit
- import CloudKit
+ import Firebase
+ 
+ struct Constants{
+    static let CURRENT_VERSION = "1.7.0"
+ }
  
  @UIApplicationMain
  class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var gameCenterAuthenticated:Bool = false
     var leaderboardIdentifier:String = ""
-    let scale = UIScreen.main.scale
     
-    var downloadedSkins:[String:Int] = ["Default":1]
+    let defaults = UserDefaults.standard //used to save app-wide data
+    
+    /**
+     Contains a dictionary of skins already downloaded
+     
+          [Skin name : Most recent version]
+     
+     */
+    
+    
+    var downloadManager:DownloadManager = DownloadManager()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        _ = OneSignal(launchOptions: launchOptions, appId: "b8ba5f66-c4b0-4f03-9f50-d7d40e7dc982", handleNotification: nil)
         
-        OneSignal.defaultClient().enable(inAppAlertNotification: true)
+        //One Signal
+        let onesignalInitSettings = [kOSSettingsKeyAutoPrompt: false]
+        OneSignal.initWithLaunchOptions(launchOptions,
+                                        appId: "b8ba5f66-c4b0-4f03-9f50-d7d40e7dc982",
+                                        handleNotificationAction: nil,
+                                        settings: onesignalInitSettings)
         
+        OneSignal.inFocusDisplayType = OSNotificationDisplayType.notification;
+        OneSignal.promptForPushNotifications(userResponse: { accepted in
+            print("User accepted notifications: \(accepted)")
+        })
+        
+        //Firebase
+        FirebaseApp.configure()
+        downloadManager.firestore = Firestore.firestore()
+        downloadManager.firebaseStorage = Storage.storage()
         
         // Override point for customization after application launch.
-        self.window!.tintColor = UIColor(red: 114/255.0, green: 191/255.0, blue: 125/255.0, alpha: 1.0) //change tint color
-        let defaults = UserDefaults.standard //used to save app-wide data
+        self.window!.tintColor = UIColor(red: 114/255.0, green: 191/255.0, blue: 125/255.0, alpha: 1.0)//change tint color
+        
+        
         if defaults.object(forKey: "skinsUnlocked") == nil{ //this will be changed by the selected titles screen
             defaults.set(false, forKey: "skinsUnlocked")
         }
         //simulator testing only
-        #if (arch(i386) || arch(x86_64)) && os(iOS)
+        //#if (arch(i386) || arch(x86_64)) && os(iOS)
             defaults.set(true, forKey: "skinsUnlocked")
-        #endif
+        //#endif
         
         if defaults.object(forKey: "currentSkin") == nil{
             defaults.setValue("Default", forKey: "currentSkin")
@@ -43,32 +70,39 @@
         
         defaults.set(true, forKey: "needsUpdateSources") //cause the game to refresh its input sources
         
-        
-        
-        // Register for Push Notitications, if running iOS 8
-        if application.responds(to: #selector(UIApplication.registerUserNotificationSettings(_:))) {
-            let types:UIUserNotificationType = ([.alert, .badge, .sound])
-            let settings:UIUserNotificationSettings = UIUserNotificationSettings(types: types, categories: nil)
-            application.registerUserNotificationSettings(settings)
-            application.registerForRemoteNotifications()
+        if defaults.value(forKey: "beatenWordLists") == nil{
+            defaults.set([], forKey: "beatenWordLists")
         }
         
-        let networkReachability = Reachability.forInternetConnection()
-        let networkStatus = networkReachability?.currentReachabilityStatus()
-        if networkStatus?.rawValue == NotReachable.rawValue{
-            print("No connection")
-        }else{
-            print("Connected to the Interwebs!")
-            getNewWords()
-            getNewSkins()
+        if defaults.string(forKey: "lastVersionShown") != nil && defaults.string(forKey: "lastVersionShown") != Constants.CURRENT_VERSION{
+            downloadManager.deleteAllWords()
+            downloadManager.deleteAllSkins()
         }
         
-        //gamecenter achievement setup
+        let networkReachability = Reachability()!
+        networkReachability.whenReachable = {reachability in
+            print("Connected to the interwebs via \(reachability.connection.description)")
+            self.downloadManager.getNewWords()
+            self.downloadManager.getNewSkins()
+        }
+        networkReachability.whenUnreachable = {_ in
+            print("No connection :(")
+        }
+        
+        do {
+            try networkReachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+        
         func makeNonNil(_ key:String){
             if defaults.object(forKey: key) == nil{
                 defaults.set(0, forKey: key)
             }
         }
+        
+        //gamecenter achievement setup
+        
         makeNonNil("win_total")
         makeNonNil("win_streak")
         makeNonNil("longest_streak")
@@ -79,9 +113,13 @@
             defaults.set(["Default"], forKey: "used_skins")
         }
         
+        if defaults.object(forKey: "hints_remaining") == nil{
+            defaults.set(20, forKey: "hints_remaining")
+        }
+        
         let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
         let comps = (calendar as NSCalendar?)?.components([.year, .month, .day], from: Date())
-        let dateString = "\(comps!.day) \(comps!.month) \(comps!.year)"
+        let dateString = "\(comps!.day!) \(comps!.month!) \(comps!.year!)"
         if defaults.string(forKey: "last_day_played") != dateString{
             defaults.set(dateString, forKey: "last_day_played")
             
@@ -92,172 +130,10 @@
         defaults.synchronize()
         return true
     }
-    
-    func getNewWords(){
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let managedContext = appDelegate.managedObjectContext!
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName:"WordList")
-        var downloadedTitles:[String] = ["English Starter Pack"]
-        
-        var fetchedResults:[NSManagedObject]? = nil
-        do{
-            fetchedResults = try managedContext.fetch(fetchRequest) as? [NSManagedObject]
-        } catch _{
-            NSLog("Something went wrong")
-        }
-        
-        if (fetchedResults != nil){
-            for list in fetchedResults!{
-                downloadedTitles.append(list.value(forKey: "title") as! String)
-            }
-        }
-        NSLog("Word lists already downloaded: %@", downloadedTitles)
-        
-        
-        //download lists via CloudKit
-        let predicate = NSPredicate(format: "NOT (%@ CONTAINS Name)", downloadedTitles)
-        let query = CKQuery(recordType: "List", predicate: predicate)
-        
-        let queryOperation = CKQueryOperation(query: query)
-        let operationQueue = OperationQueue()
-        self.executeListQueryOperation(queryOperation, onOperationQueue: operationQueue)
-    }
-    
-    func executeListQueryOperation(_ queryOperation: CKQueryOperation, onOperationQueue operationQueue: OperationQueue) {
-        NSLog("Executing query operation")
-        let container = CKContainer(identifier: "iCloud.quaritate.Agni")
-        let publicDB = container.publicCloudDatabase
-        
-        queryOperation.database = publicDB
-        
-        queryOperation.recordFetchedBlock = {(record:CKRecord) in
-            self.saveRecord(record)
-        }
-        
-        queryOperation.queryCompletionBlock = {(cursor:CKQueryCursor?, error:Error?)->Void in
-            if error != nil{
-                NSLog("Query error: \(error.debugDescription)")
-                return
-            }
-            if let queryCursor = cursor { //there are more operations to execute
-                let queryCursorOperation = CKQueryOperation(cursor: queryCursor)
-                self.executeListQueryOperation(queryCursorOperation, onOperationQueue: operationQueue)
-            }
-        }
-        publicDB.add(queryOperation)
-    }
-    
-    func saveRecord(_ record:CKRecord){
-        if record.object(forKey: "Words") != nil{
-            NSLog("Downloading via array")
-            let wordsArray = record.object(forKey: "Words") as! [String]
-            Converter.saveListToCoreData(listItems: wordsArray, listTitle: record.object(forKey: "Name") as! String, listAuthor: record.object(forKey: "Author") as! String)
-            
-        }else if record.object(forKey: "WordsTextFile") != nil{
-            NSLog("Downloading via text file")
-            let textfile = record.object(forKey: "WordsTextFile") as! CKAsset
-            let data = try? Data(contentsOf: textfile.fileURL)
-            Converter.saveListToCoreData(listData: data!, listTitle: record.object(forKey: "Name") as! String, listAuthor: record.object(forKey: "Author") as! String)
-        }
-    }
-    
-    //MARK - Skins code
-    func getNewSkins(){
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let managedContext = appDelegate.managedObjectContext!
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName:"Skin")
-        
-        var fetchedResults:[NSManagedObject]? = nil
-        do{
-            fetchedResults = try managedContext.fetch(fetchRequest) as? [NSManagedObject]
-        } catch _{
-            NSLog("Something went wrong getting skins from data")
-        }
-        
-        NSLog("Skins already downloaded: ")
-        if (fetchedResults != nil){
-            for skin in fetchedResults!{
-                downloadedSkins[skin.value(forKey: "name") as! String] = skin.value(forKey: "version") as? Int
-                
-                var version: Int
-                if skin.value(forKey: "version") == nil{
-                    version = -1
-                } else {
-                    version = skin.value(forKey: "version") as! Int
-                }
-                let name = skin.value(forKey: "name") as! String
-                print("\(name) , v\(version)")
-            }
-        }
-        
-        //Let's download some skins!
-        let truePredicate = NSPredicate(format: "TRUEPREDICATE")
-        let query = CKQuery(recordType: "Skin", predicate: truePredicate)
-        
-        
-        let queryOperation = CKQueryOperation(query: query)
-        let operationQueue = OperationQueue()
-        self.executeSkinQueryOperation(queryOperation, onOperationQueue: operationQueue)
-    }
-    
-    func executeSkinQueryOperation(_ queryOperation: CKQueryOperation, onOperationQueue operationQueue: OperationQueue) {
-        NSLog("Executing skin query operation")
-        let container = CKContainer(identifier: "iCloud.quaritate.Agni")
-        let publicDB = container.publicCloudDatabase
-        
-        queryOperation.database = publicDB
-        
-        queryOperation.recordFetchedBlock = {(record:CKRecord) in
-            self.downloadSkin(record)
-        }
-        
-        queryOperation.queryCompletionBlock = {(cursor:CKQueryCursor?, error:Error?)->Void in
-            if error != nil{
-                NSLog("Query error: \(error.debugDescription)")
-                return
-            }
-            if let queryCursor = cursor { //there are more operations to execute
-                let queryCursorOperation = CKQueryOperation(cursor: queryCursor)
-                self.executeSkinQueryOperation(queryCursorOperation, onOperationQueue: operationQueue)
-            }else{
-                let nc = NotificationCenter()
-                nc.post(Notification(name: Notification.Name("skins-refreshed")))
-            }
-        }
-        publicDB.add(queryOperation)
-    }
+
     
     
-    func downloadSkin(_ download:CKRecord){
-        let downloadName = download.object(forKey: "Name") as! String
-        if !(downloadedSkins.keys.contains(downloadName) && downloadedSkins[downloadName]! == (download.object(forKey: "Version") as? Int)){
-            
-            guard let imageFile = download.object(forKey: "File") as? CKAsset
-                else{return}
-            
-            let data = try? Data(contentsOf: imageFile.fileURL)
-            let image = UIImage(data: data!) //large image, used for carousel
-            
-            //Figure out the scaled size
-            let ratio = image!.size.height / image!.size.width
-            let size:CGSize
-            switch scale{
-            case 1.0:
-                size = CGSize(width: 212.0, height: 212.0 * ratio)
-            case 2.0:
-                size = CGSize(width: 318.0, height: 318.0 * ratio)
-            default:
-                size = CGSize(width: 212.0, height: 212.0 * ratio)
-            }
-            UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
-            image?.draw(in: CGRect(origin: CGPoint.zero, size: size))
-            let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            
-            let skinData = UIImagePNGRepresentation(scaledImage!)
-            Converter.saveSkinToCoreData(skinData!, name: download.object(forKey: "Name") as! String, type: download.object(forKey: "Type") as! String, date: download.object(forKey: "creationDate") as! Date, version: download.object(forKey: "Version") as! Int, largeImageData: data!)
-        }
-    }
+    //MARK: Game center
     
     func authenticateLocalPlayer(){
         print("Start authentication")
@@ -275,15 +151,15 @@
                 self.gameCenterAuthenticated = true
                 localPlayer.loadDefaultLeaderboardIdentifier(completionHandler: {(leaderboardId, error) in
                     if error != nil{
-                        NSLog("%@", error!.localizedDescription)
+                        print("%@", error!.localizedDescription)
                     }else{
                         self.leaderboardIdentifier = leaderboardId!
-                        NSLog("\(self.leaderboardIdentifier)")
+                        print("\(self.leaderboardIdentifier)")
                     }
                 })
             }else{
                 if error != nil{
-                    NSLog("%@", error!.localizedDescription)
+                    print("%@", error!.localizedDescription)
                     self.gameCenterAuthenticated = false
                 }
             }
@@ -291,11 +167,13 @@
     }
     
     //MARK: Sharing files
+    //Opening file shared to app
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
         do{
             let str = try NSString(contentsOf: url, encoding: String.Encoding.utf8.rawValue)
             let components = str.components(separatedBy: "\n")
-            NSLog("File opened contains: \(components)")
+            print("File opened contains: \(components)") //Should be 3 or 4 comps
+            //Title, author, words, [meanings]
             
             let alert = UIAlertController(title: "Save List", message: "Would you like to save '\(components[0])'?", preferredStyle: .alert)
             let actionNo = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -330,20 +208,23 @@
         return true
     }
     
-    func saveListAction( _ components:[String]){
+    func saveListAction( _ components:[String]){ //Triggered by opening custom file, saves to coredata
         var comps = components
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext!
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName:"WordList") //get the list of lists
         
-        let predicate = NSPredicate(format: "title == %@", components[0])
+        let predicate = NSPredicate(format: "title == %@", components[0]) //Make sure title is not taken
         fetchRequest.predicate = predicate
+        
         do {
             let results = try managedContext.fetch(fetchRequest)
             if results.count == 0 && components[0] != "English Starter Pack" && components[0] != "Latin Starter Pack"{
+                //Title not taken, go ahead saving
                 Converter.saveListToCoreData(components)
             }else{
+                //Title is taken, try again with a new title
                 let alert = UIAlertController(title: "List name already taken", message: "Choose a different name:", preferredStyle: .alert)
                 let actionNo = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
                 let actionYes = UIAlertAction(title: "Save", style: .default, handler: {
@@ -366,12 +247,12 @@
                 currentVC!.present(alert, animated: true, completion: nil)
             }
         } catch let error1 as NSError {
-            NSLog("%@", error1)
+            print("%@", error1)
             
         }
     }
     
-    func alertTextFieldDidChange(){
+    @objc func alertTextFieldDidChange(){
         var currentVC = self.window?.rootViewController
         while let presentedViewController = currentVC!.presentedViewController {
             currentVC = presentedViewController
@@ -379,7 +260,7 @@
         if let alert = currentVC as? UIAlertController{
             let textfield = alert.textFields?.first
             let saveAction = alert.actions.last
-            if textfield!.text!.characters.count > 0{
+            if textfield!.text!.count > 0{
                 saveAction?.isEnabled = true
             }
         }
@@ -398,21 +279,6 @@
         }
     }
     
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
-        if let pushInfo = userInfo as? [String: NSObject] {
-            let notification = CKNotification(fromRemoteNotificationDictionary: pushInfo)
-            
-            let ac = UIAlertController(title: "What's that Whistle?", message: notification.alertBody, preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            
-            if let nc = window?.rootViewController as? UINavigationController {
-                if let vc = nc.visibleViewController {
-                    vc.present(ac, animated: true, completion: nil)
-                }
-            }
-        }
-        
-    }
     
     // MARK: - Core Data stack
     // Used to implement persistant data
@@ -450,7 +316,7 @@
             error = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict)
             // Replace this with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            NSLog("Unresolved error \(error), \(error!.userInfo)")
+            print("Unresolved error \(error!), \(error!.userInfo)")
             abort()
         } catch {
             fatalError()
@@ -465,7 +331,7 @@
         if coordinator == nil {
             return nil
         }
-        var managedObjectContext = NSManagedObjectContext()
+        var managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         managedObjectContext.persistentStoreCoordinator = coordinator
         return managedObjectContext
     }()
@@ -480,7 +346,7 @@
                 } catch let error1 as NSError {
                     // Replace this implementation with code to handle the error appropriately.
                     // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                    NSLog("Unresolved error \(error1), \(error1.userInfo)")
+                    print("Unresolved error \(error1), \(error1.userInfo)")
                     abort()
                 }
             }

@@ -22,28 +22,43 @@ class CustomListViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        backgroundImage = UIImageEffects.imageByApplyingBlur(to: backgroundImage, withRadius: 30, tintColor: UIColor(white: 1.0, alpha: 0.2), saturationDeltaFactor: 1.0, maskImage: nil)
+        /**backgroundImage = UIImageEffects.imageByApplyingBlur(to: backgroundImage, withRadius: 30, tintColor: UIColor(white: 1.0, alpha: 0.2), saturationDeltaFactor: 1.0, maskImage: nil)
         
         let bgImageView = UIImageView(frame: self.view.frame)
         bgImageView.image = self.backgroundImage!
         self.view.insertSubview(bgImageView, at: 0)
+         **/
         
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(CustomListViewController.dismissView))
         self.view.addGestureRecognizer(gestureRecognizer)
         
         fileNameLabel.text = (list?.value(forKey: "title") as! String)
         
-        //make textfile
+        //Make textfile
         var stringToWrite = (list!.value(forKey: "title") as! String) + "\n" + (list!.value(forKey: "author") as! String) + "\n"
         var wordList = NSKeyedUnarchiver.unarchiveObject(with: list!.value(forKey: "words") as! Data) as! [String]
         guard wordList.count > 0 else{return}
         
-        do{
-            stringToWrite += wordList.removeFirst()
-            for word in wordList{
+        stringToWrite += wordList.removeFirst()
+        for word in wordList{
+            stringToWrite += ", "
+            stringToWrite += word
+        }
+        
+        if list?.value(forKey: "has_study_mode") as! Bool{
+            //List has study mode, lets write the meanings on a new line
+            stringToWrite += "\n"
+            var hintList = NSKeyedUnarchiver.unarchiveObject(with: list!.value(forKey: "word_meanings") as! Data) as! [String]
+            guard hintList.count > 0 else{return}
+            stringToWrite += hintList.removeFirst()
+            for hint in hintList{
                 stringToWrite += ", "
-                stringToWrite += word
+                stringToWrite += hint
             }
+        }
+        
+        //Save textfile
+        do{
             let documentsDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory,.userDomainMask, true)
             let path = documentsDirectory.first! + "/" + (list?.value(forKey: "title") as! String) + ".awl"
             print(path)
@@ -61,7 +76,7 @@ class CustomListViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func dismissView(){
+    @objc func dismissView(){
         self.dismiss(animated: true, completion: nil)
     }
     @IBAction func shareAction(_ sender: AnyObject) {

@@ -27,14 +27,6 @@ class BuySkinsViewController: UIViewController, SKPaymentTransactionObserver  {
         // Do any additional setup after loading the view.
         SKPaymentQueue.default().add(self)
         
-        //        PFPurchase.addObserverForProduct("agni_sheep_skins") {
-        //            (transaction: SKPaymentTransaction?) -> Void in
-        //            // Will run once this product is purchased.
-        //            NSLog("Purchased")
-        //            self.defaults.setBool(true , forKey: "skinsUnlocked")
-        //            self.dismissViewControllerAnimated(true, completion: nil)
-        //            self.defaults.synchronize()
-        //        }
         wrapperView.layer.cornerRadius = 5.0
         wrapperView.layer.borderColor = self.view.tintColor.cgColor
         wrapperView.layer.borderWidth = 3.0

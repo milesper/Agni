@@ -36,7 +36,7 @@ class Achievements: NSObject {
         GKScore.report([score], withCompletionHandler: {
             error in
             if error != nil{
-                NSLog(error!.localizedDescription)
+                print(error!.localizedDescription)
             }
         })
     }
@@ -105,7 +105,7 @@ class Achievements: NSObject {
         }
         GKAchievement.report(achievements, withCompletionHandler: {error in
             if error != nil{
-                NSLog("%@", (error?.localizedDescription)!)
+                print("%@", (error?.localizedDescription)!)
             }
         })
     }
@@ -113,7 +113,7 @@ class Achievements: NSObject {
         totalLosses = self.defaults.integer(forKey: "loss_total")
         var achievements:[GKAchievement] = []
         
-        if totalLosses == 1{
+        if totalLosses >= 1{
             let firstLossAchievment = GKAchievement(identifier: "first_loss")
             firstLossAchievment.percentComplete = 100.0
             firstLossAchievment.showsCompletionBanner = true
@@ -133,7 +133,7 @@ class Achievements: NSObject {
         }
         GKAchievement.report(achievements, withCompletionHandler: {error in
             if error != nil{
-                NSLog("%@", (error?.localizedDescription)!)
+                print("%@", (error?.localizedDescription)!)
             }
         })
     }
@@ -155,7 +155,7 @@ class Achievements: NSObject {
         }
         GKAchievement.report(achievements, withCompletionHandler: {error in
             if error != nil{
-                NSLog("%@", (error?.localizedDescription)!)
+                print("%@", (error?.localizedDescription)!)
             }
         })
     }
