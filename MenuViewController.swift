@@ -9,7 +9,8 @@
 import UIKit
 import GameKit
 
-class MenuViewController: MenuItemViewController, GKGameCenterControllerDelegate, UITableViewDelegate, UIViewControllerTransitioningDelegate {
+class MenuViewController: MenuItemViewController, GKGameCenterControllerDelegate, UITableViewDelegate, UIViewControllerTransitioningDelegate, HintIAPManagerDelegate {
+    
     var defaults = UserDefaults.standard //get app-wide data
     
     @IBOutlet weak var sheepImageView: UIImageView!
@@ -19,6 +20,7 @@ class MenuViewController: MenuItemViewController, GKGameCenterControllerDelegate
     @IBOutlet weak var wordListLabel: UILabel!
     @IBOutlet weak var studyModeSwitch: UISwitch!
     @IBOutlet weak var hintsRemainingButton: UIButton!
+
     
     var hintManager = HintIAPManager()
     
@@ -36,12 +38,13 @@ class MenuViewController: MenuItemViewController, GKGameCenterControllerDelegate
         wordListLabel.text = (self.defaults.object(forKey: "selectedTitle") as! String)
         studyModeSwitch.setOn(defaults.bool(forKey: "study_mode_on"), animated: true)
         
-        hintsRemainingButton.setTitle("Hints remaining: \(hintManager.hintsRemaining)", for: .normal)
+        hintsRemainingButton.setTitle("Hints remaining: \(HintIAPManager.hintsRemaining)", for: .normal)
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
         self.sheepImageView.image = Converter.getCurrentSkinImage()!
+        self.view.setNeedsLayout()
         
         wordListLabel.text = (self.defaults.object(forKey: "selectedTitle") as! String)
     }
@@ -74,6 +77,7 @@ class MenuViewController: MenuItemViewController, GKGameCenterControllerDelegate
         }
         self.present(gcViewController, animated: true, completion: nil)
     }
+    
     @IBAction func showIconsLink(_ sender: Any) {
         if let link = URL(string: "https://icons8.com") {
             if #available(iOS 10.0, *) {
@@ -100,14 +104,26 @@ class MenuViewController: MenuItemViewController, GKGameCenterControllerDelegate
 
     }
     
+    // MARK: Hints
+    
     @IBAction func getHints(_ sender: Any) {
         let alert = UIAlertController(title: "Get more hints?", message: "Add 50 hints", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { (action) in
             self.hintManager.buy()
+            self.hintManager.delegate = self
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
+    
+    func paymentBegun() {
+        //we might do something or not
+    }
+    
+    func paymentEnded(successful: Bool) {
+        hintsRemainingButton.setTitle("Hints remaining: \(HintIAPManager.hintsRemaining)", for: .normal)
+    }
+    
     
     // MARK: Segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -22,6 +22,7 @@
     var leaderboardIdentifier:String = ""
     
     let defaults = UserDefaults.standard //used to save app-wide data
+    let messageController = MessagesController()
     
     /**
      Contains a dictionary of skins already downloaded
@@ -59,10 +60,13 @@
         if defaults.object(forKey: "skinsUnlocked") == nil{ //this will be changed by the selected titles screen
             defaults.set(false, forKey: "skinsUnlocked")
         }
+        print("Skins unlocked: \(defaults.bool(forKey: "skinsUnlocked"))")
+        
         //simulator testing only
-        //#if (arch(i386) || arch(x86_64)) && os(iOS)
+        #if targetEnvironment(simulator)
             defaults.set(true, forKey: "skinsUnlocked")
-        //#endif
+            print("Unlocking skins for simulator testing")
+        #endif
         
         if defaults.object(forKey: "currentSkin") == nil{
             defaults.setValue("Default", forKey: "currentSkin")
@@ -116,6 +120,12 @@
         if defaults.object(forKey: "hints_remaining") == nil{
             defaults.set(20, forKey: "hints_remaining")
         }
+        
+        if defaults.object(forKey: "used_codes") == nil{
+            defaults.set([], forKey:"used_codes")
+        }
+        
+        defaults.set(0, forKey: "displayed_popups")
         
         let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
         let comps = (calendar as NSCalendar?)?.components([.year, .month, .day], from: Date())
