@@ -35,12 +35,12 @@ class ReverseMenuSlideTransition: NSObject, UIViewControllerAnimatedTransitionin
         
         //let finalFrameForButton = toViewController.menuButton.frame
         
-        UIView.animate(withDuration: 0.7, delay: 0.0, options: UIViewAnimationOptions(), animations: {
+        UIView.animate(withDuration: 0.7, delay: 0.0, options: UIView.AnimationOptions(), animations: {
             fromViewController.view.frame = finalFrameForVC.offsetBy(dx: 0, dy: bounds.size.height)
             toViewController.view.alpha = 1.0
             }, completion: nil)
         
-        UIView.animate(withDuration: 0.8, delay: 0.0, options: UIViewAnimationOptions(), animations: {
+        UIView.animate(withDuration: 0.8, delay: 0.0, options: UIView.AnimationOptions(), animations: {
             //buttonSnapshot?.frame = finalFrameForButton
             buttonSnapshot?.transform = CGAffineTransform(rotationAngle: CGFloat(-1 * Double.pi/2))
             }, completion: {

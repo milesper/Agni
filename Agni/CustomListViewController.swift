@@ -95,7 +95,7 @@ class CustomListViewController: UIViewController {
         //remove list from selected
         var selectedLists = self.defaults.array(forKey: "selectedTitles") as! [String]
         if selectedLists.contains(self.fileNameLabel.text!){
-            selectedLists.remove(at: selectedLists.index(of: self.fileNameLabel.text!)!)
+            selectedLists.remove(at: selectedLists.firstIndex(of: self.fileNameLabel.text!)!)
             
             if selectedLists.count == 0{
                 selectedLists.append("English Starter Pack")

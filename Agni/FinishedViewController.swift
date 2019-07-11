@@ -30,6 +30,8 @@ class FinishedViewController: UIViewController {
         
         self.beatenLabel.text = "You have beaten the word pack \(selectedTitle)."
         
+        HintIAPManager.addHints(50, withDisplay: true)
+        
         if selectedTitle == "Latin Starter Pack"{
             latinSPSetup()
         }else if selectedTitle == "English Starter Pack"{
@@ -61,9 +63,9 @@ class FinishedViewController: UIViewController {
             }
         } catch let error {
             print(error.localizedDescription)
-            newSkinLabel.text = "Can't get a skin :("
+            newSkinLabel.text = ""
             newSkinLabel.textColor = UIColor.AgniColors.Red
-            newSkinImage.image = UIImage(named: "Sheep missing")
+            newSkinImage.image = UIImage()
         }
 
     }

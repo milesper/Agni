@@ -10,6 +10,7 @@
  import CoreData
  import GameKit
  import Firebase
+ import OneSignal
  
  struct Constants{
     static let CURRENT_VERSION = "1.7.0"
@@ -34,7 +35,7 @@
     
     var downloadManager:DownloadManager = DownloadManager()
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         //One Signal
         let onesignalInitSettings = [kOSSettingsKeyAutoPrompt: false]
@@ -147,7 +148,7 @@
     
     func authenticateLocalPlayer(){
         print("Start authentication")
-        let localPlayer = GKLocalPlayer.localPlayer()
+        let localPlayer = GKLocalPlayer.local
         localPlayer.authenticateHandler = {
             (viewController, error) in
             if (viewController != nil){
@@ -178,7 +179,7 @@
     
     //MARK: Sharing files
     //Opening file shared to app
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
         do{
             let str = try NSString(contentsOf: url, encoding: String.Encoding.utf8.rawValue)
             let components = str.components(separatedBy: "\n")

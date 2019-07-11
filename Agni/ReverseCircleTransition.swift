@@ -29,7 +29,7 @@ class ReverseCircleTransition: NSObject, UIViewControllerAnimatedTransitioning, 
         guard let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)  else{return}
         
         containerView.addSubview(toViewController.view)
-        containerView.sendSubview(toBack: toViewController.view)
+        containerView.sendSubviewToBack(toViewController.view)
         
         guard let button = originButton else {return}
         

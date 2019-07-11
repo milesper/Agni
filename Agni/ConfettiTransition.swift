@@ -22,7 +22,7 @@ class ConfettiTransition: NSObject, UIViewControllerAnimatedTransitioning {
         toViewController.view.alpha = 0.0
         containerView.backgroundColor = UIColor.white
         containerView.addSubview(toViewController.view)
-        containerView.sendSubview(toBack: toViewController.view)
+        containerView.sendSubviewToBack(toViewController.view)
         
         let cheerView = CheerView()
         cheerView.frame = containerView.frame

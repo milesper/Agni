@@ -170,7 +170,7 @@ class DownloadManager: NSObject {
             scaledImage = image.resizeToWidth(width: 212.0, scale: scale)
         }
         
-        let skinData = UIImagePNGRepresentation(scaledImage!)
+        let skinData = scaledImage!.pngData()
         
         if download.get("forlist") == nil{
             Converter.saveSkinToCoreData(skinData!, name: downloadName, date: download.get("dateCreated") as! Date, version: download.get("version") as! Int, largeImageData: largedata)

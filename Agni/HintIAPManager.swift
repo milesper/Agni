@@ -15,13 +15,12 @@ protocol HintIAPManagerDelegate{
 }
 
 class HintIAPManager: NSObject, SKPaymentTransactionObserver {
-    var defaults = UserDefaults.standard
-    var hintsRemaining:Int {
+    class var hintsRemaining:Int {
         get{
-            return defaults.integer(forKey: "hints_remaining")
+            return UserDefaults.standard.integer(forKey: "hints_remaining")
         }
         set(hints){
-            defaults.set(hints, forKey: "hints_remaining")
+            UserDefaults.standard.set(hints, forKey: "hints_remaining")
         }
     }
     
@@ -32,7 +31,7 @@ class HintIAPManager: NSObject, SKPaymentTransactionObserver {
         SKPaymentQueue.default().add(self)
         
         let payment = SKMutablePayment()
-        payment.productIdentifier = "agni_hints_50"
+        payment.productIdentifier = "morehints_50"
         SKPaymentQueue.default().add(payment)
         transactionInProgress = true
         if delegate != nil{
@@ -46,8 +45,8 @@ class HintIAPManager: NSObject, SKPaymentTransactionObserver {
             case .purchased:
                 SKPaymentQueue.default().finishTransaction(transaction)
                 transactionInProgress = false
+                HintIAPManager.addHints(50)
                 if delegate != nil {delegate?.paymentEnded(successful: true)}
-                addHints()
             case .failed:
                 SKPaymentQueue.default().finishTransaction(transaction)
                 transactionInProgress = false
@@ -60,7 +59,13 @@ class HintIAPManager: NSObject, SKPaymentTransactionObserver {
         }
     }
     
-    private func addHints(){
-        self.hintsRemaining += 50
+    class func addHints(_ number:Int){
+        self.hintsRemaining += number
+    }
+    
+    class func addHints(_ number:Int, withDisplay:Bool){
+        addHints(number)
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        delegate.messageController.addMessage("You got \(number) hints!")
     }
 }

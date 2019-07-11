@@ -316,14 +316,14 @@ class NewListViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     //Keyboard 
     func registerForKeyboardNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(aNotification:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(aNotification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(aNotification:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(aNotification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     @objc func keyboardWasShown(aNotification: NSNotification) {
         guard currentlyEditingTextField != nil else{return}
         let info = aNotification.userInfo as! [String: AnyObject],
-        kbSize = (info[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue.size,
+        kbSize = (info[UIResponder.keyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue.size,
         contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: kbSize.height, right: 0)
         
         self.tableView.contentInset = contentInsets

@@ -24,14 +24,14 @@ class ShakeTransition: NSObject,UIViewControllerAnimatedTransitioning {
         toViewController.view.alpha = 0.0
         containerView.backgroundColor = UIColor.white
         containerView.addSubview(toViewController.view)
-        containerView.sendSubview(toBack: toViewController.view)
+        containerView.sendSubviewToBack(toViewController.view)
         let shake = CAKeyframeAnimation(keyPath: "transform.translation.x")
-        shake.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+        shake.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
         shake.duration = 1.5
         shake.values = [-20, 20, -20, 20, -10, 10, -5, 5, 0]
         fromViewController.view.layer.add(shake, forKey: "shake")
         
-        UIView.animate(withDuration: 1.5, delay: 0.0, options: UIViewAnimationOptions(), animations: {
+        UIView.animate(withDuration: 1.5, delay: 0.0, options: UIView.AnimationOptions(), animations: {
             fromViewController.view.alpha = 0.0
             toViewController.view.alpha = 1.0
             }, completion: {

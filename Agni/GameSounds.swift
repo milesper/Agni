@@ -113,14 +113,14 @@ class GameSounds: NSObject {
     func toggleBGMusic(){
         if backgroundMusicPlayer.isPlaying{
             do {
-                try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
+                try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category(rawValue: convertFromAVAudioSessionCategory(AVAudioSession.Category.ambient)))
             } catch _ {
             }
             backgroundMusicPlayer.pause()
             self.defaults.set(false, forKey: "musicOn")
         } else{
             do {
-                try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategorySoloAmbient)
+                try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category(rawValue: convertFromAVAudioSessionCategory(AVAudioSession.Category.soloAmbient)))
             } catch _ {
             }
             backgroundMusicPlayer.play()
@@ -133,4 +133,9 @@ class GameSounds: NSObject {
             self.defaults.synchronize()
         })
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
+	return input.rawValue
 }

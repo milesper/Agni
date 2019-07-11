@@ -33,7 +33,7 @@ class BuySkinsViewController: UIViewController, SKPaymentTransactionObserver  {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        self.activityIndicator = UIActivityIndicatorView(style: .gray)
         self.activityIndicator?.frame = self.buyButton.frame
         self.activityIndicator?.backgroundColor = UIColor.white
         self.buyButton.superview!.insertSubview(activityIndicator!, aboveSubview: buyButton)
@@ -72,7 +72,6 @@ class BuySkinsViewController: UIViewController, SKPaymentTransactionObserver  {
     
     func upgradeBought(){
         self.defaults.set(true , forKey: "skinsUnlocked")
-        self.defaults.synchronize()
         self.dismiss(animated: true, completion: nil)
     }
     

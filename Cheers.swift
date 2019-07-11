@@ -17,9 +17,9 @@ public class CheerView: UIView {
 
     let emitter = CAEmitterLayer()
     emitter.emitterPosition = CGPoint(x: bounds.width / 2.0, y: 0)
-    emitter.emitterShape = kCAEmitterLayerLine
+    emitter.emitterShape = CAEmitterLayerEmitterShape.line
     emitter.emitterSize = CGSize(width: bounds.width, height: 1)
-    emitter.renderMode = kCAEmitterLayerAdditive
+    emitter.renderMode = CAEmitterLayerRenderMode.additive
 
     let colors = config.colors.shuffled()
     var cells = [CAEmitterCell]()

@@ -12,6 +12,7 @@ class MenuSwingTransition: NSObject, UIViewControllerAnimatedTransitioning, UIDy
     let transitionDuration = 0.5
     var animator:UIDynamicAnimator?
     var context: UIViewControllerContextTransitioning!
+    var snapshot:UIView?
     
     var originButton:UIButton?
     
@@ -35,16 +36,26 @@ class MenuSwingTransition: NSObject, UIViewControllerAnimatedTransitioning, UIDy
         containerView.addSubview(fromViewController.view)
         
         
-        menuView.transform = CGAffineTransform.identity.rotated(by: degreesToRadians(-90))
-        menuView.frame = CGRect(x: 0, y: -menuView.frame.height, width: menuView.frame.width, height: menuView.frame.height)
         
         containerView.addSubview(menuView)
+        guard let snapshot = menuView.snapshotView(afterScreenUpdates: true) else{return}
+        self.snapshot = snapshot
+        containerView.addSubview(snapshot)
+        menuView.removeFromSuperview()
+    
+        snapshot.transform = CGAffineTransform.identity.rotated(by: degreesToRadians(-90))
+        snapshot.frame = CGRect(x: 0, y: -snapshot.frame.height, width: snapshot.frame.width, height: snapshot.frame.height)
+
+        
         
         //Now do the actual animations
         animator = UIDynamicAnimator(referenceView: containerView)
         animator?.delegate = self
         
-        let vectorDY = CGFloat((4/Double.pi) * Double(UIScreen.main.bounds.size.height) / transitionDuration) //How hard to push the view to the right
+        var vectorDY = CGFloat((4/Double.pi) * Double(UIScreen.main.bounds.size.height) / transitionDuration) //How hard to push the view to the right
+        if UIDevice.current.userInterfaceIdiom == .pad{
+            vectorDY = CGFloat((8/Double.pi) * Double(UIScreen.main.bounds.size.height) / transitionDuration)
+        }
         let rotationDirection = CGVector(dx: 0, dy: vectorDY)
 
         
@@ -55,28 +66,31 @@ class MenuSwingTransition: NSObject, UIViewControllerAnimatedTransitioning, UIDy
         
         let anchorPoint = CGPoint(x: 0, y: 0)
         
-        let viewOffset = UIOffsetMake(-menuView.bounds.size.width / 2 + anchorPoint.x, -menuView.bounds.size.height / 2 + anchorPoint.y)
-        let attachmentBehaviour = UIAttachmentBehavior(item: menuView, offsetFromCenter: viewOffset, attachedToAnchor: anchorPoint)
+        let viewOffset = UIOffset.init(horizontal: -snapshot.bounds.size.width / 2 + anchorPoint.x, vertical: -snapshot.bounds.size.height / 2 )
+        let attachmentBehaviour = UIAttachmentBehavior(item: snapshot, offsetFromCenter: viewOffset, attachedToAnchor: anchorPoint)
         animator!.addBehavior(attachmentBehaviour)
 
         
         let collisionBehaviour = UICollisionBehavior()
         collisionBehaviour.addBoundary(withIdentifier: "collide" as NSCopying, from: CGPoint(x: fromX, y: fromY), to: CGPoint(x: toX, y: toY))
-        collisionBehaviour.addItem(menuView)
+        collisionBehaviour.addItem(snapshot)
         animator!.addBehavior(collisionBehaviour)
         
-        let itemBehaviour = UIDynamicItemBehavior(items: [menuView])
+        let itemBehaviour = UIDynamicItemBehavior(items: [snapshot])
         itemBehaviour.elasticity = 0.55
         itemBehaviour.density = 1.7
         animator!.addBehavior(itemBehaviour)
         
-        let fallBehaviour = UIPushBehavior(items:[menuView], mode: .continuous)
+        let fallBehaviour = UIPushBehavior(items:[snapshot], mode: .continuous)
         fallBehaviour.pushDirection = rotationDirection
         animator!.addBehavior(fallBehaviour)
 
     }
     
     func dynamicAnimatorDidPause(_ animator: UIDynamicAnimator) {
+        let toController = context.viewController(forKey: UITransitionContextViewControllerKey.to)! as! MenuViewController
+        context.containerView.addSubview(toController.view)
+        self.snapshot?.removeFromSuperview()
         context.completeTransition(true)
     }
 
