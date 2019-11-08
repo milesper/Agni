@@ -128,17 +128,17 @@ class MenuViewController: MenuItemViewController, GKGameCenterControllerDelegate
     // MARK: Segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destinationViewController = segue.destination as? MenuItemViewController {
-            destinationViewController.transitioningDelegate = self
-            destinationViewController.interactor = svinteractor
+//            destinationViewController.transitioningDelegate = self
+//            destinationViewController.interactor = svinteractor
         }
     }
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return DismissAnimator()
-    }
-
-    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        return svinteractor.hasStarted ? svinteractor : nil
-    }
+//    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+//        return DismissAnimator()
+//    }
+//
+//    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+//        return svinteractor.hasStarted ? svinteractor : nil
+//    }
     
     //GKGameCenterVC delegate
     func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {

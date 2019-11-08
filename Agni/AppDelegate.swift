@@ -9,7 +9,7 @@
  import UIKit
  import CoreData
  import GameKit
- import Firebase
+// import Firebase
  import OneSignal
  
  struct Constants{
@@ -50,9 +50,9 @@
         })
         
         //Firebase
-        FirebaseApp.configure()
-        downloadManager.firestore = Firestore.firestore()
-        downloadManager.firebaseStorage = Storage.storage()
+//        FirebaseApp.configure()
+//        downloadManager.firestore = Firestore.firestore()
+//        downloadManager.firebaseStorage = Storage.storage()
         
         // Override point for customization after application launch.
         self.window!.tintColor = UIColor(red: 114/255.0, green: 191/255.0, blue: 125/255.0, alpha: 1.0)//change tint color
