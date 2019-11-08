@@ -19,6 +19,7 @@
 
 #include <chrono>  // NOLINT(build/c++11)
 #include <functional>
+#include <memory>
 #include <string>
 #include <utility>
 
@@ -32,7 +33,15 @@ namespace util {
 // outlive the operation, but it *cannot* outlive the executor that created it.
 class DelayedOperation {
  public:
+  // Creates an empty `DelayedOperation` not associated with any actual
+  // operation. Calling `Cancel` on it is a no-op.
   DelayedOperation() {
+  }
+
+  // Returns whether this `DelayedOperation` is associated with an actual
+  // operation.
+  explicit operator bool() const {
+    return static_cast<bool>(cancel_func_);
   }
 
   // If the operation has not been run yet, cancels the operation. Otherwise,
@@ -40,6 +49,7 @@ class DelayedOperation {
   void Cancel() {
     if (cancel_func_) {
       cancel_func_();
+      cancel_func_ = {};
     }
   }
 
@@ -51,8 +61,6 @@ class DelayedOperation {
  private:
   std::function<void()> cancel_func_;
 };
-
-namespace internal {
 
 // An interface to a platform-specific executor of asynchronous operations
 // (called tasks on other platforms).
@@ -82,6 +90,12 @@ class Executor {
     Tag tag = 0;
     Operation operation;
   };
+
+  // Creates a new serial Executor of the platform-appropriate type, and gives
+  // it the given label, if the implementation supports it.
+  //
+  // Note that this method has multiple definitions, depending on the platform.
+  static std::unique_ptr<Executor> CreateSerial(const char* label);
 
   virtual ~Executor() {
   }
@@ -123,7 +137,6 @@ class Executor {
   virtual absl::optional<TaggedOperation> PopFromSchedule() = 0;
 };
 
-}  // namespace internal
 }  // namespace util
 }  // namespace firestore
 }  // namespace firebase

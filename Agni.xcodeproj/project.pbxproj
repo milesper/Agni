@@ -34,7 +34,6 @@
 		953F0F5E1BB98E5D00836E5A /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 953F0F5D1BB98E5D00836E5A /* libz.tbd */; };
 		953F0F601BB98ED700836E5A /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 953F0F5F1BB98ED700836E5A /* libsqlite3.tbd */; };
 		9544A52A215471DC0011181D /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9544A529215471DC0011181D /* MessagesController.swift */; };
-		954B4181207467DB006115B0 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 954B417F207467DB006115B0 /* iCarousel.m */; };
 		95569C431D372865007F73FA /* document@44_58.png in Resources */ = {isa = PBXBuildFile; fileRef = 95569C3F1D372865007F73FA /* document@44_58.png */; };
 		95569C441D372865007F73FA /* document@64_64.png in Resources */ = {isa = PBXBuildFile; fileRef = 95569C401D372865007F73FA /* document@64_64.png */; };
 		95569C451D372865007F73FA /* document@312_312.png in Resources */ = {isa = PBXBuildFile; fileRef = 95569C411D372865007F73FA /* document@312_312.png */; };
@@ -196,8 +195,6 @@
 		953F0F5F1BB98ED700836E5A /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		9544A529215471DC0011181D /* MessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesController.swift; sourceTree = "<group>"; };
 		9548A6CC1D02055B00290C4A /* Agni.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Agni.entitlements; sourceTree = "<group>"; };
-		954B417F207467DB006115B0 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
-		954B4180207467DB006115B0 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		95569C3F1D372865007F73FA /* document@44_58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "document@44_58.png"; sourceTree = "<group>"; };
 		95569C401D372865007F73FA /* document@64_64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "document@64_64.png"; sourceTree = "<group>"; };
 		95569C411D372865007F73FA /* document@312_312.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "document@312_312.png"; sourceTree = "<group>"; };
@@ -546,15 +543,6 @@
 			path = "Agni Stickers";
 			sourceTree = "<group>";
 		};
-		95897A111B86AABA00BBA25C /* iCarousel */ = {
-			isa = PBXGroup;
-			children = (
-				954B4180207467DB006115B0 /* iCarousel.h */,
-				954B417F207467DB006115B0 /* iCarousel.m */,
-			);
-			name = iCarousel;
-			sourceTree = "<group>";
-		};
 		959CFB3D1C3B69D100D86CC2 /* Utility Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -622,7 +610,6 @@
 			children = (
 				95E628491FFC8F8800C4B647 /* SpriteKit.framework */,
 				95098C801F73FA820056FB1C /* Reachability */,
-				95897A111B86AABA00BBA25C /* iCarousel */,
 				9512FC771F2E5860005B80D4 /* Cheers */,
 				953F0F5D1BB98E5D00836E5A /* libz.tbd */,
 				953F0F5F1BB98ED700836E5A /* libsqlite3.tbd */,
@@ -678,7 +665,6 @@
 				9508F6B71AF52A2B00A8C713 /* Resources */,
 				9583EC081D8F8B8D0097D22B /* Embed App Extensions */,
 				BD23E65CA50F9C7C3601EAA0 /* [CP] Embed Pods Frameworks */,
-				2FFB5C32A3C3E5A7F3AF4F32 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -699,8 +685,6 @@
 				9508F6CA1AF52A2B00A8C713 /* Sources */,
 				9508F6CB1AF52A2B00A8C713 /* Frameworks */,
 				9508F6CC1AF52A2B00A8C713 /* Resources */,
-				747EB5F3B746DAA66A5D74ED /* [CP] Embed Pods Frameworks */,
-				0D9C11AF081597C121CFB8E6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -719,7 +703,6 @@
 				70D361FDAF69B985031E3418 /* [CP] Check Pods Manifest.lock */,
 				9583EC091D8F8C060097D22B /* Resources */,
 				124EB94FF2FF4663363081A2 /* Frameworks */,
-				5D399B941A0BF01117A50CF0 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -738,7 +721,6 @@
 				95ECD7051F4B965200FFB69D /* Sources */,
 				95ECD7061F4B965200FFB69D /* Frameworks */,
 				95ECD7071F4B965200FFB69D /* Resources */,
-				C590B54AF753565D26907B45 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -757,7 +739,7 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "Michael Ginn";
 				TargetAttributes = {
 					9508F6B81AF52A2B00A8C713 = {
@@ -801,10 +783,9 @@
 			};
 			buildConfigurationList = 9508F6B41AF52A2B00A8C713 /* Build configuration list for PBXProject "Agni" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 			);
@@ -894,36 +875,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0D9C11AF081597C121CFB8E6 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AgniTests/Pods-AgniTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		2FFB5C32A3C3E5A7F3AF4F32 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Agni/Pods-Agni-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		5D34C1226DD897387B6FD833 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -942,21 +893,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5D399B941A0BF01117A50CF0 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Agni Stickers/Pods-Agni Stickers-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		70D361FDAF69B985031E3418 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -973,21 +909,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		747EB5F3B746DAA66A5D74ED /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AgniTests/Pods-AgniTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		AAD5686A7A7E2100EA72A0A0 /* [CP] Check Pods Manifest.lock */ = {
@@ -1014,53 +935,32 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Agni/Pods-Agni-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/BoringSSL/openssl.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-Agni/Pods-Agni-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
-				"${BUILT_PRODUCTS_DIR}/gRPC-RxLibrary/RxLibrary.framework",
 				"${BUILT_PRODUCTS_DIR}/iCarousel/iCarousel.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxLibrary.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/iCarousel.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Agni/Pods-Agni-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C590B54AF753565D26907B45 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Agni/Pods-Agni-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		EC98AC7A06366D2DE66CF4F6 /* [CP] Check Pods Manifest.lock */ = {
@@ -1111,7 +1011,6 @@
 				95C6E29321C973BD00B4D9A9 /* WordProvider.swift in Sources */,
 				9512FC6C1F2E5408005B80D4 /* LossViewController.swift in Sources */,
 				95ECD7021F42B10900FFB69D /* MenuSwingTransition.swift in Sources */,
-				954B4181207467DB006115B0 /* iCarousel.m in Sources */,
 				95B303BE1D6160180077E92B /* MenuItemViewController.swift in Sources */,
 				957EF34E2137102100CFE0F7 /* DownloadManager.swift in Sources */,
 				9512FC7D1F2ED393005B80D4 /* FinishedViewController.swift in Sources */,
@@ -1198,6 +1097,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1258,6 +1158,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
