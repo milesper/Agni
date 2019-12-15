@@ -21,8 +21,6 @@
     var window: UIWindow?
     var gameCenterAuthenticated:Bool = false
     var leaderboardIdentifier:String = ""
-    
-    let defaults = UserDefaults.standard //used to save app-wide data
     let messageController = MessagesController()
     
     /**
@@ -32,8 +30,6 @@
      
      */
     
-    
-    var downloadManager:DownloadManager = DownloadManager()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
@@ -51,44 +47,35 @@
         
         // Firebase
         FirebaseApp.configure()
-        downloadManager.firestore = Firestore.firestore()
-        downloadManager.firebaseStorage = Storage.storage()
+        DownloadManager.standard.firestore = Firestore.firestore()
+        DownloadManager.standard.firebaseStorage = Storage.storage()
         
         // Override point for customization after application launch.
         self.window!.tintColor = UIColor(red: 114/255.0, green: 191/255.0, blue: 125/255.0, alpha: 1.0)//change tint color
         
         
-        if defaults.object(forKey: "skinsUnlocked") == nil{ //this will be changed by the selected titles screen
-            defaults.set(false, forKey: "skinsUnlocked")
-        }
-        print("Skins unlocked: \(defaults.bool(forKey: "skinsUnlocked"))")
+        print("Skins unlocked: \(AgniDefaults.skinsUnlocked)")
         
         //simulator testing only
         #if targetEnvironment(simulator)
-            defaults.set(true, forKey: "skinsUnlocked")
-            print("Unlocking skins for simulator testing")
+        AgniDefaults.skinsUnlocked = true
+        print("Unlocking skins for simulator testing")
         #endif
         
-        if defaults.object(forKey: "currentSkin") == nil{
-            defaults.setValue("Default", forKey: "currentSkin")
-        }
         
-        defaults.set(true, forKey: "needsUpdateSources") //cause the game to refresh its input sources
+        AgniDefaults.needsUpdateSources = true // cause the game to refresh its input sources
         
-        if defaults.value(forKey: "beatenWordLists") == nil{
-            defaults.set([], forKey: "beatenWordLists")
-        }
         
-        if defaults.string(forKey: "lastVersionShown") != nil && defaults.string(forKey: "lastVersionShown") != Constants.CURRENT_VERSION{
-            downloadManager.deleteAllWords()
-            downloadManager.deleteAllSkins()
+        if AgniDefaults.lastVersionShown != Constants.CURRENT_VERSION {
+            DownloadManager.standard.deleteAllWords()
+            DownloadManager.standard.deleteAllSkins()
         }
         
         let networkReachability = Reachability()!
         networkReachability.whenReachable = {reachability in
             print("Connected to the interwebs via \(reachability.connection.description)")
-            self.downloadManager.getNewWords()
-            self.downloadManager.getNewSkins()
+            DownloadManager.standard.getNewWords()
+            DownloadManager.standard.getNewSkins()
         }
         networkReachability.whenUnreachable = {_ in
             print("No connection :(")
@@ -100,42 +87,18 @@
             print("Unable to start notifier")
         }
         
-        func makeNonNil(_ key:String){
-            if defaults.object(forKey: key) == nil{
-                defaults.set(0, forKey: key)
-            }
-        }
         
-        //gamecenter achievement setup
+        // TODO: Make this not a user default but rather a global variable
+        AgniDefaults.displayedPopups = 0
         
-        makeNonNil("win_total")
-        makeNonNil("win_streak")
-        makeNonNil("longest_streak")
-        makeNonNil("loss_total")
-        makeNonNil("days_played")
         
-        if defaults.object(forKey: "used_skins") == nil || defaults.array(forKey: "used_skins")!.count == 0{
-            defaults.set(["Default"], forKey: "used_skins")
-        }
-        
-        if defaults.object(forKey: "hints_remaining") == nil{
-            defaults.set(20, forKey: "hints_remaining")
-        }
-        
-        if defaults.object(forKey: "used_codes") == nil{
-            defaults.set([], forKey:"used_codes")
-        }
-        
-        defaults.set(0, forKey: "displayed_popups")
         
         let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
         let comps = (calendar as NSCalendar?)?.components([.year, .month, .day], from: Date())
         let dateString = "\(comps!.day!) \(comps!.month!) \(comps!.year!)"
-        if defaults.string(forKey: "last_day_played") != dateString{
-            defaults.set(dateString, forKey: "last_day_played")
-            
-            let daysPlayed = defaults.integer(forKey: "days_played")
-            defaults.set(daysPlayed + 1, forKey: "days_played")
+        if AgniDefaults.lastDayPlayed != dateString{
+            AgniDefaults.lastDayPlayed = dateString
+            AgniDefaults.daysPlayed += 1
         }
         
         return true
@@ -148,10 +111,13 @@
     func authenticateLocalPlayer(){
         print("Start authentication")
         let localPlayer = GKLocalPlayer.local
+        
         localPlayer.authenticateHandler = {
             (viewController, error) in
+            
             if (viewController != nil){
                 print("Not logged in")
+                
                 var currentVC = self.window?.rootViewController
                 while let presentedViewController = currentVC!.presentedViewController {
                     currentVC = presentedViewController

@@ -15,7 +15,6 @@ import SpriteKit
 
 class AgniViewController: UIViewController, UIViewControllerTransitioningDelegate, GameplayDelegate {
     
-    
     //interface components
     var gameplayVC: GameplayViewController?
     
@@ -24,17 +23,13 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
     @IBOutlet weak var volumeButton: UIButton!
     
     var firstTime = false;
-    var achievementsManager = Achievements()
     
     var winStreak = 0 //update after each win
     var winning = false
-    let defaults = UserDefaults.standard //use to get app-wide data
+    
     var lastSegue:UIStoryboardSegue?
     let svinteractor = MenuItemInteractor()
     
-    
-    var soundPlayer = GameSounds()
-    var musicOn = true
     var musicStarted = false
     
     //MARK: Methods
@@ -53,16 +48,15 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
         let manager = GameplayManager(provider: StandardWordProvider())
         gameplayVC?.manager = manager
         gameplayVC?.delegate = self
-        gameplayVC?.soundPlayer = soundPlayer
         gameplayVC?.load()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         //Load any needed transitions
-        if defaults.object(forKey: "selectedTitle") == nil{ //this will be changed by the selected titles screen
+        if AgniDefaults.selectedTitle == ""{ //this will be changed by the selected titles screen
             self.performSegue(withIdentifier: "showWelcome", sender: self)
             firstTime = true
-        }else if defaults.string(forKey: "lastVersionShown") != Constants.CURRENT_VERSION && !firstTime{
+        }else if AgniDefaults.lastVersionShown != Constants.CURRENT_VERSION && !firstTime{
             self.performSegue(withIdentifier: "showWhatsNew", sender: self)
         }else{
             //Normal boot
@@ -77,21 +71,20 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
     func setup(){
         //Called only once for the word pack
         if !musicStarted{
-            if defaults.object(forKey: "musicOn") == nil || defaults.bool(forKey: "musicOn") == true{
-                defaults.set(true, forKey: "musicOn")
-                self.soundPlayer.toggleBGMusic()
+            if AgniDefaults.musicOn{
+                GameSounds.standard.toggleBGMusic()
             }else{
                 self.volumeButton.setBackgroundImage(UIImage(named: "mute.png"), for: UIControl.State())
-                self.musicOn = false
             }
             musicStarted = true
         }
     }
     
     @IBAction func toggleMusic(_ sender: UIButton) {
-        soundPlayer.toggleBGMusic()
-        sender.setBackgroundImage(UIImage(named: (!musicOn ? "mute.png" : "sound.png")), for: UIControl.State())
-        self.musicOn = !self.musicOn
+        GameSounds.standard.toggleBGMusic()
+        
+        sender.setBackgroundImage(UIImage(named: (AgniDefaults.musicOn ? "mute.png" : "sound.png")), for: UIControl.State())
+        AgniDefaults.musicOn.toggle()
     }
     
     //MARK: Delegate Methods
@@ -105,20 +98,20 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
     
     func gameWon() {
         //Streak stuff
-        if !self.defaults.bool(forKey: "customListUsed"){
+        if !AgniDefaults.customListUsed{
             //Update streak
             if self.winning{
                 self.winStreak += 1
             }else{
                 self.winStreak = 1
             }
-            if self.winStreak > self.defaults.integer(forKey: "longest_streak"){
-                self.achievementsManager.higherWinStreak(self.winStreak)
+            if self.winStreak > AgniDefaults.longestStreak{
+                Achievements.standard.higherWinStreak(self.winStreak)
             }
             self.winning = true
             
             //stuff for achievements
-            self.achievementsManager.win()
+            Achievements.standard.win()
             
             //win some hints
             if self.winStreak % 5 == 0{
@@ -133,7 +126,7 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
         self.winStreak = 0
         
         self.performSegue(withIdentifier: "loss", sender: self) //show lost screen
-        self.achievementsManager.loss()
+        Achievements.standard.loss()
     }
     
     func startNewWord() {

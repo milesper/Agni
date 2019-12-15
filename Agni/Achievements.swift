@@ -9,23 +9,17 @@
 import UIKit
 import GameKit
 
-// TODO: Make a singleton
 
 class Achievements: NSObject {
-    var defaults = UserDefaults.standard //use to get app-wide data
-    var streak = 0
-    var totalWins = 0
-    var totalLosses = 0
+    static let standard = Achievements() // singleton object
     
-    override init(){
-        totalWins = self.defaults.integer(forKey: "win_total")
-        totalLosses = self.defaults.integer(forKey: "loss_total")
-    }
+    var streak = 0
+    
+    private override init(){}
     
     func win(){
         //incremement wins and save to defaults
-        totalWins += 1
-        self.defaults.set(totalWins, forKey: "win_total")
+        AgniDefaults.winTotal += 1
         DispatchQueue.main.async(execute: {
             //save in the background
             self.checkWinsAchievements()
@@ -33,7 +27,7 @@ class Achievements: NSObject {
         
         //Report to leaderboard
         let score = GKScore(leaderboardIdentifier: "total_wins")
-        score.value = Int64(totalWins)
+        score.value = Int64(AgniDefaults.winTotal)
         GKScore.report([score], withCompletionHandler: {
             error in
             if error != nil{
@@ -44,8 +38,7 @@ class Achievements: NSObject {
     
     
     func loss(){
-        totalLosses += 1
-        self.defaults.set(totalLosses, forKey: "loss_total")
+        AgniDefaults.lossTotal += 1
         DispatchQueue.main.async(execute: {
             //save in the background
             self.checkLossesAchievements()
@@ -53,11 +46,11 @@ class Achievements: NSObject {
     }
     
     func higherWinStreak(_ streak:Int){
-        self.defaults.set(streak, forKey: "longest_streak")
+        AgniDefaults.longestStreak = streak
     }
     
     func checkWinsAchievements(){
-        totalWins = self.defaults.integer(forKey: "win_total")
+        let totalWins = AgniDefaults.winTotal
         
         var achievements:[GKAchievement] = []
         
@@ -110,7 +103,7 @@ class Achievements: NSObject {
         })
     }
     func checkLossesAchievements(){
-        totalLosses = self.defaults.integer(forKey: "loss_total")
+        let totalLosses = AgniDefaults.lossTotal
         var achievements:[GKAchievement] = []
         
         if totalLosses >= 1{

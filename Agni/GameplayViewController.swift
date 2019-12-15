@@ -36,17 +36,14 @@ class GameplayViewController: UIViewController, HintIAPManagerDelegate {
     @IBOutlet var letterButtons: [UIButton]!
     @IBOutlet weak var hintButton: UIButton!
     
-    var sceneView:SKView?
-    var scene: AgniScene?
+    private var sceneView:SKView?
+    private var scene: AgniScene?
     
     var manager:GameplayManager!
-    var hintManager = HintIAPManager()
-    let defaults = UserDefaults.standard //use to get app-wide data
-    var hintUsed = false
-    var soundPlayer:GameSounds?
-    
-    var stage = 0 //goes up to 7, which is death
-    var swordLocs:[CGFloat] = [] //holds all possible positions for the sword
+    private var hintManager = HintIAPManager()
+    private var hintUsed = false
+    private var stage = 0 //goes up to 7, which is death
+    private var swordLocs:[CGFloat] = [] //holds all possible positions for the sword
     
     var delegate:GameplayDelegate?
     
@@ -97,7 +94,7 @@ class GameplayViewController: UIViewController, HintIAPManagerDelegate {
     //MARK: Gameplay Methods
     
     private func startNewWord(){
-        soundPlayer?.playSound(.start)
+        GameSounds.standard.playSound(.start)
         delegate?.startNewWord()
         
         if manager.allWordsCompleted(){
@@ -134,10 +131,10 @@ class GameplayViewController: UIViewController, HintIAPManagerDelegate {
     
     private func tryLetter(letter: String){
         if manager.guessLetter(letter: letter){
-            soundPlayer?.playSound(.correct)
+            GameSounds.standard.playSound(.correct)
             self.refreshWord()
         }else{
-            soundPlayer?.playSound(.incorrect)
+            GameSounds.standard.playSound(.incorrect)
             self.wrongLetter()
         }
     }
@@ -154,7 +151,7 @@ class GameplayViewController: UIViewController, HintIAPManagerDelegate {
     }
     
     func win(){
-        soundPlayer?.playSound(.win)
+       GameSounds.standard.playSound(.win)
         if stage == 0{
             self.correctLabel.text = "PERFECT!!"
         }else{
@@ -197,7 +194,7 @@ class GameplayViewController: UIViewController, HintIAPManagerDelegate {
         } else{
             //Game lost
             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-            soundPlayer?.playSound(.lose)
+            GameSounds.standard.playSound(.lose)
             
             delegate?.gameLost()
         }

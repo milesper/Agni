@@ -11,7 +11,6 @@ import CoreData
 
 class StandardWordProvider: NSObject, WordProvider {
     var wordPairs:[WordPair] = []
-    let defaults = UserDefaults.standard
     
     override init(){
         studyMode = false
@@ -20,11 +19,9 @@ class StandardWordProvider: NSObject, WordProvider {
     }
     
     func reload(){
-        studyMode = defaults.bool(forKey: "study_mode_on")
-        if defaults.object(forKey:"selectedTitle") != nil{ //this will be changed by the selected titles screen
-            let wordsArray:[String]
-            let meaningsArray:[String?]
-            (wordsArray, meaningsArray) = Converter.getCurrentWordsArray() // Concats the lists
+        studyMode = AgniDefaults.studyModeOn
+        if AgniDefaults.selectedTitle != ""{ //this will be changed by the selected titles screen
+            let (wordsArray, meaningsArray) = Converter.getCurrentWordsArray() // Concats the lists
             for index in 0..<wordsArray.count{
                 wordPairs.append(WordPair(word: wordsArray[index], meaning:meaningsArray[index]))
             }
@@ -70,10 +67,9 @@ class StandardWordProvider: NSObject, WordProvider {
             wordsArray.append(pair.word)
         }
         
-        let selectedTitle = defaults.value(forKey: "selectedTitle") as! String
-        if selectedTitle == "Latin Starter Pack"{
+        if AgniDefaults.selectedTitle == "Latin Starter Pack"{
             defaults.set(wordsArray, forKey: "latinSPRemaining")
-        }else if selectedTitle == "English Starter Pack"{
+        }else if AgniDefaults.selectedTitle == "English Starter Pack"{
             defaults.set(wordsArray, forKey: "englishSPRemaining")
         }else{
             //Find the core data entry
@@ -82,7 +78,7 @@ class StandardWordProvider: NSObject, WordProvider {
             
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName:"WordList") //get the list of lists
             
-            let predicate = NSPredicate(format: "title == %@", selectedTitle)
+            let predicate = NSPredicate(format: "title == %@", AgniDefaults.selectedTitle)
             fetchRequest.predicate = predicate
             do {
                 let results = try managedContext.fetch(fetchRequest) as! [NSManagedObject]

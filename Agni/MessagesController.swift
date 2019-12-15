@@ -9,7 +9,7 @@
 import UIKit
 
 class MessagesController: NSObject {
-    class MessageBubble{
+    private class MessageBubble{
         var message:String
         public var view:UIView?
         
@@ -18,19 +18,16 @@ class MessagesController: NSObject {
         }
     }
     
-    let defaults = UserDefaults.standard
+    private let VIEW_HEIGHT:CGFloat = 40.0
+    private let VIEW_WIDTH:CGFloat = 150.0
     
-    let viewHeight:CGFloat = 40.0
-    let viewWidth:CGFloat = 150.0
-    var currentYPosition:CGFloat {
+    private var currentYPosition:CGFloat {
         get{
-            return 80 + (CGFloat(self.messages.count) * (viewHeight + 12))
+            return 80 + (CGFloat(self.messages.count) * (VIEW_HEIGHT + 12))
         }
     }
     
-    var messages:[MessageBubble] = []
-    
-    
+    private var messages:[MessageBubble] = []
     
     func addMessage(_ message:String){
         let messageBubble = MessageBubble(message: message)
@@ -66,9 +63,9 @@ class MessagesController: NSObject {
         UIView.animate(withDuration: 0.2) {
             for message in self.messages{
                 if let view = message.view{
-                    view.frame = CGRect(x: view.frame.minX, y: yVal, width: self.viewWidth, height: self.viewHeight)
+                    view.frame = CGRect(x: view.frame.minX, y: yVal, width: self.VIEW_WIDTH, height: self.VIEW_HEIGHT)
                 }
-                yVal += (self.viewHeight + 12)
+                yVal += (self.VIEW_HEIGHT + 12)
             }
         }
         
@@ -77,7 +74,7 @@ class MessagesController: NSObject {
     
     private func createView(message:String)->UIVisualEffectView{
         let window = UIApplication.shared.keyWindow!
-        let messageView = UIVisualEffectView(frame: CGRect(x: window.bounds.width - viewWidth - 16, y: currentYPosition, width: viewWidth, height: viewHeight))
+        let messageView = UIVisualEffectView(frame: CGRect(x: window.bounds.width - VIEW_WIDTH - 16, y: currentYPosition, width: VIEW_WIDTH, height: VIEW_HEIGHT))
         messageView.effect = UIBlurEffect(style: .light)
         
         messageView.layer.borderWidth = 2.0
@@ -88,7 +85,7 @@ class MessagesController: NSObject {
         messageView.layer.shadowColor = UIColor.black.cgColor
         messageView.layer.shadowRadius = 5.0
         messageView.clipsToBounds = false
-        let label = UILabel(frame: CGRect(x: 4, y: viewHeight / 2 - 13, width: viewWidth - 8, height: 26.0))
+        let label = UILabel(frame: CGRect(x: 4, y: VIEW_HEIGHT / 2 - 13, width: VIEW_WIDTH - 8, height: 26.0))
         label.textAlignment = .center
         label.text = message
         label.textColor = UIColor.AgniColors.Blue

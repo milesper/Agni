@@ -10,16 +10,19 @@ import UIKit
 import CoreData
 import Firebase
 
-// TODO: Make singleton
+
 
 class DownloadManager: NSObject {
+    static let standard = DownloadManager()
+    
     var firestore: Firestore? = nil
     var firebaseStorage: Storage? = nil
     
     var downloadedSkins:[String:Int] = ["Default":1]
     var ongoingDownloads = 0
-    let defaults = UserDefaults.standard //used to save app-wide data
     let scale = UIScreen.main.scale
+    
+    private override init(){}
     
     //MARK: Get lists
     func getNewWords(){
@@ -89,13 +92,14 @@ class DownloadManager: NSObject {
             print("Couldn't delete words, \(error.description)")
         }
         
-        defaults.setValue("English Starter Pack", forKey: "selectedTitle")
+        AgniDefaults.selectedTitle = "English Starter Pack"
     }
     
     //MARK: - Skins code
     func getNewSkins(){
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext!
+        // TODO: Get rid of hardcoding
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName:"Skin")
         
         var fetchedResults:[NSManagedObject]? = nil
@@ -106,6 +110,7 @@ class DownloadManager: NSObject {
         }
         
         print("Skins already downloaded: ")
+        // TODO: Use a custom suclass of ManagedObject rather than this awful value for key stuff
         if (fetchedResults != nil){
             for skin in fetchedResults!{
                 downloadedSkins[skin.value(forKey: "name") as! String] = skin.value(forKey: "version") as? Int
@@ -196,6 +201,6 @@ class DownloadManager: NSObject {
         } catch let error as NSError {
             print("Couldn't delete skins, \(error.description)")
         }
-        defaults.set("Default", forKey: "currentSkin")
+        AgniDefaults.currentSkin = "Default"
     }
 }

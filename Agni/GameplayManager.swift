@@ -12,14 +12,11 @@ import CoreData
 class GameplayManager: NSObject {
     var chosenWord:String = ""
     var chosenMeaning:String? = nil
-//    var wordsArray:[String] = [] //will change depending on input
-//    var meaningsArray:[String?] = [] //should be nil for any without meaning
     var remaining:String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    
     var wordProvider:WordProvider
-    
     var studyMode:Bool = false;
-    var defaults = UserDefaults.standard
+    
+    // TODO: non study mode aint working with hints somehow
     
     /**
         Gets the current list of words, toggles study mode
@@ -35,7 +32,6 @@ class GameplayManager: NSObject {
      */
     func reload(){
         wordProvider.reload()
-        //let pairs = wordProvider.getAllWordsAndMeanings()
         studyMode = wordProvider.studyMode
     }
     
@@ -116,9 +112,6 @@ class GameplayManager: NSObject {
      - Returns: A boolean indicating if the list is finished
      */
     func completedWord()->Bool{
-//        let index = self.wordsArray.index(of: self.chosenWord)!
-//        self.wordsArray.remove(at: index)
-//        self.meaningsArray.remove(at: index)
         wordProvider.wordCompleted(word: chosenWord)
         return allWordsCompleted()
     }

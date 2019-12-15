@@ -11,16 +11,15 @@ import CoreData
 
 class Converter: NSObject {
     //utility methods for interacting with files
-    static let defaults = UserDefaults.standard
     
     class func getCurrentWordsArray()->(words: [String], meanings: [String?]){
-        defaults.set(false, forKey: "customListUsed")
+        // TODO: this shouldn't be a default probably idk
+        AgniDefaults.customListUsed = false
         
         var finalList:[String] = [] //Should contain just the unguessed words of the list
         var meaningsList:[String?] = [] //For lists which have meanings
-        let selectedTitle = defaults.value(forKey: "selectedTitle") as! String
         
-        if selectedTitle == "Latin Starter Pack"{
+        if AgniDefaults.selectedTitle == "Latin Starter Pack"{
             //Get data out of textfile
             var latinSPOriginalWords:[String] = [] //Contains all the words
             var latinSPOriginalMeanings:[String] = []
@@ -53,7 +52,7 @@ class Converter: NSObject {
                 }
             }
             
-        }else if selectedTitle == "English Starter Pack"{
+        }else if AgniDefaults.selectedTitle == "English Starter Pack"{
             let path = Bundle.main.path(forResource: "EnglishStarterPack", ofType: "txt")
             let content = (try! NSString(contentsOfFile: path!, encoding:String.Encoding.utf8.rawValue)) as String
             let engList = content.components(separatedBy: ", ")
@@ -77,14 +76,14 @@ class Converter: NSObject {
             
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName:"WordList") //get the list of lists
             
-            let predicate = NSPredicate(format: "title == %@", selectedTitle)
+            let predicate = NSPredicate(format: "title == %@", AgniDefaults.selectedTitle)
             fetchRequest.predicate = predicate
             do {
                 let results = try managedContext.fetch(fetchRequest) as! [NSManagedObject]
                 guard let list = results.first else{return ([], [])}
                 let fullList = NSKeyedUnarchiver.unarchiveObject(with: list.value(forKey: "words") as! Data) as! [String]
                 if list.value(forKey: "author") as! String != "Agni Dev"{
-                    defaults.set(true, forKey: "customListUsed")
+                    AgniDefaults.customListUsed = true
                 }
                 
                 if list.value(forKey: "remaining_words") == nil{
@@ -284,14 +283,18 @@ class Converter: NSObject {
             downloadedSkin.setValue(version, forKey: "version")
             downloadedSkin.setValue(largeImageData, forKey: "largefile")
             
-            let beatenTitles = (defaults.value(forKey: "beatenWordLists") as! [String])
             if forList == nil{
+                // the skin has no req, so it is unlocked
                 downloadedSkin.setValue("", forKey: "forList")
                 downloadedSkin.setValue(true, forKey: "unlocked")
-            }else if beatenTitles.contains(forList!){
+                
+            }else if AgniDefaults.beatenWordLists.contains(forList!){
+                // we have beaten the list to unlock the skin
+                
                 downloadedSkin.setValue(forList, forKey: "forList")
                 downloadedSkin.setValue(true, forKey: "unlocked")
             }else{
+                // it's still locked
                 downloadedSkin.setValue(forList, forKey: "forList")
                 downloadedSkin.setValue(false, forKey: "unlocked")
             }
@@ -305,16 +308,15 @@ class Converter: NSObject {
     }
     
     class func getCurrentSkinImage()->UIImage?{
-        let defaults = UserDefaults.standard //get app-wide data
         var skinImage:UIImage?
-        if defaults.string(forKey: "currentSkin")! == "Default"{
+        if AgniDefaults.currentSkin == "Default"{
             skinImage = UIImage(named: "Sheep")
         }else{
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             let managedContext = appDelegate.managedObjectContext!
             
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName:"Skin") //get the list of skins
-            let predicate = NSPredicate(format: "name == %@", defaults.string(forKey: "currentSkin")!)
+            let predicate = NSPredicate(format: "name == %@", AgniDefaults.currentSkin)
             fetchRequest.predicate = predicate
             
             do {

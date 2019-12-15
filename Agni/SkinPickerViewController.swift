@@ -167,7 +167,7 @@ class SkinPickerViewController: MenuItemViewController, iCarouselDataSource, iCa
     
     @IBAction func refreshSkins(_ sender: UIButton) {
         let delegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate
-        delegate.downloadManager.getNewSkins()
+        DownloadManager.standard.getNewSkins()
     }
     
     

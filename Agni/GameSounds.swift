@@ -13,7 +13,7 @@ import AVFoundation
 // TODO: Make singleton
 
 class GameSounds: NSObject {
-    var defaults = UserDefaults.standard //use to get app-wide data
+    static let standard = GameSounds()
     
     enum gameSound{
         case correct
@@ -22,29 +22,24 @@ class GameSounds: NSObject {
         case win
         case lose
     }
-    enum bgMusicToggle{
-        case on
-        case off
-    }
 
-    var correctSound =  URL(fileURLWithPath: Bundle.main.path(forResource: "correctSound", ofType: "wav")!)
-    var incorrectSound =  URL(fileURLWithPath: Bundle.main.path(forResource: "incorrectSound", ofType: "wav")!)
-    var startSound =  URL(fileURLWithPath: Bundle.main.path(forResource: "lightgong", ofType: "aif")!)
-    var loseSound = URL(fileURLWithPath: Bundle.main.path(forResource: "loss", ofType: "wav")!)
-    var winSound = URL(fileURLWithPath: Bundle.main.path(forResource: "win", ofType: "wav")!)
-    
-    var backgroundMusic = URL(fileURLWithPath: Bundle.main.path(forResource: "BackgroundMusic", ofType: "m4a")!)
+    private var correctSound =  URL(fileURLWithPath: Bundle.main.path(forResource: "correctSound", ofType: "wav")!)
+    private var incorrectSound =  URL(fileURLWithPath: Bundle.main.path(forResource: "incorrectSound", ofType: "wav")!)
+    private var startSound =  URL(fileURLWithPath: Bundle.main.path(forResource: "lightgong", ofType: "aif")!)
+    private var loseSound = URL(fileURLWithPath: Bundle.main.path(forResource: "loss", ofType: "wav")!)
+    private var winSound = URL(fileURLWithPath: Bundle.main.path(forResource: "win", ofType: "wav")!)
+    private var backgroundMusic = URL(fileURLWithPath: Bundle.main.path(forResource: "BackgroundMusic", ofType: "m4a")!)
 
     
-    var startAudioPlayer = AVAudioPlayer()
-    var correctAudioPlayer = AVAudioPlayer()
-    var incorrectAudioPlayer = AVAudioPlayer()
-    var lossAudioPlayer = AVAudioPlayer()
-    var winAudioPlayer = AVAudioPlayer()
+    private var startAudioPlayer = AVAudioPlayer()
+    private var correctAudioPlayer = AVAudioPlayer()
+    private var incorrectAudioPlayer = AVAudioPlayer()
+    private var lossAudioPlayer = AVAudioPlayer()
+    private var winAudioPlayer = AVAudioPlayer()
     
-    var backgroundMusicPlayer = AVAudioPlayer()
+    private var backgroundMusicPlayer = AVAudioPlayer()
     
-    override init(){
+    private override init(){
         do{
         startAudioPlayer = try AVAudioPlayer(contentsOf: startSound)
         }catch _{
@@ -119,14 +114,14 @@ class GameSounds: NSObject {
             } catch _ {
             }
             backgroundMusicPlayer.pause()
-            self.defaults.set(false, forKey: "musicOn")
+            AgniDefaults.musicOn = false
         } else{
             do {
                 try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category(rawValue: convertFromAVAudioSessionCategory(AVAudioSession.Category.soloAmbient)))
             } catch _ {
             }
             backgroundMusicPlayer.play()
-            self.defaults.set(true, forKey: "musicOn")
+            AgniDefaults.musicOn = true
         }
     }
 }

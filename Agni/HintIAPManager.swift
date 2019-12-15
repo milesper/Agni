@@ -15,15 +15,6 @@ protocol HintIAPManagerDelegate{
 }
 
 class HintIAPManager: NSObject, SKPaymentTransactionObserver {
-    class var hintsRemaining:Int {
-        get{
-            return UserDefaults.standard.integer(forKey: "hints_remaining")
-        }
-        set(hints){
-            UserDefaults.standard.set(hints, forKey: "hints_remaining")
-        }
-    }
-    
     var transactionInProgress = false
     var delegate:HintIAPManagerDelegate?
     
@@ -60,7 +51,7 @@ class HintIAPManager: NSObject, SKPaymentTransactionObserver {
     }
     
     class func addHints(_ number:Int){
-        self.hintsRemaining += number
+        AgniDefaults.hintsRemaining += number
     }
     
     class func addHints(_ number:Int, withDisplay:Bool){
