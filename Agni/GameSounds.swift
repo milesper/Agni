@@ -10,6 +10,8 @@
 import UIKit
 import AVFoundation
 
+// TODO: Make singleton
+
 class GameSounds: NSObject {
     var defaults = UserDefaults.standard //use to get app-wide data
     
@@ -126,12 +128,6 @@ class GameSounds: NSObject {
             backgroundMusicPlayer.play()
             self.defaults.set(true, forKey: "musicOn")
         }
-        
-        let time = DispatchTime.now() + Double(0) / Double(NSEC_PER_SEC)
-        DispatchQueue.main.asyncAfter(deadline: time, execute: {
-            //save in the background
-            self.defaults.synchronize()
-        })
     }
 }
 

@@ -8,11 +8,13 @@
 
 import UIKit
 import CoreData
+import Firebase
 
+// TODO: Make singleton
 
 class DownloadManager: NSObject {
-//    var firestore: Firestore? = nil
-//    var firebaseStorage: Storage? = nil
+    var firestore: Firestore? = nil
+    var firebaseStorage: Storage? = nil
     
     var downloadedSkins:[String:Int] = ["Default":1]
     var ongoingDownloads = 0
@@ -42,35 +44,35 @@ class DownloadManager: NSObject {
         
 
         //download lists via Firebase? hopefully
-//        if let store = firestore{
-//            store.collection("wordlists").getDocuments { (querySnapshot, err) in
-//                if let err = err{
-//                    print("Error getting documents: \(err)")
-//                }else{
-//                    for document in querySnapshot!.documents {
-//                        if !(downloadedTitles.contains(document.get("name") as! String)){
-//                            self.saveRecord(document)
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        if let store = firestore{
+            store.collection("wordlists").getDocuments { (querySnapshot, err) in
+                if let err = err{
+                    print("Error getting documents: \(err)")
+                }else{
+                    for document in querySnapshot!.documents {
+                        if !(downloadedTitles.contains(document.get("name") as! String)){
+                            self.saveRecord(document)
+                        }
+                    }
+                }
+            }
+        }
     }
     
-//    func saveRecord(_ record:QueryDocumentSnapshot){
-//        if let wordsString:String = record.get("words") as? String {
-//            let title = record.get("name") as? String ?? ""
-//            print("Downloading raw words from \(title)")
-//            let author = record.get("author") as? String ?? ""
-//            let words = wordsString.components(separatedBy: ", ")
-//            if let meaningsString:String = record.get("meanings") as? String{
-//                let meanings = meaningsString.components(separatedBy: ", ")
-//                Converter.saveListToCoreData(listItems: words, listItemMeanings: meanings, listTitle: title, listAuthor: author)
-//            }else{
-//                Converter.saveListToCoreData(listItems: words, listTitle: title, listAuthor: author)
-//            }
-//        }
-//    }
+    func saveRecord(_ record:QueryDocumentSnapshot){
+        if let wordsString:String = record.get("words") as? String {
+            let title = record.get("name") as? String ?? ""
+            print("Downloading raw words from \(title)")
+            let author = record.get("author") as? String ?? ""
+            let words = wordsString.components(separatedBy: ", ")
+            if let meaningsString:String = record.get("meanings") as? String{
+                let meanings = meaningsString.components(separatedBy: ", ")
+                Converter.saveListToCoreData(listItems: words, listItemMeanings: meanings, listTitle: title, listAuthor: author)
+            }else{
+                Converter.saveListToCoreData(listItems: words, listTitle: title, listAuthor: author)
+            }
+        }
+    }
     
     func deleteAllWords(){
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -120,64 +122,65 @@ class DownloadManager: NSObject {
         }
         
         //Download using firebase
-//        if let store = firestore{
-//            store.collection("skins").getDocuments { (querySnapshot, err) in
-//                if let err = err{
-//                    print("Error getting documents: \(err)")
-//                }else{
-//                    for document in querySnapshot!.documents {
-//                        self.beginSkinDownload(document)
-//                    }
-//                }
-//            }
-//        }
+        if let store = firestore{
+            store.collection("skins").getDocuments { (querySnapshot, err) in
+                if let err = err{
+                    print("Error getting documents: \(err)")
+                }else{
+                    for document in querySnapshot!.documents {
+                        self.beginSkinDownload(document)
+                    }
+                }
+            }
+        }
     }
     
     
-//    func beginSkinDownload(_ download:QueryDocumentSnapshot){
-//        let downloadName = download.get("name") as! String
-//        if !(downloadedSkins.keys.contains(downloadName) && downloadedSkins[downloadName]! == (download.get("version") as? Int)){
-//
-//            guard let filename = download.get("filename") as? String
-//                else{return}
-//            let storageRef = firebaseStorage?.reference()
-//            let imageRef = storageRef?.child("skins/\(filename)")
-//
-//            ongoingDownloads += 1
-//            imageRef?.getData(maxSize: 4 * 1024 * 1024, completion: { (data, error) in
-//                if let error = error{
-//                    print(error.localizedDescription)
-//                }else{
-//                    self.downloadSkin(largedata: data!, download: download)
-//                    self.ongoingDownloads -= 1
-//                    if self.ongoingDownloads == 0{
-//                        let nc = NotificationCenter()
-//                        nc.post(Notification(name: Notification.Name("skins-refreshed")))
-//                    }
-//                }
-//            })
-//        }
-//    }
+    func beginSkinDownload(_ download:QueryDocumentSnapshot){
+        let downloadName = download.get("name") as! String
+        if !(downloadedSkins.keys.contains(downloadName) && downloadedSkins[downloadName]! == (download.get("version") as? Int)){
+
+            guard let filename = download.get("filename") as? String
+                else{return}
+            let storageRef = firebaseStorage?.reference()
+            let imageRef = storageRef?.child("skins/\(filename)")
+
+            ongoingDownloads += 1
+            imageRef?.getData(maxSize: 4 * 1024 * 1024, completion: { (data, error) in
+                if let error = error{
+                    print(error.localizedDescription)
+                }else{
+                    self.downloadSkin(largedata: data!, download: download)
+                    self.ongoingDownloads -= 1
+                    if self.ongoingDownloads == 0{
+                        let nc = NotificationCenter()
+                        nc.post(Notification(name: Notification.Name("skins-refreshed")))
+                    }
+                }
+            })
+        }
+    }
     
-//    private func downloadSkin(largedata:Data, download:QueryDocumentSnapshot){
-//        guard let image = UIImage(data: largedata) else{return}
-//        let downloadName = download.get("name") as! String
-//        
-//        let scaledImage:UIImage?
-//        if downloadName == "huge"{
-//            scaledImage = image.resizeToWidth(width: 424.0, scale: scale)
-//        }else{
-//            scaledImage = image.resizeToWidth(width: 212.0, scale: scale)
-//        }
-//        
-//        let skinData = scaledImage!.pngData()
-//        
-//        if download.get("forlist") == nil{
-//            Converter.saveSkinToCoreData(skinData!, name: downloadName, date: download.get("dateCreated") as! Date, version: download.get("version") as! Int, largeImageData: largedata)
-//        }else{
-//            Converter.saveSkinToCoreData(skinData!, name: downloadName, date: download.get("dateCreated") as! Date, version: download.get("version") as! Int, largeImageData: largedata, forList: (download.get("forlist") as! String))
-//        }
-//    }
+    private func downloadSkin(largedata:Data, download:QueryDocumentSnapshot){
+        guard let image = UIImage(data: largedata) else{return}
+        let downloadName = download.get("name") as! String
+        
+        let scaledImage:UIImage?
+        if downloadName == "huge"{
+            scaledImage = image.resizeToWidth(width: 424.0, scale: scale)
+        }else{
+            scaledImage = image.resizeToWidth(width: 212.0, scale: scale)
+        }
+        
+        let skinData = scaledImage!.pngData()
+        
+        if download.get("forlist") == nil{
+            
+            Converter.saveSkinToCoreData(skinData!, name: downloadName, date: (download.get("dateCreated") as! Timestamp).dateValue(), version: download.get("version") as! Int, largeImageData: largedata)
+        }else{
+            Converter.saveSkinToCoreData(skinData!, name: downloadName, date: (download.get("dateCreated") as! Timestamp).dateValue(), version: download.get("version") as! Int, largeImageData: largedata, forList: (download.get("forlist") as! String))
+        }
+    }
     
     func deleteAllSkins(){
         let appDelegate = UIApplication.shared.delegate as! AppDelegate

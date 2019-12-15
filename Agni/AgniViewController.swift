@@ -44,11 +44,12 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
         
         (UIApplication.shared.delegate as! AppDelegate).authenticateLocalPlayer()
         
-        //Get Gameplay controller
+        // Get Gameplay controller
         guard let gameplay = children.first as? GameplayViewController else{
             fatalError("Check storyboard, missing childGameplayVC")
         }
         gameplayVC = gameplay
+        
         let manager = GameplayManager(provider: StandardWordProvider())
         gameplayVC?.manager = manager
         gameplayVC?.delegate = self
@@ -148,54 +149,54 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
         self.lastSegue = segue
         if segue.identifier == "loss"{
             let toViewController = segue.destination as! LossViewController
-            //toViewController.transitioningDelegate = self
+            toViewController.transitioningDelegate = self
             
             toViewController.word = gameplayVC?.manager.chosenWord ?? "Error getting word" //loss screen will tell the user the word
         }else if segue.identifier == "finished"{
             let toViewController = segue.destination as! FinishedViewController
-            //toViewController.transitioningDelegate = self
+            toViewController.transitioningDelegate = self
         }else if segue.identifier == "stats"{
             let toViewController = segue.destination as! StatsViewController
             //toViewController.transitioningDelegate = self
         }else if segue.identifier == "showMenu"{
             let toViewController = segue.destination as! MenuViewController
-//            toViewController.transitioningDelegate = self
-//            toViewController.interactor = svinteractor
+            toViewController.transitioningDelegate = self
+            toViewController.interactor = svinteractor
         }
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 104/255.0, green: 104/255.0, blue: 104/255.0, alpha: 1.0)]
     }
     
-//    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        guard let segue = self.lastSegue else{return nil}
-//
-//        switch segue.identifier!{
-//        case "loss":
-//            return ShakeTransition()
-//        case "finished":
-//            return ConfettiTransition()
-//        case "stats":
-//            return CircleTransition(button: winsButton)
-//        case "showMenu":
-//            return MenuSwingTransition(button: menuButton)
-//        default:
-//            return nil
-//        }
-//    }
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard let segue = self.lastSegue else{return nil}
+
+        switch segue.identifier!{
+        case "loss":
+            return ShakeTransition()
+        case "finished":
+            return ConfettiTransition()
+        case "stats":
+            return CircleTransition(button: winsButton)
+        case "showMenu":
+            return MenuSwingTransition(button: menuButton)
+        default:
+            return nil
+        }
+    }
     
-//    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        guard let segue = self.lastSegue else{return nil}
-//
-//        switch segue.identifier!{
-//        case "stats":
-//            return ReverseCircleTransition(button: winsButton)
-//        case "showMenu":
-//            return ReverseMenuSlideTransition()
-//        default:
-//            return nil
-//        }
-//    }
-//
-//    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-//        return svinteractor.hasStarted ? svinteractor : nil
-//    }
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard let segue = self.lastSegue else{return nil}
+
+        switch segue.identifier!{
+        case "stats":
+            return ReverseCircleTransition(button: winsButton)
+        case "showMenu":
+            return ReverseMenuSlideTransition()
+        default:
+            return nil
+        }
+    }
+
+    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        return svinteractor.hasStarted ? svinteractor : nil
+    }
 }

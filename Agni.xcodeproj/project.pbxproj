@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		065EBBC797C676B248B477B9 /* Pods_Agni.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11431E762F8ED4ECA4829339 /* Pods_Agni.framework */; };
+		18A1D57E14FC360B8E983ACA /* Pods_Agni_Stickers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0472D259C979FD9E03582713 /* Pods_Agni_Stickers.framework */; };
+		3325838084C321844A229EA1 /* Pods_AgniTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9360E00B02B8045E095018E /* Pods_AgniTests.framework */; };
+		653B55FF6CEDAF5F1355FF87 /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76DECD8BFF9AD2D4A2B34882 /* Pods_OneSignalNotificationServiceExtension.framework */; };
 		9503F0011B16743F0020A7ED /* GameSounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9503F0001B16743F0020A7ED /* GameSounds.swift */; };
 		9508F6BF1AF52A2B00A8C713 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9508F6BE1AF52A2B00A8C713 /* AppDelegate.swift */; };
 		9508F6C41AF52A2B00A8C713 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9508F6C21AF52A2B00A8C713 /* Main.storyboard */; };
@@ -155,6 +159,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0472D259C979FD9E03582713 /* Pods_Agni_Stickers.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Agni_Stickers.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		09137AE6AF8553EE8E6FD4E9 /* Pods-Agni Stickers.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Agni Stickers.release.xcconfig"; path = "Target Support Files/Pods-Agni Stickers/Pods-Agni Stickers.release.xcconfig"; sourceTree = "<group>"; };
+		11431E762F8ED4ECA4829339 /* Pods_Agni.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Agni.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5377A70193C8C3D8EB490CE0 /* Pods-Agni.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Agni.debug.xcconfig"; path = "Target Support Files/Pods-Agni/Pods-Agni.debug.xcconfig"; sourceTree = "<group>"; };
+		59CE30D5671DC44B8E05AFB0 /* Pods-AgniTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgniTests.release.xcconfig"; path = "Target Support Files/Pods-AgniTests/Pods-AgniTests.release.xcconfig"; sourceTree = "<group>"; };
+		76DECD8BFF9AD2D4A2B34882 /* Pods_OneSignalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OneSignalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7C94A53A6DF91A889EE82E94 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		9503F0001B16743F0020A7ED /* GameSounds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSounds.swift; sourceTree = "<group>"; };
 		9508F6B91AF52A2B00A8C713 /* Agni.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Agni.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9508F6BD1AF52A2B00A8C713 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -210,7 +221,7 @@
 		95857C882375444A00381ADC /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
 		95857C892375444A00381ADC /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		95897A121B86AEED00BBA25C /* SkinPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SkinPickerViewController.swift; sourceTree = "<group>"; };
-		958FFBCF1B4CB66B00F34478 /* DALEK___.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DALEK___.ttf"; sourceTree = "<group>"; };
+		958FFBCF1B4CB66B00F34478 /* DALEK___.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DALEK___.ttf; sourceTree = "<group>"; };
 		958FFBDD1B4DC57B00F34478 /* Agni-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Agni-Bridging-Header.h"; sourceTree = "<group>"; };
 		959B5CCD1D359B9100292239 /* Xbox Menu Filled-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Xbox Menu Filled-100.png"; sourceTree = "<group>"; };
 		959B5CD31D35A15000292239 /* Xbox Menu Filled Rotated-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Xbox Menu Filled Rotated-100.png"; sourceTree = "<group>"; };
@@ -273,6 +284,11 @@
 		95FA549B1C075F190029D91D /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		95FA549F1C077C6B0029D91D /* Graphics.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Graphics.xcassets; sourceTree = "<group>"; };
 		95FA54A11C079C850029D91D /* Store 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Store 3.xcdatamodel"; sourceTree = "<group>"; };
+		996940DB5DCEBBDEB429810F /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		DC6712A8718290BCDABE2FB9 /* Pods-AgniTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AgniTests.debug.xcconfig"; path = "Target Support Files/Pods-AgniTests/Pods-AgniTests.debug.xcconfig"; sourceTree = "<group>"; };
+		F726AD9A33C78C2AA2DDA7CC /* Pods-Agni.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Agni.release.xcconfig"; path = "Target Support Files/Pods-Agni/Pods-Agni.release.xcconfig"; sourceTree = "<group>"; };
+		F9360E00B02B8045E095018E /* Pods_AgniTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AgniTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFF7E9EB6C704BE5AC23B318 /* Pods-Agni Stickers.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Agni Stickers.debug.xcconfig"; path = "Target Support Files/Pods-Agni Stickers/Pods-Agni Stickers.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -280,6 +296,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18A1D57E14FC360B8E983ACA /* Pods_Agni_Stickers.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,6 +316,7 @@
 				95A86CCA1AF966AC00E0FB67 /* AudioToolbox.framework in Frameworks */,
 				95A86CB41AF861E700E0FB67 /* CoreData.framework in Frameworks */,
 				95FA549C1C075F190029D91D /* GameKit.framework in Frameworks */,
+				065EBBC797C676B248B477B9 /* Pods_Agni.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,6 +324,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3325838084C321844A229EA1 /* Pods_AgniTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,12 +334,29 @@
 			files = (
 				95ECD71A1F4B9A0A00FFB69D /* SystemConfiguration.framework in Frameworks */,
 				95ECD7161F4B98E600FFB69D /* OneSignal.framework in Frameworks */,
+				653B55FF6CEDAF5F1355FF87 /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1B7EEE88AEECEB3B05D04C3D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5377A70193C8C3D8EB490CE0 /* Pods-Agni.debug.xcconfig */,
+				F726AD9A33C78C2AA2DDA7CC /* Pods-Agni.release.xcconfig */,
+				FFF7E9EB6C704BE5AC23B318 /* Pods-Agni Stickers.debug.xcconfig */,
+				09137AE6AF8553EE8E6FD4E9 /* Pods-Agni Stickers.release.xcconfig */,
+				DC6712A8718290BCDABE2FB9 /* Pods-AgniTests.debug.xcconfig */,
+				59CE30D5671DC44B8E05AFB0 /* Pods-AgniTests.release.xcconfig */,
+				996940DB5DCEBBDEB429810F /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */,
+				7C94A53A6DF91A889EE82E94 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		9508F6B01AF52A2B00A8C713 = {
 			isa = PBXGroup;
 			children = (
@@ -331,6 +367,7 @@
 				95ECD70A1F4B965200FFB69D /* OneSignalNotificationServiceExtension */,
 				9508F6BA1AF52A2B00A8C713 /* Products */,
 				95ECD7171F4B999E00FFB69D /* Frameworks */,
+				1B7EEE88AEECEB3B05D04C3D /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -600,6 +637,10 @@
 				95A86CB31AF861E700E0FB67 /* CoreData.framework */,
 				95EA93F31AF9A70F00766E92 /* Agni-Bridging-Header.h */,
 				95ECD7181F4B999E00FFB69D /* UserNotifications.framework */,
+				11431E762F8ED4ECA4829339 /* Pods_Agni.framework */,
+				0472D259C979FD9E03582713 /* Pods_Agni_Stickers.framework */,
+				F9360E00B02B8045E095018E /* Pods_AgniTests.framework */,
+				76DECD8BFF9AD2D4A2B34882 /* Pods_OneSignalNotificationServiceExtension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -632,10 +673,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9508F6D81AF52A2B00A8C713 /* Build configuration list for PBXNativeTarget "Agni" */;
 			buildPhases = (
+				972A37E60B771DE059612E4A /* [CP] Check Pods Manifest.lock */,
 				9508F6B51AF52A2B00A8C713 /* Sources */,
 				9508F6B61AF52A2B00A8C713 /* Frameworks */,
 				9508F6B71AF52A2B00A8C713 /* Resources */,
 				9583EC081D8F8B8D0097D22B /* Embed App Extensions */,
+				2A2F1A971134178F2D645DA5 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -652,6 +695,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9508F6DB1AF52A2B00A8C713 /* Build configuration list for PBXNativeTarget "AgniTests" */;
 			buildPhases = (
+				7A2870817483C579BBCE326F /* [CP] Check Pods Manifest.lock */,
 				9508F6CA1AF52A2B00A8C713 /* Sources */,
 				9508F6CB1AF52A2B00A8C713 /* Frameworks */,
 				9508F6CC1AF52A2B00A8C713 /* Resources */,
@@ -670,6 +714,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9583EC131D8F8C060097D22B /* Build configuration list for PBXNativeTarget "Agni Stickers" */;
 			buildPhases = (
+				3F9CA65AB21D0AE74E98783A /* [CP] Check Pods Manifest.lock */,
 				9583EC091D8F8C060097D22B /* Resources */,
 				124EB94FF2FF4663363081A2 /* Frameworks */,
 			);
@@ -686,6 +731,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 95ECD7111F4B965200FFB69D /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */;
 			buildPhases = (
+				DCF19FDE85BDD4BDC89C95FD /* [CP] Check Pods Manifest.lock */,
 				95ECD7051F4B965200FFB69D /* Sources */,
 				95ECD7061F4B965200FFB69D /* Frameworks */,
 				95ECD7071F4B965200FFB69D /* Resources */,
@@ -841,6 +887,129 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2A2F1A971134178F2D645DA5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Agni/Pods-Agni-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/abseil/absl.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/absl.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Agni/Pods-Agni-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3F9CA65AB21D0AE74E98783A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Agni Stickers-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7A2870817483C579BBCE326F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AgniTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		972A37E60B771DE059612E4A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Agni-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DCF19FDE85BDD4BDC89C95FD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-OneSignalNotificationServiceExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		9508F6B51AF52A2B00A8C713 /* Sources */ = {
@@ -1070,6 +1239,7 @@
 		};
 		9508F6D91AF52A2B00A8C713 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5377A70193C8C3D8EB490CE0 /* Pods-Agni.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1103,6 +1273,7 @@
 		};
 		9508F6DA1AF52A2B00A8C713 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F726AD9A33C78C2AA2DDA7CC /* Pods-Agni.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1135,6 +1306,7 @@
 		};
 		9508F6DC1AF52A2B00A8C713 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DC6712A8718290BCDABE2FB9 /* Pods-AgniTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1157,6 +1329,7 @@
 		};
 		9508F6DD1AF52A2B00A8C713 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 59CE30D5671DC44B8E05AFB0 /* Pods-AgniTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1175,6 +1348,7 @@
 		};
 		9583EC141D8F8C060097D22B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FFF7E9EB6C704BE5AC23B318 /* Pods-Agni Stickers.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1194,6 +1368,7 @@
 		};
 		9583EC151D8F8C060097D22B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 09137AE6AF8553EE8E6FD4E9 /* Pods-Agni Stickers.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1212,6 +1387,7 @@
 		};
 		95ECD7121F4B965200FFB69D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 996940DB5DCEBBDEB429810F /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1237,6 +1413,7 @@
 		};
 		95ECD7131F4B965200FFB69D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7C94A53A6DF91A889EE82E94 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;

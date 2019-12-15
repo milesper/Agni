@@ -9,6 +9,8 @@
 import UIKit
 import GameKit
 
+// TODO: Make a singleton
+
 class Achievements: NSObject {
     var defaults = UserDefaults.standard //use to get app-wide data
     var streak = 0
@@ -26,7 +28,6 @@ class Achievements: NSObject {
         self.defaults.set(totalWins, forKey: "win_total")
         DispatchQueue.main.async(execute: {
             //save in the background
-            self.defaults.synchronize()
             self.checkWinsAchievements()
         })
         
@@ -47,7 +48,6 @@ class Achievements: NSObject {
         self.defaults.set(totalLosses, forKey: "loss_total")
         DispatchQueue.main.async(execute: {
             //save in the background
-            self.defaults.synchronize()
             self.checkLossesAchievements()
         })
     }

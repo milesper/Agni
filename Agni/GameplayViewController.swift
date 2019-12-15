@@ -57,6 +57,7 @@ class GameplayViewController: UIViewController, HintIAPManagerDelegate {
         // Do any additional setup after loading the view.
         sceneView = (view as! SKView)
         
+        // setup the letter buttons
         for button in letterButtons{
             button.addTarget(self, action: #selector(GameplayViewController.guessLetter(_:)), for: UIControl.Event.touchUpInside)
         }

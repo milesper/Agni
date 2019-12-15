@@ -137,7 +137,6 @@ class NewListViewController: UIViewController, UITableViewDelegate, UITableViewD
                     var userCreatedLists = defaults.array(forKey: "userCreatedLists") as! [String]
                     userCreatedLists.append(listTitleTextField.text!)
                     defaults.set(userCreatedLists, forKey: "userCreatedLists")
-                    defaults.synchronize()
                     self.dismiss(animated: true, completion: nil)
                 }
                 
