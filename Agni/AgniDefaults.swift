@@ -15,7 +15,7 @@ struct AgniDefaults {
     @UserDefault(key: "skinsUnlocked", defaultValue: false)
     static var skinsUnlocked: Bool
     
-    @UserDefault(key: "currentSkin", defaultValue: "Default")
+    @UserDefault(key: "currentSkin", defaultValue: Constants.DEFAULT_SKIN_NAME)
     static var currentSkin: String
     
     @UserDefault(key: "needsUpdateSources", defaultValue: true)
@@ -44,7 +44,7 @@ struct AgniDefaults {
     static var daysPlayed: Int
     
     // other stuff
-    @UserDefault(key: "used_skins", defaultValue: ["Default"])
+    @UserDefault(key: "used_skins", defaultValue: [Constants.DEFAULT_SKIN_NAME])
     static var usedSkins: [String]
     
     @UserDefault(key: "hints_remaining", defaultValue: 0)
@@ -62,9 +62,15 @@ struct AgniDefaults {
     @UserDefault(key: "customListUsed", defaultValue: false)
     static var customListUsed: Bool
     
-    @UserDefault(key: "beatenWordLists", defaultValue: [])
-    static var beatenWordLists: [String]
-    
     @UserDefault(key: "study_mode_on", defaultValue: false)
     static var studyModeOn: Bool
+    
+    @UserDefault(key: "latinSPRemaining", defaultValue: nil)
+    static var latinStarterPackRemaining: [String]?
+    
+    @UserDefault(key: "englishSPRemaining", defaultValue: nil)
+    static var englishStarterPackRemaining: [String]?
+    
+    @UserDefault(key: "userCreatedLists", defaultValue: [])
+    static var userCreatedListTitles: [String]
 }

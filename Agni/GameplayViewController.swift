@@ -85,9 +85,9 @@ class GameplayViewController: UIViewController, HintIAPManagerDelegate {
             swordLocs.append(distanceFromPerson)
         }
         
-        if (defaults.value(forKey: "needsUpdateSources") as! Bool){ //user has changed which lists are used
+        if(AgniDefaults.needsUpdateSources){
             manager.reload()
-            defaults.set(false, forKey: "needsUpdateSources")
+            AgniDefaults.needsUpdateSources = false
         }
     }
     
@@ -217,10 +217,10 @@ class GameplayViewController: UIViewController, HintIAPManagerDelegate {
     @IBAction func getHint(_ sender: Any) {
         let alert:UIAlertController
         let confirmAction:UIAlertAction
-        if HintIAPManager.hintsRemaining > 0{
-            alert = UIAlertController(title: "Use one hint?", message: "You have \(HintIAPManager.hintsRemaining) hint\(HintIAPManager.hintsRemaining == 1 ? "" : "s").", preferredStyle: .alert)
+        if AgniDefaults.hintsRemaining > 0{
+            alert = UIAlertController(title: "Use one hint?", message: "You have \(AgniDefaults.hintsRemaining) hint\(AgniDefaults.hintsRemaining == 1 ? "" : "s").", preferredStyle: .alert)
             confirmAction = UIAlertAction(title: "Use hint", style: .default) { (_) in
-                HintIAPManager.hintsRemaining -= 1
+                AgniDefaults.hintsRemaining -= 1
                 self.hintUsed = true
                 self.hintButton.setTitle("", for: .normal)
                 self.hintButton.isEnabled = false

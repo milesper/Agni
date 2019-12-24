@@ -11,7 +11,6 @@ import StoreKit
 
 
 class BuySkinsViewController: UIViewController, SKPaymentTransactionObserver  {
-    var defaults = UserDefaults.standard
     let productID = "agni_sheep_skins"
     
     var activityIndicator:UIActivityIndicatorView?
@@ -71,7 +70,7 @@ class BuySkinsViewController: UIViewController, SKPaymentTransactionObserver  {
     }
     
     func upgradeBought(){
-        self.defaults.set(true , forKey: "skinsUnlocked")
+        AgniDefaults.skinsUnlocked = true
         self.dismiss(animated: true, completion: nil)
     }
     

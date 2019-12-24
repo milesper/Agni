@@ -59,6 +59,7 @@
 		958FFBD01B4CB6F000F34478 /* DALEK___.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 958FFBCF1B4CB66B00F34478 /* DALEK___.ttf */; };
 		959B5CCE1D359B9100292239 /* Xbox Menu Filled-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 959B5CCD1D359B9100292239 /* Xbox Menu Filled-100.png */; };
 		959B5CD41D35A15000292239 /* Xbox Menu Filled Rotated-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 959B5CD31D35A15000292239 /* Xbox Menu Filled Rotated-100.png */; };
+		959F57E823ABE62D00109C7D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959F57E723ABE62D00109C7D /* Constants.swift */; };
 		95A5879E2138F52D00833C74 /* UIImage+Resizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A5879D2138F52D00833C74 /* UIImage+Resizing.swift */; };
 		95A639641B18080F00A2A108 /* mute.png in Resources */ = {isa = PBXBuildFile; fileRef = 95A639621B18080F00A2A108 /* mute.png */; };
 		95A639651B18080F00A2A108 /* sound.png in Resources */ = {isa = PBXBuildFile; fileRef = 95A639631B18080F00A2A108 /* sound.png */; };
@@ -227,6 +228,7 @@
 		958FFBDD1B4DC57B00F34478 /* Agni-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Agni-Bridging-Header.h"; sourceTree = "<group>"; };
 		959B5CCD1D359B9100292239 /* Xbox Menu Filled-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Xbox Menu Filled-100.png"; sourceTree = "<group>"; };
 		959B5CD31D35A15000292239 /* Xbox Menu Filled Rotated-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Xbox Menu Filled Rotated-100.png"; sourceTree = "<group>"; };
+		959F57E723ABE62D00109C7D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		95A5879D2138F52D00833C74 /* UIImage+Resizing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Resizing.swift"; sourceTree = "<group>"; };
 		95A639621B18080F00A2A108 /* mute.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mute.png; sourceTree = "<group>"; };
 		95A639631B18080F00A2A108 /* sound.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sound.png; sourceTree = "<group>"; };
@@ -478,6 +480,7 @@
 				95A86CAE1AF85E8600E0FB67 /* Store.xcdatamodeld */,
 				95C9B6E41B7C3A920099A7D2 /* QTRomanNumerals.swift */,
 				95F84ACD21D72EF500E77DDC /* WordPair.swift */,
+				959F57E723ABE62D00109C7D /* Constants.swift */,
 				959CFB3D1C3B69D100D86CC2 /* Utility Classes */,
 				95F84ACC21D7267200E77DDC /* Gameplay */,
 				95E28F8F23A602A300485A53 /* UserDefaultWrapper.swift */,
@@ -1046,6 +1049,7 @@
 				95C6E29321C973BD00B4D9A9 /* WordProvider.swift in Sources */,
 				9512FC6C1F2E5408005B80D4 /* LossViewController.swift in Sources */,
 				95ECD7021F42B10900FFB69D /* MenuSwingTransition.swift in Sources */,
+				959F57E823ABE62D00109C7D /* Constants.swift in Sources */,
 				95E28F9023A602A300485A53 /* UserDefaultWrapper.swift in Sources */,
 				95B303BE1D6160180077E92B /* MenuItemViewController.swift in Sources */,
 				957EF34E2137102100CFE0F7 /* DownloadManager.swift in Sources */,

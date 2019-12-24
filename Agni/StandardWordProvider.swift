@@ -21,6 +21,7 @@ class StandardWordProvider: NSObject, WordProvider {
     func reload(){
         studyMode = AgniDefaults.studyModeOn
         if AgniDefaults.selectedTitle != ""{ //this will be changed by the selected titles screen
+            wordPairs = []
             let (wordsArray, meaningsArray) = Converter.getCurrentWordsArray() // Concats the lists
             for index in 0..<wordsArray.count{
                 wordPairs.append(WordPair(word: wordsArray[index], meaning:meaningsArray[index]))
@@ -67,10 +68,10 @@ class StandardWordProvider: NSObject, WordProvider {
             wordsArray.append(pair.word)
         }
         
-        if AgniDefaults.selectedTitle == "Latin Starter Pack"{
-            defaults.set(wordsArray, forKey: "latinSPRemaining")
-        }else if AgniDefaults.selectedTitle == "English Starter Pack"{
-            defaults.set(wordsArray, forKey: "englishSPRemaining")
+        if AgniDefaults.selectedTitle == Constants.LATIN_STARTER_PACK{
+            AgniDefaults.latinStarterPackRemaining = wordsArray
+        }else if AgniDefaults.selectedTitle == Constants.ENGLISH_STARTER_PACK{
+            AgniDefaults.englishStarterPackRemaining = wordsArray
         }else{
             //Find the core data entry
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -78,7 +79,7 @@ class StandardWordProvider: NSObject, WordProvider {
             
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName:"WordList") //get the list of lists
             
-            let predicate = NSPredicate(format: "title == %@", AgniDefaults.selectedTitle)
+            let predicate = NSPredicate(format: "title == \"\(AgniDefaults.selectedTitle)\"")
             fetchRequest.predicate = predicate
             do {
                 let results = try managedContext.fetch(fetchRequest) as! [NSManagedObject]

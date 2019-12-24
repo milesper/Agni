@@ -30,7 +30,6 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 class NewListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
-    var defaults = UserDefaults.standard //use to get app-wide data
     
     @IBOutlet weak var listTitleTextField: UITextField!
     @IBOutlet weak var saveButton: UIButton!
@@ -134,9 +133,7 @@ class NewListViewController: UIViewController, UITableViewDelegate, UITableViewD
                 }else{
                     Converter.saveListToCoreData(listItems: words,listItemMeanings:meanings, listTitle: listTitleTextField.text!, listAuthor: authorTextField.text!)
                     
-                    var userCreatedLists = defaults.array(forKey: "userCreatedLists") as! [String]
-                    userCreatedLists.append(listTitleTextField.text!)
-                    defaults.set(userCreatedLists, forKey: "userCreatedLists")
+                    AgniDefaults.userCreatedListTitles.append(listTitleTextField.text!)
                     self.dismiss(animated: true, completion: nil)
                 }
                 

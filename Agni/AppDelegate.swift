@@ -12,10 +12,6 @@
  import Firebase
  import OneSignal
  
- struct Constants{
-    static let CURRENT_VERSION = "1.7.0"
- }
- 
  @UIApplicationMain
  class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
@@ -196,7 +192,7 @@
         
         do {
             let results = try managedContext.fetch(fetchRequest)
-            if results.count == 0 && components[0] != "English Starter Pack" && components[0] != "Latin Starter Pack"{
+            if results.count == 0 && components[0] != Constants.ENGLISH_STARTER_PACK && components[0] != Constants.LATIN_STARTER_PACK{
                 //Title not taken, go ahead saving
                 Converter.saveListToCoreData(components)
             }else{

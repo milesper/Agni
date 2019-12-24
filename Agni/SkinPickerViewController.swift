@@ -11,7 +11,6 @@ import CoreData
 
 class SkinPickerViewController: MenuItemViewController, iCarouselDataSource, iCarouselDelegate {
     @IBOutlet var carousel : iCarousel!
-    var defaults = UserDefaults.standard //get app-wide data
     var skins:[NSManagedObject] = []
     var selectedSkinName:String?
     var lastSelectedIndex:Int = 0
@@ -45,7 +44,7 @@ class SkinPickerViewController: MenuItemViewController, iCarouselDataSource, iCa
             }
         }
         skins.sort(by: {($0.value(forKey: "date") as! NSDate).compare(($1.value(forKey: "date") as! NSDate) as Date) == .orderedDescending})
-        self.selectedSkinName = (defaults.value(forKey: "currentSkin") as! String)
+        self.selectedSkinName = AgniDefaults.currentSkin
         carousel.reloadData()
         
         for i in 0 ..< skins.count{
@@ -93,7 +92,7 @@ class SkinPickerViewController: MenuItemViewController, iCarouselDataSource, iCa
         checkView = itemView.viewWithTag(1) as! UIImageView
         if index == 0{
             itemView.setImage(UIImage(named: "Sheep large"), for:.normal)
-            if self.defaults.string(forKey: "currentSkin") == "Default"{
+            if AgniDefaults.currentSkin == Constants.DEFAULT_SKIN_NAME{
                 self.lastSelectedIndex = 0
                 checkView.image = UIImage(named: "Checkmark-100.png")
             }
@@ -104,10 +103,10 @@ class SkinPickerViewController: MenuItemViewController, iCarouselDataSource, iCa
             
             let isAwardSkin = skin.value(forKey: "forList") != nil && skin.value(forKey: "forList") as! String != "" //Will use to determine if skin is locked
             
-            if self.defaults.string(forKey: "currentSkin") == skin.value(forKey: "name") as? String{
+            if AgniDefaults.currentSkin == skin.value(forKey: "name") as? String{
                 self.lastSelectedIndex = index
                 checkView.image = UIImage(named: "Checkmark-100.png")
-            }else if !isAwardSkin && !defaults.bool(forKey: "skinsUnlocked"){
+            }else if !isAwardSkin && !AgniDefaults.skinsUnlocked{
                 checkView.image = UIImage(named: "Lock-100.png")
             }
             itemView.addTarget(self, action: #selector(useSkin(sender:)), for: .touchUpInside)
@@ -120,7 +119,7 @@ class SkinPickerViewController: MenuItemViewController, iCarouselDataSource, iCa
         let index = carousel.index(ofItemViewOrSubview: sender)
         
         if index == 0{
-            defaults.setValue("Default", forKey: "currentSkin")
+            AgniDefaults.currentSkin = Constants.DEFAULT_SKIN_NAME
             let checkImageView = sender.viewWithTag(1) as! UIImageView
             checkImageView.image = UIImage(named: "Checkmark-100.png")
             checkImageView.alpha = 1.0;
@@ -131,17 +130,17 @@ class SkinPickerViewController: MenuItemViewController, iCarouselDataSource, iCa
                 lastButton.alpha = 0.0
                 lastSelectedIndex = index
             }
-            print("Current Skin: %@", defaults.value(forKey: "currentSkin") as! String)
+            print("Current Skin: %@", AgniDefaults.currentSkin)
         }else{
             let skin = skins[index-1]
             let isAwardSkin = skin.value(forKey: "forList") != nil && skin.value(forKey: "forList") as! String != ""
             
-            if isAwardSkin || defaults.bool(forKey: "skinsUnlocked"){
+            if isAwardSkin || AgniDefaults.skinsUnlocked{
                 print("Press!")
                 let checkImageView = sender.viewWithTag(1) as! UIImageView
                 checkImageView.image = UIImage(named: "Checkmark-100.png")
                 checkImageView.alpha = 1.0;
-                defaults.setValue(skin.value(forKey: "name") as? String, forKey: "currentSkin") //change it up
+                AgniDefaults.currentSkin = skin.value(forKey: "name") as? String ?? Constants.DEFAULT_SKIN_NAME
                 
                 
                 if (lastSelectedIndex != index){
@@ -151,7 +150,7 @@ class SkinPickerViewController: MenuItemViewController, iCarouselDataSource, iCa
                     lastSelectedIndex = index
                 }
                 
-                print("Current Skin: %@", defaults.value(forKey: "currentSkin") as! String)
+                print("Current Skin: %@", AgniDefaults.currentSkin)
             } else{
                 self.performSegue(withIdentifier: "buySkins", sender: self)
             }

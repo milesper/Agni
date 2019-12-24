@@ -18,8 +18,6 @@ class WhatsNewViewController: UIViewController {
     @IBOutlet weak var thirdDescription: UILabel!
     @IBOutlet weak var continueButton: UIButton!
     
-    var defaults = UserDefaults.standard //use to get app-wide data
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +45,7 @@ class WhatsNewViewController: UIViewController {
     
     
     @IBAction func continueButtonPressed(sender: UIButton) {
-        defaults.setValue(Constants.CURRENT_VERSION, forKey: "lastVersionShown")
+        AgniDefaults.lastVersionShown = Constants.CURRENT_VERSION
         self.dismiss(animated: true, completion: nil)
     }
 }

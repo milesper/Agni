@@ -19,7 +19,7 @@ class Converter: NSObject {
         var finalList:[String] = [] //Should contain just the unguessed words of the list
         var meaningsList:[String?] = [] //For lists which have meanings
         
-        if AgniDefaults.selectedTitle == "Latin Starter Pack"{
+        if AgniDefaults.selectedTitle == Constants.LATIN_STARTER_PACK{
             //Get data out of textfile
             var latinSPOriginalWords:[String] = [] //Contains all the words
             var latinSPOriginalMeanings:[String] = []
@@ -32,16 +32,15 @@ class Converter: NSObject {
             let meaningContent = (try! NSString(contentsOfFile: meaningPath!, encoding: String.Encoding.utf8.rawValue)) as String
             latinSPOriginalMeanings += meaningContent.components(separatedBy: ", ") as [String]
             
-            //Now figure out what to return
-            if defaults.value(forKey: "latinSPRemaining") == nil{
-                //Remaining has not yet been created, so just use all of them
-                finalList = latinSPOriginalWords
-                meaningsList = latinSPOriginalMeanings
-                
-                defaults.set(finalList, forKey: "latinSPRemaining")
-            }else{
-                //Figure out which meanings should be added
-                finalList = defaults.array(forKey: "latinSPRemaining") as! [String]
+            // Now figure out what to return
+            if let latinRemaining = AgniDefaults.latinStarterPackRemaining{
+                // Figure out which meanings should be added
+                if(latinRemaining.count > latinSPOriginalWords.count){
+                    // something is very wrong
+                    finalList = latinSPOriginalWords
+                }else{
+                    finalList = latinRemaining
+                }
                 print("Loaded \(finalList.count) remaining words out of \(latinSPOriginalWords.count)")
                 
                 for i in 0..<latinSPOriginalWords.count{
@@ -50,24 +49,35 @@ class Converter: NSObject {
                         meaningsList.append(latinSPOriginalMeanings[i])
                     }
                 }
+            }else{
+                //Remaining has not yet been created, so just use all of them
+                finalList = latinSPOriginalWords
+                meaningsList = latinSPOriginalMeanings
+                
+                AgniDefaults.latinStarterPackRemaining = finalList
             }
             
-        }else if AgniDefaults.selectedTitle == "English Starter Pack"{
+        }else if AgniDefaults.selectedTitle == Constants.ENGLISH_STARTER_PACK{
             let path = Bundle.main.path(forResource: "EnglishStarterPack", ofType: "txt")
             let content = (try! NSString(contentsOfFile: path!, encoding:String.Encoding.utf8.rawValue)) as String
             let engList = content.components(separatedBy: ", ")
             
-            if defaults.value(forKey: "englishSPRemaining") == nil{
+            if let englishRemaining = AgniDefaults.englishStarterPackRemaining{
+                if(englishRemaining.count > engList.count){
+                    // something is very wrong
+                    finalList = engList
+                }else{
+                    finalList = englishRemaining
+                }
+                meaningsList += [String?](repeating: nil, count: finalList.count)
+                
+                print("Loaded \(finalList.count) remaining words out of \(engList.count)")
+            }else{
                 //Remaining has not yet been created
                 finalList = engList
                 meaningsList += [String?](repeating: nil, count: engList.count)
                 
-                defaults.set(finalList, forKey: "englishSPRemaining")
-            }else{
-                finalList = defaults.array(forKey: "englishSPRemaining") as! [String]
-                meaningsList += [String?](repeating: nil, count: finalList.count)
-                
-                print("Loaded \(finalList.count) remaining words out of \(engList.count)")
+                AgniDefaults.englishStarterPackRemaining = finalList
             }
         }else{
             //get lists from CoreData
@@ -76,7 +86,7 @@ class Converter: NSObject {
             
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName:"WordList") //get the list of lists
             
-            let predicate = NSPredicate(format: "title == %@", AgniDefaults.selectedTitle)
+            let predicate = NSPredicate(format: "title == \"\(AgniDefaults.selectedTitle)\"")
             fetchRequest.predicate = predicate
             do {
                 let results = try managedContext.fetch(fetchRequest) as! [NSManagedObject]
@@ -309,18 +319,25 @@ class Converter: NSObject {
     
     class func getCurrentSkinImage()->UIImage?{
         var skinImage:UIImage?
-        if AgniDefaults.currentSkin == "Default"{
+        if AgniDefaults.currentSkin == Constants.DEFAULT_SKIN_NAME{
             skinImage = UIImage(named: "Sheep")
         }else{
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             let managedContext = appDelegate.managedObjectContext!
             
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName:"Skin") //get the list of skins
-            let predicate = NSPredicate(format: "name == %@", AgniDefaults.currentSkin)
+            let predicate = NSPredicate(format: "name == \"\(AgniDefaults.currentSkin)\"")
+            print(AgniDefaults.currentSkin)
             fetchRequest.predicate = predicate
             
             do {
                 let results = try managedContext.fetch(fetchRequest)
+                if results.count == 0{
+                    // the skin disappeared somehow
+                    print("Could not find skin \(AgniDefaults.currentSkin)")
+                    AgniDefaults.currentSkin = "Default"
+                    return UIImage(named: "Sheep")
+                }
                 let firstSkin = results[0] as! NSManagedObject
                 skinImage = UIImage(data: firstSkin.value(forKey: "file") as! Data)
             } catch let error1 as NSError {

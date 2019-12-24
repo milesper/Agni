@@ -10,7 +10,6 @@ import UIKit
 import CoreData
 
 class CustomListViewController: UIViewController {
-    var defaults = UserDefaults.standard //get app-wide data
     
     var backgroundImage:UIImage?
     var list:NSManagedObject?
@@ -92,22 +91,19 @@ class CustomListViewController: UIViewController {
     }
 
     @IBAction func deleteAction(_ sender: AnyObject) {
-        //remove list from selected
-        var selectedLists = self.defaults.array(forKey: "selectedTitles") as! [String]
-        if selectedLists.contains(self.fileNameLabel.text!){
-            selectedLists.remove(at: selectedLists.firstIndex(of: self.fileNameLabel.text!)!)
-            
-            if selectedLists.count == 0{
-                selectedLists.append("English Starter Pack")
-            }
-            
-            self.defaults.set(selectedLists, forKey: "selectedTitles")
-        }
+        
         
         let alert = UIAlertController(title: "Delete List", message: "Really delete '\(self.fileNameLabel.text!)'?", preferredStyle: .alert)
         let actionNo = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         let actionYes = UIAlertAction(title: "Delete", style: .destructive, handler: {
             action in
+            
+            //remove list from selected
+            if AgniDefaults.selectedTitle == self.fileNameLabel.text{
+                AgniDefaults.selectedTitle = "English Starter Pack"
+            }
+            
+            // remove from core data as well
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             let managedContext = appDelegate.managedObjectContext!
             managedContext.delete(self.list!)

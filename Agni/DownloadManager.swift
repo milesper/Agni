@@ -18,7 +18,7 @@ class DownloadManager: NSObject {
     var firestore: Firestore? = nil
     var firebaseStorage: Storage? = nil
     
-    var downloadedSkins:[String:Int] = ["Default":1]
+    var downloadedSkins:[String:Int] = [Constants.DEFAULT_SKIN_NAME:1]
     var ongoingDownloads = 0
     let scale = UIScreen.main.scale
     
@@ -29,7 +29,7 @@ class DownloadManager: NSObject {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let managedContext = appDelegate.managedObjectContext!
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName:"WordList")
-        var downloadedTitles:[String] = ["English Starter Pack", "Latin Starter Pack"]
+        var downloadedTitles:[String] = [Constants.ENGLISH_STARTER_PACK, Constants.LATIN_STARTER_PACK]
         
         var fetchedResults:[NSManagedObject]? = nil
         do{
@@ -92,7 +92,7 @@ class DownloadManager: NSObject {
             print("Couldn't delete words, \(error.description)")
         }
         
-        AgniDefaults.selectedTitle = "English Starter Pack"
+        AgniDefaults.selectedTitle = Constants.ENGLISH_STARTER_PACK
     }
     
     //MARK: - Skins code
@@ -201,6 +201,6 @@ class DownloadManager: NSObject {
         } catch let error as NSError {
             print("Couldn't delete skins, \(error.description)")
         }
-        AgniDefaults.currentSkin = "Default"
+        AgniDefaults.currentSkin = Constants.DEFAULT_SKIN_NAME
     }
 }

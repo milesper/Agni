@@ -11,8 +11,6 @@ import GameKit
 
 class MenuViewController: MenuItemViewController, GKGameCenterControllerDelegate, UITableViewDelegate, UIViewControllerTransitioningDelegate, HintIAPManagerDelegate {
     
-    var defaults = UserDefaults.standard //get app-wide data
-    
     @IBOutlet weak var sheepImageView: UIImageView!
     @IBOutlet weak var menuButton: UIButton!
     @IBOutlet weak var contentView: UIView!
@@ -35,10 +33,10 @@ class MenuViewController: MenuItemViewController, GKGameCenterControllerDelegate
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.sheepImageView.image = Converter.getCurrentSkinImage()!
-        wordListLabel.text = (self.defaults.object(forKey: "selectedTitle") as! String)
-        studyModeSwitch.setOn(defaults.bool(forKey: "study_mode_on"), animated: true)
+        wordListLabel.text = AgniDefaults.selectedTitle
+        studyModeSwitch.setOn(AgniDefaults.studyModeOn, animated: true)
         
-        hintsRemainingButton.setTitle("Hints remaining: \(HintIAPManager.hintsRemaining)", for: .normal)
+        hintsRemainingButton.setTitle("Hints remaining: \(AgniDefaults.hintsRemaining)", for: .normal)
         
     }
     
@@ -46,14 +44,14 @@ class MenuViewController: MenuItemViewController, GKGameCenterControllerDelegate
         self.sheepImageView.image = Converter.getCurrentSkinImage()!
         self.view.setNeedsLayout()
         
-        wordListLabel.text = (self.defaults.object(forKey: "selectedTitle") as! String)
+        wordListLabel.text = AgniDefaults.selectedTitle
     }
     
     // MARK: Menu Items
     
     @IBAction func toggleStudyMode(_ sender: Any) {
-        defaults.set(studyModeSwitch.isOn, forKey: "study_mode_on")
-        defaults.set(true, forKey: "needsUpdateSources")
+        AgniDefaults.studyModeOn = studyModeSwitch.isOn
+        AgniDefaults.needsUpdateSources = true
     }
 
     
@@ -121,7 +119,7 @@ class MenuViewController: MenuItemViewController, GKGameCenterControllerDelegate
     }
     
     func paymentEnded(successful: Bool) {
-        hintsRemainingButton.setTitle("Hints remaining: \(HintIAPManager.hintsRemaining)", for: .normal)
+        hintsRemainingButton.setTitle("Hints remaining: \(AgniDefaults.hintsRemaining)", for: .normal)
     }
     
     

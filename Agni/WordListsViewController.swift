@@ -18,9 +18,6 @@ class WordListsViewController: MenuItemViewController, UITableViewDelegate, UITa
     var lists:[NSManagedObject] = [] //lists from CoreData
     var customLists:[NSManagedObject] = []
     
-    var defaults = UserDefaults.standard //get app-wide data
-    
-    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var pageControl: UIPageControl!
     
@@ -55,10 +52,7 @@ class WordListsViewController: MenuItemViewController, UITableViewDelegate, UITa
                 }
             }
         }
-        //self.selectedTitles = self.defaults.object(forKey: "selectedTitles") as! [String]
-        self.selectedTitle = self.defaults.object(forKey: "selectedTitle") as! String
-        
-        
+        self.selectedTitle = AgniDefaults.selectedTitle
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -98,17 +92,18 @@ class WordListsViewController: MenuItemViewController, UITableViewDelegate, UITa
         guard let listLabel = cell.textLabel else{return cell}
         guard let authorLabel = cell.detailTextLabel else{return cell}
         var hasStudyMode = false
-        let beatenTitles = (defaults.value(forKey: "beatenWordLists") as! [String])
+        let beatenTitles = AgniDefaults.beatenWordLists
         
         if tableView.tag == 1{
             if (indexPath as NSIndexPath).section == 0{
                 if (indexPath as NSIndexPath).row == 0{
-                    listLabel.text = "Latin Starter Pack"
+                    listLabel.text = Constants.LATIN_STARTER_PACK
                     authorLabel.text = "Agni Dev"
                     hasStudyMode = true
                     
-                    if let remaining = defaults.array(forKey: "latinSPRemaining"){
-                        if !beatenTitles.contains("Latin Starter Pack"){
+                    // load the remaining count just so we can get a nice completion thingy
+                    if let remaining = AgniDefaults.latinStarterPackRemaining{
+                        if !beatenTitles.contains(Constants.LATIN_STARTER_PACK){
                             let remainingPercent = Float(remaining.count) / 211.0
                             addCompletionGradient(label: listLabel, percentage: 1.0 - remainingPercent)
                         }else{
@@ -120,12 +115,12 @@ class WordListsViewController: MenuItemViewController, UITableViewDelegate, UITa
                         //We'll let the later screen take care of initializing the remaining val
                     }
                 }else if (indexPath as NSIndexPath).row == 1{
-                    listLabel.text = "English Starter Pack"
+                    listLabel.text = Constants.ENGLISH_STARTER_PACK
                     authorLabel.text = "Agni Dev"
                     
-                    if let remaining = defaults.array(forKey: "englishSPRemaining"){
+                    if let remaining = AgniDefaults.englishStarterPackRemaining{
                         
-                        if !beatenTitles.contains("English Starter Pack"){
+                        if !beatenTitles.contains(Constants.ENGLISH_STARTER_PACK){
                             let remainingPercent = Float(remaining.count) / 51
                             addCompletionGradient(label: listLabel, percentage: 1.0 - remainingPercent)
                         }else{
@@ -251,13 +246,13 @@ class WordListsViewController: MenuItemViewController, UITableViewDelegate, UITa
         guard let titleLabel = cell.textLabel else{return}
         
         self.selectedTitle = titleLabel.text!
-        self.defaults.set(selectedTitle, forKey: "selectedTitle")
+        AgniDefaults.selectedTitle = selectedTitle
         tableView.deselectRow(at: indexPath, animated: true)
         self.selectedCell?.accessoryType = .none
         cell.accessoryType = .checkmark
         self.selectedCell = cell
         
-        self.defaults.set(true, forKey: "needsUpdateSources")
+        AgniDefaults.needsUpdateSources = true
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

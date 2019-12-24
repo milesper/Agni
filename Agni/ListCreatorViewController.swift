@@ -10,7 +10,6 @@ import UIKit
 import CoreData
 
 class ListCreatorViewController: MenuItemViewController, UICollectionViewDelegate, UICollectionViewDataSource {
-    var defaults = UserDefaults.standard //use to get app-wide data
     
     var userLists:[NSManagedObject] = []
     
@@ -29,12 +28,10 @@ class ListCreatorViewController: MenuItemViewController, UICollectionViewDelegat
     
     func loadData(){
         self.userLists = []
-        if defaults.object(forKey: "userCreatedLists") == nil{
-            let blankArray:[String] = []
-            defaults.set(blankArray, forKey: "userCreatedLists")
-            userLists = []
+        if AgniDefaults.userCreatedListTitles == []{
+            return
         }else{
-            let listNames = defaults.object(forKey: "userCreatedLists") as! [String]
+            let listNames = AgniDefaults.userCreatedListTitles
             //get lists saved in persistant memory
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             let managedContext = appDelegate.managedObjectContext!

@@ -10,8 +10,6 @@
 import UIKit
 import AVFoundation
 
-// TODO: Make singleton
-
 class GameSounds: NSObject {
     static let standard = GameSounds()
     

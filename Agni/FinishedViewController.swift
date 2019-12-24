@@ -32,9 +32,9 @@ class FinishedViewController: UIViewController {
         
         HintIAPManager.addHints(50, withDisplay: true)
         
-        if selectedTitle == "Latin Starter Pack"{
+        if selectedTitle == Constants.LATIN_STARTER_PACK{
             latinSPSetup()
-        }else if selectedTitle == "English Starter Pack"{
+        }else if selectedTitle == Constants.ENGLISH_STARTER_PACK{
             englishSPSetup()
         }else{
             otherWordPackSetup()
@@ -79,13 +79,13 @@ class FinishedViewController: UIViewController {
         defaults.set(latinSPOriginalWords, forKey: "latinSPRemaining")
         
         var beatenTitles = (defaults.value(forKey: "beatenWordLists") as! [String])
-        if beatenTitles.contains("Latin Starter Pack"){
+        if beatenTitles.contains(Constants.LATIN_STARTER_PACK){
             //Already beaten
             beatenLabel.text = "You've already beaten this pack. Way to do it again!"
             newSkinLabel.text = "You already have this skin!"
         }else{
             //Never completed this pack
-            beatenTitles.append("Latin Starter Pack")
+            beatenTitles.append(Constants.LATIN_STARTER_PACK)
             defaults.set(beatenTitles, forKey: "beatenWordLists")
             beatenLabel.text = "You have beaten the Latin Starter Pack!"
             newSkinLabel.text = "You have unlocked a new skin!"
@@ -101,13 +101,13 @@ class FinishedViewController: UIViewController {
         defaults.set(engList, forKey: "englishSPRemaining")
         
         var beatenTitles = (defaults.value(forKey: "beatenWordLists") as! [String])
-        if beatenTitles.contains("English Starter Pack"){
+        if beatenTitles.contains(Constants.ENGLISH_STARTER_PACK){
             //Already beaten
             beatenLabel.text = "You've already beaten this pack. Way to do it again!"
             newSkinLabel.text = "Play with this skin?"
         }else{
             //Never completed this pack
-            beatenTitles.append("English Starter Pack")
+            beatenTitles.append(Constants.ENGLISH_STARTER_PACK)
             defaults.set(beatenTitles, forKey: "beatenWordLists")
             beatenLabel.text = "You have beaten the English Starter Pack!"
             newSkinLabel.text = "You have unlocked a new skin!"
@@ -139,7 +139,7 @@ class FinishedViewController: UIViewController {
             guard let list = results.first else{return}
             let fullList = NSKeyedUnarchiver.unarchiveObject(with: list.value(forKey: "words") as! Data) as! [String]
             if fullList.count <= 0 {
-                defaults.set("English Starter Pack", forKey: "selectedTitle") 
+                defaults.set(Constants.ENGLISH_STARTER_PACK, forKey: "selectedTitle") 
             }
             
             //Now save the full list to the remaining

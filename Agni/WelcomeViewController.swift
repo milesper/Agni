@@ -9,7 +9,6 @@
 import UIKit
 
 class WelcomeViewController: UIViewController {
-    var defaults = UserDefaults.standard //use to get app-wide data
     @IBOutlet weak var latinButton: UIButton!
     @IBOutlet weak var englishButton: UIButton!
     
@@ -17,18 +16,18 @@ class WelcomeViewController: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        defaults.set("English Starter Pack", forKey: "selectedTitle")
-        defaults.set(Constants.CURRENT_VERSION, forKey: "lastVersionShown")
+        AgniDefaults.selectedTitle = Constants.ENGLISH_STARTER_PACK
+        AgniDefaults.lastVersionShown = Constants.CURRENT_VERSION
     }
     
     @IBAction func latin(_ sender: UIButton) {
-        defaults.set("Latin Starter Pack", forKey: "selectedTitle")
+        AgniDefaults.selectedTitle = Constants.LATIN_STARTER_PACK
         latinButton.backgroundColor = UIColor(red: 75/255.0, green: 127/255.0, blue: 132/255.0, alpha: 0.65)
         englishButton.backgroundColor = UIColor(white: 0.83, alpha: 1.0)
     }
     
     @IBAction func english(_ sender: UIButton) {
-        defaults.set("English Starter Pack", forKey: "selectedTitle")
+        AgniDefaults.selectedTitle = Constants.ENGLISH_STARTER_PACK
         englishButton.backgroundColor = UIColor(red: 75/255.0, green: 127/255.0, blue: 132/255.0, alpha: 0.65)
         latinButton.backgroundColor = UIColor(white: 0.83, alpha: 1.0)
     }
