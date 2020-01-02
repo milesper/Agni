@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 
-class WordListsViewController: MenuItemViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
+class WordListsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
     
     var selectedTitles:[String] = []
     var selectedTitle:String = ""

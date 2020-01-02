@@ -32,7 +32,7 @@ class BuySkinsViewController: UIViewController, SKPaymentTransactionObserver  {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.activityIndicator = UIActivityIndicatorView(style: .gray)
+        self.activityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
         self.activityIndicator?.frame = self.buyButton.frame
         self.activityIndicator?.backgroundColor = UIColor.white
         self.buyButton.superview!.insertSubview(activityIndicator!, aboveSubview: buyButton)

@@ -9,11 +9,9 @@
 import UIKit
 import GameKit
 
-class MenuViewController: MenuItemViewController, GKGameCenterControllerDelegate, UITableViewDelegate, UIViewControllerTransitioningDelegate, HintIAPManagerDelegate {
+class MenuViewController: UIViewController, GKGameCenterControllerDelegate, UITableViewDelegate, UIViewControllerTransitioningDelegate, HintIAPManagerDelegate {
     
     @IBOutlet weak var sheepImageView: UIImageView!
-    @IBOutlet weak var menuButton: UIButton!
-    @IBOutlet weak var contentView: UIView!
     
     @IBOutlet weak var wordListLabel: UILabel!
     @IBOutlet weak var studyModeSwitch: UISwitch!
@@ -22,7 +20,6 @@ class MenuViewController: MenuItemViewController, GKGameCenterControllerDelegate
     
     var hintManager = HintIAPManager()
     
-    let svinteractor = MenuItemInteractor()
     
     @IBOutlet weak var skinMenuItem: MenuItemView!
     var wordLists:[String] = []

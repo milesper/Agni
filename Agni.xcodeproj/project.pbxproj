@@ -44,7 +44,6 @@
 		955BE3D32151685600F7E45C /* icons8-bug-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 955BE3D02151685600F7E45C /* icons8-bug-100.png */; };
 		955BE3D42151685600F7E45C /* icons8-hint-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 955BE3D12151685600F7E45C /* icons8-hint-100.png */; };
 		95649AA61C2F21030052ADEB /* Achievements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95649AA51C2F21030052ADEB /* Achievements.swift */; };
-		9564C7211D34A13F002F1335 /* ReverseMenuSlideTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9564C7201D34A13F002F1335 /* ReverseMenuSlideTransition.swift */; };
 		957CE68C1FAFF73500D4ECF0 /* Latin1Meanings.txt in Resources */ = {isa = PBXBuildFile; fileRef = 957CE68A1FAFF73500D4ECF0 /* Latin1Meanings.txt */; };
 		957CE68D1FAFF73500D4ECF0 /* Latin1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 957CE68B1FAFF73500D4ECF0 /* Latin1.txt */; };
 		957EF34E2137102100CFE0F7 /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957EF34D2137102100CFE0F7 /* DownloadManager.swift */; };
@@ -74,9 +73,6 @@
 		95A86CD41AF966D200E0FB67 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A86CD31AF966D200E0FB67 /* QuartzCore.framework */; };
 		95A86CD81AF966DD00E0FB67 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A86CD71AF966DD00E0FB67 /* StoreKit.framework */; };
 		95A86CDA1AF966E900E0FB67 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95A86CD91AF966E900E0FB67 /* SystemConfiguration.framework */; };
-		95B303BC1D5F7BCF0077E92B /* MenuItemInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B303BB1D5F7BCF0077E92B /* MenuItemInteractor.swift */; };
-		95B303BE1D6160180077E92B /* MenuItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B303BD1D6160180077E92B /* MenuItemViewController.swift */; };
-		95B69C891F746A17001DBA0A /* DismissAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B69C881F746A17001DBA0A /* DismissAnimator.swift */; };
 		95BEE2B421E68AE000B57DC7 /* GameplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BEE2B321E68AE000B57DC7 /* GameplayViewController.swift */; };
 		95C6E29321C973BD00B4D9A9 /* WordProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C6E29221C973BD00B4D9A9 /* WordProvider.swift */; };
 		95C9B6E51B7C3A920099A7D2 /* QTRomanNumerals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C9B6E41B7C3A920099A7D2 /* QTRomanNumerals.swift */; };
@@ -84,7 +80,6 @@
 		95CE4F581FB3FC7F0048979A /* GameplayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95CE4F571FB3FC7F0048979A /* GameplayManager.swift */; };
 		95CF7E211AFAFFAE007D2F27 /* Refresh-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 95CF7E201AFAFFAE007D2F27 /* Refresh-100.png */; };
 		95D9F50C1D31A2160083A7C6 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D9F50B1D31A2160083A7C6 /* MenuViewController.swift */; };
-		95D9F50E1D31A8780083A7C6 /* MenuSlideTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D9F50D1D31A8780083A7C6 /* MenuSlideTransition.swift */; };
 		95D9F5101D3307DE0083A7C6 /* MenuItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D9F50F1D3307DE0083A7C6 /* MenuItemView.swift */; };
 		95DC7B3521346A38006AC7A9 /* HintIAPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DC7B3421346A38006AC7A9 /* HintIAPManager.swift */; };
 		95DC7B372134A8B1006AC7A9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 95DC7B362134A8B1006AC7A9 /* GoogleService-Info.plist */; };
@@ -106,7 +101,6 @@
 		95E652951D17436400B3F0A3 /* lightgong.aif in Resources */ = {isa = PBXBuildFile; fileRef = 95E6528D1D17436400B3F0A3 /* lightgong.aif */; };
 		95E652961D17436400B3F0A3 /* loss.wav in Resources */ = {isa = PBXBuildFile; fileRef = 95E6528E1D17436400B3F0A3 /* loss.wav */; };
 		95E652971D17436400B3F0A3 /* win.wav in Resources */ = {isa = PBXBuildFile; fileRef = 95E6528F1D17436400B3F0A3 /* win.wav */; };
-		95ECD7021F42B10900FFB69D /* MenuSwingTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95ECD7011F42B10900FFB69D /* MenuSwingTransition.swift */; };
 		95ECD70C1F4B965200FFB69D /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95ECD70B1F4B965200FFB69D /* NotificationService.swift */; };
 		95ECD7101F4B965200FFB69D /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 95ECD7091F4B965200FFB69D /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		95ECD7151F4B983A00FFB69D /* OneSignal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95ECD7141F4B983A00FFB69D /* OneSignal.framework */; };
@@ -211,7 +205,6 @@
 		955BE3D02151685600F7E45C /* icons8-bug-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-bug-100.png"; sourceTree = "<group>"; };
 		955BE3D12151685600F7E45C /* icons8-hint-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-hint-100.png"; sourceTree = "<group>"; };
 		95649AA51C2F21030052ADEB /* Achievements.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Achievements.swift; sourceTree = "<group>"; };
-		9564C7201D34A13F002F1335 /* ReverseMenuSlideTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReverseMenuSlideTransition.swift; sourceTree = "<group>"; };
 		957CE68A1FAFF73500D4ECF0 /* Latin1Meanings.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Latin1Meanings.txt; sourceTree = "<group>"; };
 		957CE68B1FAFF73500D4ECF0 /* Latin1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Latin1.txt; sourceTree = "<group>"; };
 		957EF34D2137102100CFE0F7 /* DownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManager.swift; sourceTree = "<group>"; };
@@ -245,9 +238,6 @@
 		95A86CD31AF966D200E0FB67 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		95A86CD71AF966DD00E0FB67 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		95A86CD91AF966E900E0FB67 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		95B303BB1D5F7BCF0077E92B /* MenuItemInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItemInteractor.swift; sourceTree = "<group>"; };
-		95B303BD1D6160180077E92B /* MenuItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItemViewController.swift; sourceTree = "<group>"; };
-		95B69C881F746A17001DBA0A /* DismissAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissAnimator.swift; sourceTree = "<group>"; };
 		95B7D7811E998E810034801E /* Store 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Store 4.xcdatamodel"; sourceTree = "<group>"; };
 		95BEE2B321E68AE000B57DC7 /* GameplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayViewController.swift; sourceTree = "<group>"; };
 		95C6E29221C973BD00B4D9A9 /* WordProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordProvider.swift; sourceTree = "<group>"; };
@@ -257,7 +247,6 @@
 		95CE4F571FB3FC7F0048979A /* GameplayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayManager.swift; sourceTree = "<group>"; };
 		95CF7E201AFAFFAE007D2F27 /* Refresh-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Refresh-100.png"; sourceTree = "<group>"; };
 		95D9F50B1D31A2160083A7C6 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuViewController.swift; path = ../MenuViewController.swift; sourceTree = "<group>"; };
-		95D9F50D1D31A8780083A7C6 /* MenuSlideTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuSlideTransition.swift; sourceTree = "<group>"; };
 		95D9F50F1D3307DE0083A7C6 /* MenuItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItemView.swift; sourceTree = "<group>"; };
 		95DC7B3421346A38006AC7A9 /* HintIAPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HintIAPManager.swift; sourceTree = "<group>"; };
 		95DC7B362134A8B1006AC7A9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -277,7 +266,6 @@
 		95E6528E1D17436400B3F0A3 /* loss.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = loss.wav; sourceTree = "<group>"; };
 		95E6528F1D17436400B3F0A3 /* win.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = win.wav; sourceTree = "<group>"; };
 		95EA93F31AF9A70F00766E92 /* Agni-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Agni-Bridging-Header.h"; sourceTree = "<group>"; };
-		95ECD7011F42B10900FFB69D /* MenuSwingTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuSwingTransition.swift; sourceTree = "<group>"; };
 		95ECD7091F4B965200FFB69D /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		95ECD70B1F4B965200FFB69D /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		95ECD70D1F4B965200FFB69D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -464,7 +452,6 @@
 				9512FC6B1F2E5408005B80D4 /* LossViewController.swift */,
 				9512FC7C1F2ED393005B80D4 /* FinishedViewController.swift */,
 				95D9F50B1D31A2160083A7C6 /* MenuViewController.swift */,
-				95B303BD1D6160180077E92B /* MenuItemViewController.swift */,
 				95A86CB71AF9316C00E0FB67 /* WordListsViewController.swift */,
 				95F21F651D39B78A003C0203 /* List Creation */,
 				95897A121B86AEED00BBA25C /* SkinPickerViewController.swift */,
@@ -611,11 +598,6 @@
 				9512FC781F2E59EF005B80D4 /* ConfettiTransition.swift */,
 				9583F9A51D2F0FBA0017A26F /* CircleTransition.swift */,
 				9583F9A71D2F39660017A26F /* ReverseCircleTransition.swift */,
-				95D9F50D1D31A8780083A7C6 /* MenuSlideTransition.swift */,
-				9564C7201D34A13F002F1335 /* ReverseMenuSlideTransition.swift */,
-				95ECD7011F42B10900FFB69D /* MenuSwingTransition.swift */,
-				95B303BB1D5F7BCF0077E92B /* MenuItemInteractor.swift */,
-				95B69C881F746A17001DBA0A /* DismissAnimator.swift */,
 			);
 			name = Transitions;
 			sourceTree = "<group>";
@@ -1035,8 +1017,6 @@
 				9512FC731F2E585C005B80D4 /* Cheers.swift in Sources */,
 				95E28F9223A603AF00485A53 /* AgniDefaults.swift in Sources */,
 				95649AA61C2F21030052ADEB /* Achievements.swift in Sources */,
-				95B303BC1D5F7BCF0077E92B /* MenuItemInteractor.swift in Sources */,
-				9564C7211D34A13F002F1335 /* ReverseMenuSlideTransition.swift in Sources */,
 				9583F9A61D2F0FBA0017A26F /* CircleTransition.swift in Sources */,
 				95A639D11B2282D400A2A108 /* Converter.swift in Sources */,
 				9512FC621F299411005B80D4 /* UIColor+AgniColors.swift in Sources */,
@@ -1045,16 +1025,13 @@
 				95857C8B2375444A00381ADC /* iCarousel.m in Sources */,
 				95F21F641D39B782003C0203 /* NewListViewController.swift in Sources */,
 				9512FC791F2E59EF005B80D4 /* ConfettiTransition.swift in Sources */,
-				95B69C891F746A17001DBA0A /* DismissAnimator.swift in Sources */,
 				95098C821F73FAF40056FB1C /* Reachability.swift in Sources */,
 				95F21F601D388397003C0203 /* ListCreatorViewController.swift in Sources */,
 				95A5879E2138F52D00833C74 /* UIImage+Resizing.swift in Sources */,
 				95C6E29321C973BD00B4D9A9 /* WordProvider.swift in Sources */,
 				9512FC6C1F2E5408005B80D4 /* LossViewController.swift in Sources */,
-				95ECD7021F42B10900FFB69D /* MenuSwingTransition.swift in Sources */,
 				959F57E823ABE62D00109C7D /* Constants.swift in Sources */,
 				95E28F9023A602A300485A53 /* UserDefaultWrapper.swift in Sources */,
-				95B303BE1D6160180077E92B /* MenuItemViewController.swift in Sources */,
 				957EF34E2137102100CFE0F7 /* DownloadManager.swift in Sources */,
 				9512FC7D1F2ED393005B80D4 /* FinishedViewController.swift in Sources */,
 				95A639781B1D0AD700A2A108 /* BuySkinsViewController.swift in Sources */,
@@ -1072,7 +1049,6 @@
 				9508F6F21AF6AE6500A8C713 /* ShakeTransition.swift in Sources */,
 				9503F0011B16743F0020A7ED /* GameSounds.swift in Sources */,
 				9583F9A21D2F0E170017A26F /* StatsViewController.swift in Sources */,
-				95D9F50E1D31A8780083A7C6 /* MenuSlideTransition.swift in Sources */,
 				95D9F50C1D31A2160083A7C6 /* MenuViewController.swift in Sources */,
 				95D9F5101D3307DE0083A7C6 /* MenuItemView.swift in Sources */,
 				952C86421D43B6A700064CA5 /* CustomListViewController.swift in Sources */,

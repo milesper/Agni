@@ -28,7 +28,6 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
     var winning = false
     
     var lastSegue:UIStoryboardSegue?
-    let svinteractor = MenuItemInteractor()
     
     var musicStarted = false
     
@@ -83,8 +82,8 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
     @IBAction func toggleMusic(_ sender: UIButton) {
         GameSounds.standard.toggleBGMusic()
         
-        sender.setBackgroundImage(UIImage(named: (AgniDefaults.musicOn ? "mute.png" : "sound.png")), for: UIControl.State())
-        AgniDefaults.musicOn.toggle()
+        sender.setBackgroundImage(UIImage(named: (!AgniDefaults.musicOn ? "mute.png" : "sound.png")), for: UIControl.State())
+       
     }
     
     //MARK: Delegate Methods
@@ -150,11 +149,7 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
             toViewController.transitioningDelegate = self
         }else if segue.identifier == "stats"{
             let toViewController = segue.destination as! StatsViewController
-            //toViewController.transitioningDelegate = self
-        }else if segue.identifier == "showMenu"{
-//            let toViewController = segue.destination as! MenuViewController
-//            toViewController.transitioningDelegate = self
-//            toViewController.interactor = svinteractor
+            toViewController.transitioningDelegate = self
         }
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 104/255.0, green: 104/255.0, blue: 104/255.0, alpha: 1.0)]
     }
@@ -169,8 +164,6 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
             return ConfettiTransition()
         case "stats":
             return CircleTransition(button: winsButton)
-//        case "showMenu":
-//            return MenuSwingTransition(button: menuButton)
         default:
             return nil
         }
@@ -182,14 +175,8 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
         switch segue.identifier!{
         case "stats":
             return ReverseCircleTransition(button: winsButton)
-//        case "showMenu":
-//            return ReverseMenuSlideTransition()
         default:
             return nil
         }
-    }
-
-    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        return svinteractor.hasStarted ? svinteractor : nil
     }
 }

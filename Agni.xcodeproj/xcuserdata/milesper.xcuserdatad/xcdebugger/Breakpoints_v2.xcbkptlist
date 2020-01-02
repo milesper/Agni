@@ -187,8 +187,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "52"
             endingLineNumber = "52"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "7">
+            landmarkName = "AgniViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1082,38 +1082,6 @@
             endingLineNumber = "44"
             landmarkName = "animateTransition(using:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "5C53E321-8D24-4AB9-A983-C625C26750A5 - 9e3993c57f64f608"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Agni.MenuSlideTransition.animateTransition(using: __C.UIViewControllerContextTransitioning) -&gt; ()"
-                  moduleName = "Agni"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/milesper/Documents/XcodeProjects/Agni/Agni/MenuSlideTransition.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "45"
-                  endingLineNumber = "45"
-                  offsetFromSymbolStart = "5414">
-               </Location>
-               <Location
-                  uuid = "5C53E321-8D24-4AB9-A983-C625C26750A5 - 9a1e1228831c40eb"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in Agni.MenuSlideTransition.animateTransition(using: __C.UIViewControllerContextTransitioning) -&gt; ()"
-                  moduleName = "Agni"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/milesper/Documents/XcodeProjects/Agni/Agni/MenuSlideTransition.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "46"
-                  endingLineNumber = "46"
-                  offsetFromSymbolStart = "85">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1231,8 +1199,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "273"
             endingLineNumber = "273"
-            landmarkName = "scrollViewDidEndDecelerating(_:)"
-            landmarkType = "7">
+            landmarkName = "WordListsViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1331,8 +1299,8 @@
             timestampString = "559187346.573064"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
+            startingLineNumber = "35"
+            endingLineNumber = "35"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2147,8 +2115,8 @@
             timestampString = "559187346.574783"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
+            startingLineNumber = "35"
+            endingLineNumber = "35"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2830,23 +2798,6 @@
             startingLineNumber = "43"
             endingLineNumber = "43"
             landmarkName = "handlePanGesture(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "D694A4BD-FC08-4878-9FCB-F5BCAE8421FF"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Agni/AgniViewController.swift"
-            timestampString = "570664224.071983"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "182"
-            endingLineNumber = "182"
-            landmarkName = "animationController(forDismissed:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -83,6 +83,7 @@ class GameplayViewController: UIViewController, HintIAPManagerDelegate {
         
         setup()
         startNewWord()
+        
     }
     
     private func setup(){
@@ -95,6 +96,8 @@ class GameplayViewController: UIViewController, HintIAPManagerDelegate {
             distanceFromPerson += increment //add to the location
             swordLocs.append(distanceFromPerson)
         }
+        
+        loadSkin()
     }
     
     //MARK: Gameplay Methods

@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ListCreatorViewController: MenuItemViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class ListCreatorViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     var userLists:[NSManagedObject] = []
     

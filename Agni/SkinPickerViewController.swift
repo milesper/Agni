@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class SkinPickerViewController: MenuItemViewController, iCarouselDataSource, iCarouselDelegate {
+class SkinPickerViewController: UIViewController, iCarouselDataSource, iCarouselDelegate {
     @IBOutlet var carousel : iCarousel!
     var skins:[NSManagedObject] = []
     var selectedSkinName:String?
