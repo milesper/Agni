@@ -1226,6 +1226,9 @@
                                                 <state key="normal" image="square.and.arrow.up.fill" catalog="system">
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="21"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="shareSheet:" destination="kYA-I0-HiN" eventType="touchUpInside" id="lti-oG-RvZ"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>

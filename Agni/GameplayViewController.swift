@@ -232,7 +232,7 @@ class GameplayViewController: UIViewController, HintIAPManagerDelegate {
                 self.hintUsed = true
                 self.hintButton.setTitle("", for: .normal)
                 self.hintButton.isEnabled = false
-                if self.manager.chosenMeaning == ""{
+                if self.manager.chosenMeaning == nil || self.manager.chosenMeaning == ""{
                     //Give a free letter
                     let letter = self.manager.getRemainingLetter()
                     self.tryLetter(letter: letter)
