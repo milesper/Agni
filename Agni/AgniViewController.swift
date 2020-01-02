@@ -22,7 +22,7 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
     @IBOutlet weak var winsButton: UIButton!
     @IBOutlet weak var volumeButton: UIButton!
     
-    var firstTime = false;
+    var firstTime = false
     
     var winStreak = 0 //update after each win
     var winning = false

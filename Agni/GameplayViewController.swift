@@ -25,8 +25,6 @@ extension GameplayDelegate{
 }
 
 class GameplayViewController: UIViewController, HintIAPManagerDelegate {
-    
-    
     @IBOutlet weak var wordLabel: UILabel!
     @IBOutlet weak var distanceFromPerson: NSLayoutConstraint!
     @IBOutlet weak var correctLabel: UILabel!
@@ -42,8 +40,8 @@ class GameplayViewController: UIViewController, HintIAPManagerDelegate {
     var manager:GameplayManager!
     private var hintManager = HintIAPManager()
     private var hintUsed = false
-    private var stage = 0 //goes up to 7, which is death
-    private var swordLocs:[CGFloat] = [] //holds all possible positions for the sword
+    private var stage = 0 // goes up to 7, which is death
+    private var swordLocs:[CGFloat] = [] // holds all possible positions for the sword
     
     var delegate:GameplayDelegate?
     
@@ -218,8 +216,11 @@ class GameplayViewController: UIViewController, HintIAPManagerDelegate {
     
     @objc func guessLetter(_ sender:UIButton){
         let letter = sender.titleLabel?.text
-        tryLetter(letter: letter!)
-        sender.setTitle(" ", for: UIControl.State())
+        if letter != " "{
+            tryLetter(letter: letter!)
+            sender.setTitle(" ", for: UIControl.State())
+        }
+        
     }
     
     @IBAction func getHint(_ sender: Any) {
