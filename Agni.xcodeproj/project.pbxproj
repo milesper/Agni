@@ -14,7 +14,6 @@
 		9503F0011B16743F0020A7ED /* GameSounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9503F0001B16743F0020A7ED /* GameSounds.swift */; };
 		9508F6BF1AF52A2B00A8C713 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9508F6BE1AF52A2B00A8C713 /* AppDelegate.swift */; };
 		9508F6C41AF52A2B00A8C713 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9508F6C21AF52A2B00A8C713 /* Main.storyboard */; };
-		9508F6C91AF52A2B00A8C713 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9508F6C71AF52A2B00A8C713 /* LaunchScreen.xib */; };
 		9508F6D51AF52A2B00A8C713 /* AgniTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9508F6D41AF52A2B00A8C713 /* AgniTests.swift */; };
 		9508F6DF1AF52E4400A8C713 /* AgniViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9508F6DE1AF52E4400A8C713 /* AgniViewController.swift */; };
 		9508F6F21AF6AE6500A8C713 /* ShakeTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9508F6F11AF6AE6500A8C713 /* ShakeTransition.swift */; };
@@ -35,6 +34,7 @@
 		953F0F5E1BB98E5D00836E5A /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 953F0F5D1BB98E5D00836E5A /* libz.tbd */; };
 		953F0F601BB98ED700836E5A /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 953F0F5F1BB98ED700836E5A /* libsqlite3.tbd */; };
 		9544A52A215471DC0011181D /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9544A529215471DC0011181D /* MessagesController.swift */; };
+		9556457223BE9FBC003808BD /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9556457123BE9FBC003808BD /* Launch.storyboard */; };
 		95569C431D372865007F73FA /* document@44_58.png in Resources */ = {isa = PBXBuildFile; fileRef = 95569C3F1D372865007F73FA /* document@44_58.png */; };
 		95569C441D372865007F73FA /* document@64_64.png in Resources */ = {isa = PBXBuildFile; fileRef = 95569C401D372865007F73FA /* document@64_64.png */; };
 		95569C451D372865007F73FA /* document@312_312.png in Resources */ = {isa = PBXBuildFile; fileRef = 95569C411D372865007F73FA /* document@312_312.png */; };
@@ -169,7 +169,6 @@
 		9508F6BD1AF52A2B00A8C713 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9508F6BE1AF52A2B00A8C713 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9508F6C31AF52A2B00A8C713 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		9508F6C81AF52A2B00A8C713 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		9508F6CE1AF52A2B00A8C713 /* AgniTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AgniTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9508F6D31AF52A2B00A8C713 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9508F6D41AF52A2B00A8C713 /* AgniTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgniTests.swift; sourceTree = "<group>"; };
@@ -196,6 +195,7 @@
 		953F0F5F1BB98ED700836E5A /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		9544A529215471DC0011181D /* MessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesController.swift; sourceTree = "<group>"; };
 		9548A6CC1D02055B00290C4A /* Agni.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Agni.entitlements; sourceTree = "<group>"; };
+		9556457123BE9FBC003808BD /* Launch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
 		95569C3F1D372865007F73FA /* document@44_58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "document@44_58.png"; sourceTree = "<group>"; };
 		95569C401D372865007F73FA /* document@64_64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "document@64_64.png"; sourceTree = "<group>"; };
 		95569C411D372865007F73FA /* document@312_312.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "document@312_312.png"; sourceTree = "<group>"; };
@@ -484,7 +484,7 @@
 			children = (
 				95CE4F591FB3FC900048979A /* Transitions */,
 				9508F6C21AF52A2B00A8C713 /* Main.storyboard */,
-				9508F6C71AF52A2B00A8C713 /* LaunchScreen.xib */,
+				9556457123BE9FBC003808BD /* Launch.storyboard */,
 				95D9F50F1D3307DE0083A7C6 /* MenuItemView.swift */,
 				9512FC611F299411005B80D4 /* UIColor+AgniColors.swift */,
 				95A5879D2138F52D00833C74 /* UIImage+Resizing.swift */,
@@ -830,7 +830,6 @@
 				95569C451D372865007F73FA /* document@312_312.png in Resources */,
 				95E652951D17436400B3F0A3 /* lightgong.aif in Resources */,
 				95CF7E211AFAFFAE007D2F27 /* Refresh-100.png in Resources */,
-				9508F6C91AF52A2B00A8C713 /* LaunchScreen.xib in Resources */,
 				9512FC6A1F2D67C8005B80D4 /* Refresh-blue-100.png in Resources */,
 				95569C431D372865007F73FA /* document@44_58.png in Resources */,
 				95E652831D1742CB00B3F0A3 /* sheep_large.png in Resources */,
@@ -845,6 +844,7 @@
 				955BE3D22151685600F7E45C /* icons8-barcode-128.png in Resources */,
 				95A639C61B1F755600A2A108 /* stickfigure small.png in Resources */,
 				959B5CD41D35A15000292239 /* Xbox Menu Filled Rotated-100.png in Resources */,
+				9556457223BE9FBC003808BD /* Launch.storyboard in Resources */,
 				95E652911D17436400B3F0A3 /* correctSound.wav in Resources */,
 				95E652921D17436400B3F0A3 /* failure.wav in Resources */,
 				957CE68C1FAFF73500D4ECF0 /* Latin1Meanings.txt in Resources */,
@@ -1100,14 +1100,6 @@
 				9508F6C31AF52A2B00A8C713 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		9508F6C71AF52A2B00A8C713 /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				9508F6C81AF52A2B00A8C713 /* Base */,
-			);
-			name = LaunchScreen.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

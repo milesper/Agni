@@ -104,7 +104,7 @@
                         <outlet property="winsButton" destination="Gga-tm-I7q" id="gvY-CG-xAG"/>
                         <segue destination="eow-wO-sUp" kind="presentation" identifier="loss" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="9KA-0f-rTy"/>
                         <segue destination="0kv-d3-Kfc" kind="presentation" identifier="showWelcome" modalTransitionStyle="crossDissolve" id="dot-ra-fv6"/>
-                        <segue destination="GoL-Fe-EAP" kind="presentation" identifier="showWhatsNew" modalTransitionStyle="partialCurl" id="9Ef-Pb-Ttf"/>
+                        <segue destination="GoL-Fe-EAP" kind="presentation" identifier="showWhatsNew" id="9Ef-Pb-Ttf"/>
                         <segue destination="GIX-rg-A02" kind="presentation" identifier="finished" modalTransitionStyle="crossDissolve" id="QGu-D6-cYR"/>
                     </connections>
                 </viewController>
@@ -580,6 +580,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="1O9-40-x3J"/>
                     </view>
+                    <navigationItem key="navigationItem" id="1Jq-Ox-AYh"/>
                     <connections>
                         <outlet property="continueButton" destination="Ybs-2J-4jQ" id="VNS-6l-IXW"/>
                         <outlet property="firstDescription" destination="9Il-9l-0Gn" id="W1G-4U-CCf"/>

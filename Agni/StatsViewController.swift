@@ -9,7 +9,6 @@
 import UIKit
 
 class StatsViewController: UIViewController {
-    let defaults = UserDefaults.standard //used to save app-wide data
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var statsView: UIView!
@@ -28,27 +27,28 @@ class StatsViewController: UIViewController {
     
     func setUpStats(){
         // Do any additional setup after loading the view.
-        let totalWinNumber:String
-        if (defaults.integer(forKey: "win_total") == 0) && defaults.object(forKey: "total_wins") != nil{
-            totalWinNumber = QTRomanNumerals.convertToRomanNum(decimalNum: defaults.object(forKey: "total_wins") as! Int)
-        }else{
-            totalWinNumber = QTRomanNumerals.convertToRomanNum(decimalNum: defaults.object(forKey: "win_total") as! Int)
+        
+        // just a check in case you have the old thing for some reason
+        if UserDefaults.standard.object(forKey: "total_wins") != nil{
+            AgniDefaults.winTotal = UserDefaults.standard.integer(forKey: "total_wins")
         }
+        
+        let totalWinNumber = QTRomanNumerals.convertToRomanNum(decimalNum: AgniDefaults.winTotal)
         
         totalWins.text = "\(totalWinNumber)"
         
         //Best streak
         let bestStreakNumber:String
-        if defaults.integer(forKey: "longest_streak") == 0{
+        if AgniDefaults.longestStreak == 0{
             bestStreakNumber = "-"
         }else{
-            bestStreakNumber = QTRomanNumerals.convertToRomanNum(decimalNum: defaults.object(forKey: "longest_streak") as! Int)
+            bestStreakNumber = QTRomanNumerals.convertToRomanNum(decimalNum: AgniDefaults.longestStreak)
         }
         bestStreak.text = "\(bestStreakNumber)"
         
         //Percent wins
-        let totalGames = defaults.integer(forKey: "win_total") + defaults.integer(forKey: "loss_total")
-        let percentageValue = (defaults.object(forKey: "win_total") as! Float) / Float(totalGames)
+        let totalGames = AgniDefaults.winTotal + AgniDefaults.lossTotal
+        let percentageValue = Float(AgniDefaults.winTotal) / Float(totalGames)
         if !percentageValue.isNaN{
             percentage.text = String(format: "%.1f", percentageValue * 100) + "%"
         }else{
@@ -56,11 +56,11 @@ class StatsViewController: UIViewController {
         }
         
         //Skins used
-        let numberOfSkinsUsed = defaults.array(forKey: "used_skins")?.count
-        skinsUsed.text = QTRomanNumerals.convertToRomanNum(decimalNum: numberOfSkinsUsed!)
+        let numberOfSkinsUsed = AgniDefaults.usedSkins.count
+        skinsUsed.text = QTRomanNumerals.convertToRomanNum(decimalNum: numberOfSkinsUsed)
         
         //Days played
-        let daysPlayedNumber = defaults.integer(forKey: "days_played")
+        let daysPlayedNumber = AgniDefaults.daysPlayed
         daysPlayed.text = QTRomanNumerals.convertToRomanNum(decimalNum: daysPlayedNumber)
     }
     
