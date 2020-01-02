@@ -18,9 +18,6 @@ struct AgniDefaults {
     @UserDefault(key: "currentSkin", defaultValue: Constants.DEFAULT_SKIN_NAME)
     static var currentSkin: String
     
-    @UserDefault(key: "needsUpdateSources", defaultValue: true)
-    static var needsUpdateSources: Bool
-    
     @UserDefault(key: "beatenWordLists", defaultValue: [])
     static var beatenWordLists: [String]
     

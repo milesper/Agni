@@ -53,7 +53,7 @@ class SkinPickerViewController: MenuItemViewController, iCarouselDataSource, iCa
             }
         }
         carousel.scrollToItem(at: lastSelectedIndex, animated: false)
-        NotificationCenter().addObserver(self, selector: #selector(skinsUpdated), name: Notification.Name("skins-refreshed"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(skinsUpdated), name: .skinsRefreshed, object: nil)
 
     }
     
@@ -130,7 +130,7 @@ class SkinPickerViewController: MenuItemViewController, iCarouselDataSource, iCa
                 lastButton.alpha = 0.0
                 lastSelectedIndex = index
             }
-            print("Current Skin: %@", AgniDefaults.currentSkin)
+            print("Current Skin: \(AgniDefaults.currentSkin)")
         }else{
             let skin = skins[index-1]
             let isAwardSkin = skin.value(forKey: "forList") != nil && skin.value(forKey: "forList") as! String != ""
@@ -150,11 +150,12 @@ class SkinPickerViewController: MenuItemViewController, iCarouselDataSource, iCa
                     lastSelectedIndex = index
                 }
                 
-                print("Current Skin: %@", AgniDefaults.currentSkin)
+                print("Current Skin:\(AgniDefaults.currentSkin)")
             } else{
                 self.performSegue(withIdentifier: "buySkins", sender: self)
             }
         }
+        NotificationCenter.default.post(Notification(name: .skinChosen))
     }
     
     @IBAction func randomSkin(_ sender: UIButton) {

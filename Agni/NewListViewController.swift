@@ -113,6 +113,7 @@ class NewListViewController: UIViewController, UITableViewDelegate, UITableViewD
             do {
                 try managedContext.save()
                 print("Saved \(listTitleTextField.text!)")
+                NotificationCenter.default.post(Notification(name: .sourceChanged))
             } catch let error1 as NSError {
                 print("%@", error1)
             }

@@ -58,6 +58,9 @@ class GameplayViewController: UIViewController, HintIAPManagerDelegate {
         for button in letterButtons{
             button.addTarget(self, action: #selector(GameplayViewController.guessLetter(_:)), for: UIControl.Event.touchUpInside)
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(loadSkin), name: .skinChosen, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadManager), name: .sourceChanged, object: nil)
     }
     
     func load(){
@@ -65,8 +68,18 @@ class GameplayViewController: UIViewController, HintIAPManagerDelegate {
         manager.reload()
     }
     
+    // called in response to something changing and sending a notification
+    
+    @objc private func loadSkin(){
+         self.sheepImage.image = Converter.getCurrentSkinImage()?.resizeToWidth(width: sheepImage.frame.size.width * 2, scale: UIScreen.main.scale)
+    }
+    
+    @objc private func reloadManager(){
+        manager.reload()
+        startNewWord()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
-        self.sheepImage.image = Converter.getCurrentSkinImage()?.resizeToWidth(width: sheepImage.frame.size.width * 2, scale: UIScreen.main.scale)
         self.scene = AgniScene(size: CGSize(width: self.sceneView!.frame.size.width, height: self.sceneView!.frame.size.height))
         self.sceneView?.presentScene(self.scene)
         
@@ -83,11 +96,6 @@ class GameplayViewController: UIViewController, HintIAPManagerDelegate {
         for _ in 1...6 { //six stages of location for the sword
             distanceFromPerson += increment //add to the location
             swordLocs.append(distanceFromPerson)
-        }
-        
-        if(AgniDefaults.needsUpdateSources){
-            manager.reload()
-            AgniDefaults.needsUpdateSources = false
         }
     }
     
@@ -106,7 +114,7 @@ class GameplayViewController: UIViewController, HintIAPManagerDelegate {
         if manager.studyMode{
             //Show study mode hint
             UIView.transition(with: hintButton.titleLabel!, duration: 0.5, options: .transitionCrossDissolve, animations: {
-                let titleText = self.manager.chosenMeaning != "" ? "Meaning: " + self.manager.chosenMeaning! : ""
+                let titleText = self.manager.chosenMeaning != nil && self.manager.chosenMeaning != "" ? "Meaning: " + self.manager.chosenMeaning! : ""
                 self.hintButton.setTitle(titleText, for: .normal)
                 self.hintButton.setTitleColor(UIColor(red: 121/255.0, green: 121/255.0, blue: 121/255.0, alpha: 1.0), for: .normal)
                 self.hintButton.isEnabled = false

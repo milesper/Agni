@@ -38,20 +38,29 @@ class MenuViewController: MenuItemViewController, GKGameCenterControllerDelegate
         
         hintsRemainingButton.setTitle("Hints remaining: \(AgniDefaults.hintsRemaining)", for: .normal)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(loadSkin), name: .skinChosen, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loadList), name: .sourceChanged, object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        self.loadSkin()
+        self.loadList()
+    }
+    
+    @objc private func loadList(){
+        wordListLabel.text = AgniDefaults.selectedTitle
+    }
+    
+    @objc private func loadSkin(){
         self.sheepImageView.image = Converter.getCurrentSkinImage()!
         self.view.setNeedsLayout()
-        
-        wordListLabel.text = AgniDefaults.selectedTitle
     }
     
     // MARK: Menu Items
     
     @IBAction func toggleStudyMode(_ sender: Any) {
         AgniDefaults.studyModeOn = studyModeSwitch.isOn
-        AgniDefaults.needsUpdateSources = true
+        NotificationCenter.default.post(Notification(name: .sourceChanged))
     }
 
     
@@ -123,20 +132,6 @@ class MenuViewController: MenuItemViewController, GKGameCenterControllerDelegate
     }
     
     
-    // MARK: Segue
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destinationViewController = segue.destination as? MenuItemViewController {
-//            destinationViewController.transitioningDelegate = self
-//            destinationViewController.interactor = svinteractor
-        }
-    }
-//    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-//        return DismissAnimator()
-//    }
-//
-//    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-//        return svinteractor.hasStarted ? svinteractor : nil
-//    }
     
     //GKGameCenterVC delegate
     func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {

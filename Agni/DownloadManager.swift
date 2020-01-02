@@ -158,8 +158,7 @@ class DownloadManager: NSObject {
                     self.downloadSkin(largedata: data!, download: download)
                     self.ongoingDownloads -= 1
                     if self.ongoingDownloads == 0{
-                        let nc = NotificationCenter()
-                        nc.post(Notification(name: Notification.Name("skins-refreshed")))
+                        NotificationCenter.default.post(Notification(name: .skinsRefreshed))
                     }
                 }
             })

@@ -152,9 +152,9 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
             let toViewController = segue.destination as! StatsViewController
             //toViewController.transitioningDelegate = self
         }else if segue.identifier == "showMenu"{
-            let toViewController = segue.destination as! MenuViewController
-            toViewController.transitioningDelegate = self
-            toViewController.interactor = svinteractor
+//            let toViewController = segue.destination as! MenuViewController
+//            toViewController.transitioningDelegate = self
+//            toViewController.interactor = svinteractor
         }
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 104/255.0, green: 104/255.0, blue: 104/255.0, alpha: 1.0)]
     }
@@ -169,8 +169,8 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
             return ConfettiTransition()
         case "stats":
             return CircleTransition(button: winsButton)
-        case "showMenu":
-            return MenuSwingTransition(button: menuButton)
+//        case "showMenu":
+//            return MenuSwingTransition(button: menuButton)
         default:
             return nil
         }
@@ -182,8 +182,8 @@ class AgniViewController: UIViewController, UIViewControllerTransitioningDelegat
         switch segue.identifier!{
         case "stats":
             return ReverseCircleTransition(button: winsButton)
-        case "showMenu":
-            return ReverseMenuSlideTransition()
+//        case "showMenu":
+//            return ReverseMenuSlideTransition()
         default:
             return nil
         }

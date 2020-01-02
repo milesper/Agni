@@ -14,7 +14,6 @@ class FinishedViewController: UIViewController {
     @IBOutlet weak var newSkinLabel: UILabel!
     @IBOutlet weak var newSkinImage: UIImageView!
     
-    let defaults = UserDefaults.standard //use to get app-wide data
     var selectedTitle:String = ""
     
     enum SkinLoadingError:Error{
@@ -26,11 +25,14 @@ class FinishedViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        selectedTitle = defaults.value(forKey: "selectedTitle") as! String
+        selectedTitle = AgniDefaults.selectedTitle
         
         self.beatenLabel.text = "You have beaten the word pack \(selectedTitle)."
         
-        HintIAPManager.addHints(50, withDisplay: true)
+        if(!AgniDefaults.customListUsed) {
+            // dont give hints for a custom list cheater
+            HintIAPManager.addHints(50, withDisplay: true)
+        }
         
         if selectedTitle == Constants.LATIN_STARTER_PACK{
             latinSPSetup()
@@ -76,20 +78,21 @@ class FinishedViewController: UIViewController {
         let path = Bundle.main.path(forResource: "Latin1", ofType: "txt")
         let content = (try! NSString(contentsOfFile: path!, encoding:String.Encoding.utf8.rawValue)) as String
         latinSPOriginalWords += content.components(separatedBy: ", ")
-        defaults.set(latinSPOriginalWords, forKey: "latinSPRemaining")
+        AgniDefaults.latinStarterPackRemaining = latinSPOriginalWords
         
-        var beatenTitles = (defaults.value(forKey: "beatenWordLists") as! [String])
+        var beatenTitles = AgniDefaults.beatenWordLists
         if beatenTitles.contains(Constants.LATIN_STARTER_PACK){
             //Already beaten
             beatenLabel.text = "You've already beaten this pack. Way to do it again!"
-            newSkinLabel.text = "You already have this skin!"
+            newSkinLabel.text = ""
+            //newSkinLabel.text = "You already have this skin!"
         }else{
             //Never completed this pack
             beatenTitles.append(Constants.LATIN_STARTER_PACK)
-            defaults.set(beatenTitles, forKey: "beatenWordLists")
+            AgniDefaults.beatenWordLists = beatenTitles
             beatenLabel.text = "You have beaten the Latin Starter Pack!"
-            newSkinLabel.text = "You have unlocked a new skin!"
-            
+            //newSkinLabel.text = "You have unlocked a new skin!"
+            newSkinLabel.text = ""
             //TODO: Load skin
         }
     }
@@ -98,9 +101,9 @@ class FinishedViewController: UIViewController {
         let path = Bundle.main.path(forResource: "EnglishStarterPack", ofType: "txt")
         let content = (try! NSString(contentsOfFile: path!, encoding:String.Encoding.utf8.rawValue)) as String
         let engList = content.components(separatedBy: ", ")
-        defaults.set(engList, forKey: "englishSPRemaining")
+        AgniDefaults.englishStarterPackRemaining = engList
         
-        var beatenTitles = (defaults.value(forKey: "beatenWordLists") as! [String])
+       var beatenTitles = AgniDefaults.beatenWordLists
         if beatenTitles.contains(Constants.ENGLISH_STARTER_PACK){
             //Already beaten
             beatenLabel.text = "You've already beaten this pack. Way to do it again!"
@@ -108,21 +111,21 @@ class FinishedViewController: UIViewController {
         }else{
             //Never completed this pack
             beatenTitles.append(Constants.ENGLISH_STARTER_PACK)
-            defaults.set(beatenTitles, forKey: "beatenWordLists")
+            AgniDefaults.beatenWordLists = beatenTitles
             beatenLabel.text = "You have beaten the English Starter Pack!"
             newSkinLabel.text = "You have unlocked a new skin!"
         }
     }
     
     func otherWordPackSetup() {
-        var beatenTitles = (defaults.value(forKey: "beatenWordLists") as! [String])
+        var beatenTitles = AgniDefaults.beatenWordLists
         if beatenTitles.contains(selectedTitle){
             beatenLabel.text = "You've already beaten this pack. Way to do it again!"
             newSkinLabel.text = "Play with this skin?"
         }else{
             //Never completed this pack
             beatenTitles.append(selectedTitle)
-            defaults.set(beatenTitles, forKey: "beatenWordLists")
+            AgniDefaults.beatenWordLists = beatenTitles
             beatenLabel.text = "You have beaten \(selectedTitle)!"
             newSkinLabel.text = "You have unlocked a new skin!"
         }
@@ -139,7 +142,7 @@ class FinishedViewController: UIViewController {
             guard let list = results.first else{return}
             let fullList = NSKeyedUnarchiver.unarchiveObject(with: list.value(forKey: "words") as! Data) as! [String]
             if fullList.count <= 0 {
-                defaults.set(Constants.ENGLISH_STARTER_PACK, forKey: "selectedTitle") 
+                AgniDefaults.selectedTitle = Constants.ENGLISH_STARTER_PACK
             }
             
             //Now save the full list to the remaining
@@ -148,6 +151,7 @@ class FinishedViewController: UIViewController {
             do {
                 try managedContext.save()
                 print("Saved remaining words")
+                NotificationCenter.default.post(Notification(name: .sourceChanged))
             } catch let error1 as NSError {
                 print("%@", error1)
             }

@@ -252,7 +252,7 @@ class WordListsViewController: MenuItemViewController, UITableViewDelegate, UITa
         cell.accessoryType = .checkmark
         self.selectedCell = cell
         
-        AgniDefaults.needsUpdateSources = true
+        NotificationCenter.default.post(Notification(name: .sourceChanged))
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

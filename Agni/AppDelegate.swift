@@ -59,9 +59,6 @@
         #endif
         
         
-        AgniDefaults.needsUpdateSources = true // cause the game to refresh its input sources
-        
-        
         if AgniDefaults.lastVersionShown != Constants.CURRENT_VERSION {
             DownloadManager.standard.deleteAllWords()
             DownloadManager.standard.deleteAllSkins()

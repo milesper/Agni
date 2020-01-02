@@ -80,6 +80,7 @@
 		95BEE2B421E68AE000B57DC7 /* GameplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BEE2B321E68AE000B57DC7 /* GameplayViewController.swift */; };
 		95C6E29321C973BD00B4D9A9 /* WordProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C6E29221C973BD00B4D9A9 /* WordProvider.swift */; };
 		95C9B6E51B7C3A920099A7D2 /* QTRomanNumerals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C9B6E41B7C3A920099A7D2 /* QTRomanNumerals.swift */; };
+		95C9FD9F23BE732700EA3C83 /* NotificationNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C9FD9E23BE732700EA3C83 /* NotificationNames.swift */; };
 		95CE4F581FB3FC7F0048979A /* GameplayManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95CE4F571FB3FC7F0048979A /* GameplayManager.swift */; };
 		95CF7E211AFAFFAE007D2F27 /* Refresh-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 95CF7E201AFAFFAE007D2F27 /* Refresh-100.png */; };
 		95D9F50C1D31A2160083A7C6 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D9F50B1D31A2160083A7C6 /* MenuViewController.swift */; };
@@ -251,6 +252,7 @@
 		95BEE2B321E68AE000B57DC7 /* GameplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayViewController.swift; sourceTree = "<group>"; };
 		95C6E29221C973BD00B4D9A9 /* WordProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordProvider.swift; sourceTree = "<group>"; };
 		95C9B6E41B7C3A920099A7D2 /* QTRomanNumerals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QTRomanNumerals.swift; sourceTree = "<group>"; };
+		95C9FD9E23BE732700EA3C83 /* NotificationNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNames.swift; sourceTree = "<group>"; };
 		95CA11AB1F946D5300B44DD5 /* Play-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Play-100.png"; sourceTree = "<group>"; };
 		95CE4F571FB3FC7F0048979A /* GameplayManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayManager.swift; sourceTree = "<group>"; };
 		95CF7E201AFAFFAE007D2F27 /* Refresh-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Refresh-100.png"; sourceTree = "<group>"; };
@@ -485,6 +487,7 @@
 				95F84ACC21D7267200E77DDC /* Gameplay */,
 				95E28F8F23A602A300485A53 /* UserDefaultWrapper.swift */,
 				95E28F9123A603AF00485A53 /* AgniDefaults.swift */,
+				95C9FD9E23BE732700EA3C83 /* NotificationNames.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1073,6 +1076,7 @@
 				95D9F50C1D31A2160083A7C6 /* MenuViewController.swift in Sources */,
 				95D9F5101D3307DE0083A7C6 /* MenuItemView.swift in Sources */,
 				952C86421D43B6A700064CA5 /* CustomListViewController.swift in Sources */,
+				95C9FD9F23BE732700EA3C83 /* NotificationNames.swift in Sources */,
 				95F84ACB21D7266800E77DDC /* StandardWordProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1265,7 +1269,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Agni/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1299,7 +1303,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Agni/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"-ObjC",
