@@ -7,7 +7,7 @@
 [swift-image]:https://img.shields.io/badge/swift-5.0-orange.svg
 [swift-url]: https://swift.org/
 
-<img src="/icon-rounded.png" align="left" width="200" hspace="10" vspace="10">
+<img src="./icon_rounded.png" align="left" width="200" hspace="10" vspace="10">
 
 Agni is like hangman, with a Roman-themed twist: instead of a hangman, 
 it's a sheep being sacrificed to the gods, and its up to you to stop it. 
